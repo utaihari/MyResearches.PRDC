@@ -1,0 +1,48 @@
+\hypertarget{namespaceprdc__lzw}{\section{prdc\-\_\-lzw Namespace Reference}
+\label{namespaceprdc__lzw}\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}}
+}
+
+
+P\-R\-D\-Cで用いる\-L\-Z\-W圧縮に関する名前空間  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node}
+\begin{DoxyCompactList}\small\item\em L\-Z\-W辞書のノード \end{DoxyCompactList}\item 
+class \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary}
+\begin{DoxyCompactList}\small\item\em L\-Z\-W辞書クラス \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}{compress} (const std\-::string \&uncompressed, std\-::vector$<$ int $>$ \&compressed, \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary} \&output\-\_\-dic)
+\begin{DoxyCompactList}\small\item\em 文字列を圧縮し、辞書を抽出する \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+P\-R\-D\-Cで用いる\-L\-Z\-W圧縮に関する名前空間 
+
+\subsection{Function Documentation}
+\hypertarget{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}{\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}!compress@{compress}}
+\index{compress@{compress}!prdc_lzw@{prdc\-\_\-lzw}}
+\subsubsection[{compress}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::compress (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{uncompressed, }
+\item[{std\-::vector$<$ int $>$ \&}]{compressed, }
+\item[{Dictionary \&}]{output\-\_\-dic}
+\end{DoxyParamCaption}
+)}}\label{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}
+
+
+文字列を圧縮し、辞書を抽出する 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uncompressed} & 圧縮する文字列 \\
+\hline
+{\em compressed} & 圧縮された文字列（数値） \\
+\hline
+{\em output\-\_\-dic} & 出力される辞書 \\
+\hline
+\end{DoxyParams}

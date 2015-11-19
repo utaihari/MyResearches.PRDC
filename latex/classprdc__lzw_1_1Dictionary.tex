@@ -1,0 +1,137 @@
+\hypertarget{classprdc__lzw_1_1Dictionary}{\section{prdc\-\_\-lzw\-:\-:Dictionary Class Reference}
+\label{classprdc__lzw_1_1Dictionary}\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+}
+
+
+L\-Z\-W辞書クラス  
+
+
+
+
+{\ttfamily \#include $<$Dictionary.\-h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}{Dictionary} ()
+\item 
+virtual \hyperlink{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{$\sim$\-Dictionary} ()
+\item 
+void \hyperlink{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}{Add\-Nodes} (std\-::string key\-\_\-word)
+\begin{DoxyCompactList}\small\item\em 辞書に文字列を追加する \end{DoxyCompactList}\item 
+\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}{Search\-Nord} (std\-::string key\-\_\-word)
+\begin{DoxyCompactList}\small\item\em key\-\_\-wordのノードを辞書から検索し返す。 \end{DoxyCompactList}\item 
+bool \hyperlink{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}{Is\-Exist} (std\-::string key\-\_\-word)
+\begin{DoxyCompactList}\small\item\em key\-\_\-wordが辞書に存在するかどうか \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{dict\-\_\-size}
+\begin{DoxyCompactList}\small\item\em 辞書に単語がいくつ登録されているか \end{DoxyCompactList}\item 
+std\-::map$<$ std\-::string, \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ $>$ \hyperlink{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}{nodes}
+\begin{DoxyCompactList}\small\item\em 辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+L\-Z\-W辞書クラス 
+
+文字列の登録と検索ができる \begin{DoxyAuthor}{Author}
+uchino 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Dictionary@{Dictionary}}
+\index{Dictionary@{Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}prdc\-\_\-lzw\-::\-Dictionary\-::\-Dictionary (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}
+\hypertarget{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!$\sim$\-Dictionary@{$\sim$\-Dictionary}}
+\index{$\sim$\-Dictionary@{$\sim$\-Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{$\sim$\-Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}prdc\-\_\-lzw\-::\-Dictionary\-::$\sim$\-Dictionary (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Add\-Nodes@{Add\-Nodes}}
+\index{Add\-Nodes@{Add\-Nodes}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Add\-Nodes}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Nodes (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key\-\_\-word}
+\end{DoxyParamCaption}
+)}}\label{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}
+
+
+辞書に文字列を追加する 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key\-\_\-word} & 追加する文字列 \\
+\hline
+\end{DoxyParams}
+\hypertarget{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Is\-Exist@{Is\-Exist}}
+\index{Is\-Exist@{Is\-Exist}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Is\-Exist}]{\setlength{\rightskip}{0pt plus 5cm}bool prdc\-\_\-lzw\-::\-Dictionary\-::\-Is\-Exist (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key\-\_\-word}
+\end{DoxyParamCaption}
+)}}\label{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}
+
+
+key\-\_\-wordが辞書に存在するかどうか 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key\-\_\-word} & 検索する文字列 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+辞書中に文字列が存在すればtrue 
+\end{DoxyReturn}
+\hypertarget{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Nord@{Search\-Nord}}
+\index{Search\-Nord@{Search\-Nord}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Search\-Nord}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node} $\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Nord (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{key\-\_\-word}
+\end{DoxyParamCaption}
+)}}\label{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}
+
+
+key\-\_\-wordのノードを辞書から検索し返す。 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key\-\_\-word} & 検索する文字列 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返す 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!dict\-\_\-size@{dict\-\_\-size}}
+\index{dict\-\_\-size@{dict\-\_\-size}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{dict\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}int prdc\-\_\-lzw\-::\-Dictionary\-::dict\-\_\-size\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}
+
+
+辞書に単語がいくつ登録されているか 
+
+\hypertarget{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!nodes@{nodes}}
+\index{nodes@{nodes}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{nodes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$std\-::string, {\bf Lzw\-Node}$\ast$$>$ prdc\-\_\-lzw\-::\-Dictionary\-::nodes\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}
+
+
+辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） 
+
+
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{Dictionary_8h}{Dictionary.\-h}\item 
+src/\hyperlink{Dictionary_8cpp}{Dictionary.\-cpp}\end{DoxyCompactItemize}

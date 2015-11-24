@@ -62,13 +62,6 @@ public:
 	 */
 	LzwNode* SearchNode(std::string key_word);
 
-	/**
-	 * @brief key_wordが辞書に存在するかどうか
-	 * @param key_word 検索する文字列
-	 * @return 辞書中に文字列が存在すればtrue
-	 */
-	bool IsExist(std::string key_word);
-
 	LzwNode* current_node;
 	LzwNode* root;
 

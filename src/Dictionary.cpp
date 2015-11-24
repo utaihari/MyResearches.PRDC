@@ -53,17 +53,10 @@ Dictionary::~Dictionary() {
 	delete root;
 }
 
-LzwNode* Dictionary::SearchNode(std::string key_word) {
-
-}
 
 void Dictionary::AddNode(char key_word) {
 	current_node->InsertChild(key_word, dict_size);
 	dict_size++;
-}
-
-bool Dictionary::IsExist(std::string key_word) {
-
 }
 
 } /* namespace prdc_lzw */

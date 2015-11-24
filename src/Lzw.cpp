@@ -23,14 +23,14 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
 		if (output_dic.IsExist(wc) == true) {
 			w = wc;
 		} else {
-			compressed.push_back(output_dic.SearchNord(w)->data);
+			compressed.push_back(output_dic.SearchNode(w)->data);
 			output_dic.AddNodes(wc);
 			w = std::string(1, c);
 		}
 	}
 
 	if (!w.empty()){
-		compressed.push_back(output_dic.SearchNord(w)->data);
+		compressed.push_back(output_dic.SearchNode(w)->data);
 	}
 }
 

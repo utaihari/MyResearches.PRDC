@@ -51,7 +51,7 @@ public:
 	 * @param key_word 検索する文字列
 	 * @return key_wordのノード。辞書中に存在しなければNULLを返す
 	 */
-	LzwNode* SearchNord(std::string key_word);
+	LzwNode* SearchNode(std::string key_word);
 
 	/**
 	 * @brief key_wordが辞書に存在するかどうか
@@ -63,7 +63,7 @@ public:
 
 
 private:
-	///辞書に単語がいくつ登録されているか
+	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
 
 	///辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ）

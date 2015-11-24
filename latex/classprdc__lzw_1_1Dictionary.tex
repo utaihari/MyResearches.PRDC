@@ -40,6 +40,10 @@ uchino
 \end{DoxyAuthor}
 
 
+Definition at line 38 of file Dictionary.\-h.
+
+
+
 \subsection{Constructor \& Destructor Documentation}
 \hypertarget{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Dictionary@{Dictionary}}
 \index{Dictionary@{Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
@@ -48,6 +52,14 @@ uchino
 {}
 \end{DoxyParamCaption}
 )}}\label{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}
+
+
+Definition at line 13 of file Dictionary.\-cpp.
+
+
+
+References nodes.
+
 \hypertarget{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!$\sim$\-Dictionary@{$\sim$\-Dictionary}}
 \index{$\sim$\-Dictionary@{$\sim$\-Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{$\sim$\-Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}prdc\-\_\-lzw\-::\-Dictionary\-::$\sim$\-Dictionary (
@@ -55,6 +67,14 @@ uchino
 {}
 \end{DoxyParamCaption}
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}
+
+
+Definition at line 22 of file Dictionary.\-cpp.
+
+
+
+References nodes.
+
 
 
 \subsection{Member Function Documentation}
@@ -74,6 +94,18 @@ uchino
 {\em key\-\_\-word} & 追加する文字列 \\
 \hline
 \end{DoxyParams}
+
+
+Definition at line 47 of file Dictionary.\-cpp.
+
+
+
+References dict\-\_\-size, and nodes.
+
+
+
+Referenced by prdc\-\_\-lzw\-::compress().
+
 \hypertarget{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Is\-Exist@{Is\-Exist}}
 \index{Is\-Exist@{Is\-Exist}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{Is\-Exist}]{\setlength{\rightskip}{0pt plus 5cm}bool prdc\-\_\-lzw\-::\-Dictionary\-::\-Is\-Exist (
@@ -93,6 +125,18 @@ key\-\_\-wordが辞書に存在するかどうか
 \begin{DoxyReturn}{Returns}
 辞書中に文字列が存在すればtrue 
 \end{DoxyReturn}
+
+
+Definition at line 52 of file Dictionary.\-cpp.
+
+
+
+References nodes.
+
+
+
+Referenced by prdc\-\_\-lzw\-::compress().
+
 \hypertarget{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Nord@{Search\-Nord}}
 \index{Search\-Nord@{Search\-Nord}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{Search\-Nord}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node} $\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Nord (
@@ -114,6 +158,18 @@ key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返�
 \end{DoxyReturn}
 
 
+Definition at line 40 of file Dictionary.\-cpp.
+
+
+
+References nodes.
+
+
+
+Referenced by prdc\-\_\-lzw\-::compress().
+
+
+
 \subsection{Member Data Documentation}
 \hypertarget{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!dict\-\_\-size@{dict\-\_\-size}}
 \index{dict\-\_\-size@{dict\-\_\-size}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
@@ -122,12 +178,28 @@ key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返�
 
 辞書に単語がいくつ登録されているか 
 
+
+
+Definition at line 67 of file Dictionary.\-h.
+
+
+
+Referenced by Add\-Nodes().
+
 \hypertarget{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!nodes@{nodes}}
 \index{nodes@{nodes}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{nodes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$std\-::string, {\bf Lzw\-Node}$\ast$$>$ prdc\-\_\-lzw\-::\-Dictionary\-::nodes\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}
 
 
 辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） 
+
+
+
+Definition at line 70 of file Dictionary.\-h.
+
+
+
+Referenced by Add\-Nodes(), Dictionary(), Is\-Exist(), Search\-Nord(), and $\sim$\-Dictionary().
 
 
 

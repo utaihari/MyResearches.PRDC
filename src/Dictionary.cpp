@@ -37,7 +37,7 @@ LzwNode::~LzwNode() {
 	// TODO Auto-generated destructor stub
 }
 
-LzwNode* Dictionary::SearchNord(std::string key_word){
+LzwNode* Dictionary::SearchNode(std::string key_word){
 	if(nodes.count(key_word) == 0){
 		return NULL;
 	}

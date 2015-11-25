@@ -13,27 +13,27 @@ namespace prdc_lzw {
 LzwNode::LzwNode() :
 		data(0), content() {
 }
-LzwNode::LzwNode(int d,char c) :
+LzwNode::LzwNode(int d, char c) :
 		data(d), content(c) {
 }
 
 LzwNode::~LzwNode() {
-	for(int i = 0; i < children.size(); i++){
-		delete children.at(i);
+	for (auto c : children) {
+		delete c;
 	}
 }
 
-LzwNode* LzwNode::FindChild(char c){
-	for(int i = 0; i < children.size(); i++){
-		LzwNode* tmp = children.at(i);
-		if(tmp->content == c){
+LzwNode* LzwNode::FindChild(char c) {
+	for (auto child : children) {
+		LzwNode* tmp = child;
+		if (tmp->content == c) {
 			return tmp;
 		}
 	}
 	return NULL;
 }
 
-void LzwNode::InsertChild(char c , int data){
+void LzwNode::InsertChild(int data, char c) {
 	LzwNode* tmp = new LzwNode(data, c);
 	children.push_back(tmp);
 }
@@ -41,7 +41,6 @@ void LzwNode::InsertChild(char c , int data){
 Dictionary::Dictionary() :
 		dict_size(256) {
 	root = new LzwNode();
-	current_node = NULL;
 
 	root->children.resize(256);
 	for (int i = 0; i < 256; i++) {
@@ -53,9 +52,8 @@ Dictionary::~Dictionary() {
 	delete root;
 }
 
-
-void Dictionary::AddNode(char key_word) {
-	current_node->InsertChild(key_word, dict_size);
+void Dictionary::AddNode(LzwNode* node, char key_word) {
+	node->InsertChild(dict_size, key_word);
 	dict_size++;
 }
 

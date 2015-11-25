@@ -17,10 +17,16 @@ namespace prdc_lzw {
 /**
  * @brief LZW辞書のノード
  *
- * 内部に辞書番号（辞書に何個目に追加されたか）を持つ
+ * 内部に辞書番号（辞書に何個目に追加されたか）と単語(検索用)を持つ
  */
 class LzwNode {
+	friend class Dictionary;
 public:
+	int getData() {
+		return data;
+	}
+	LzwNode* FindChild(char c);
+private:
 	LzwNode();
 	LzwNode(int d, char c);
 	virtual ~LzwNode();
@@ -30,8 +36,8 @@ public:
 	 * @param c 探索したい文字
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
-	LzwNode* FindChild(char c);
-	void InsertChild(char c, int data);
+
+	void InsertChild(int data, char c);
 
 	int data; ///辞書番号
 	char content; ///格納文字
@@ -48,12 +54,16 @@ class Dictionary {
 public:
 	Dictionary();
 	virtual ~Dictionary();
+	LzwNode* getRoot() {
+		return root;
+	}
 
 	/**
-	 * @brief 辞書に文字列を追加する
-	 * @param key_word 追加する文字列
+	 * @brief 辞書中の指定したノードに文字を追加する
+	 * @param key_word 追加する文字
+	 * @param node 文字を追加するノード
 	 */
-	void AddNode(char key_word);
+	void AddNode(LzwNode* node, char key_word);
 
 	/**
 	 * @brief key_wordのノードを辞書から検索し返す。
@@ -62,12 +72,10 @@ public:
 	 */
 	LzwNode* SearchNode(std::string key_word);
 
-	LzwNode* current_node;
-	LzwNode* root;
-
 private:
 	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
+	LzwNode* root; ///ルートノード
 
 };
 

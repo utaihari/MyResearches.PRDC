@@ -33,5 +33,7 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
 	}
 	compressed.push_back(current_node->getData());
 }
-
+void compress_with_outer_dictionary(const std::string &uncompressed, std::vector<int> &compressed,
+		Dictionary &output_dic) {
+}
 }

@@ -14,24 +14,26 @@ namespace prdc_lzw {
 void compress(const std::string &uncompressed, std::vector<int> &compressed,
 		Dictionary &output_dic) {
 
-	std::string w;
+	LzwNode* current_node = output_dic.getRoot(); //初期位置
+
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); it++) {
-		char c = *it;	//未圧縮の文字列から一文字取り出す
-		std::string wc = w + c;
 
-		if (output_dic.IsExist(wc) == true) {
-			w = wc;
+		char c = *it;	//未圧縮の文字列から一文字取り出す
+
+		LzwNode* q = current_node->FindChild(c);
+		if (q != NULL) {
+			//辞書に文字列が追加されていたら
+			current_node = q;	//探索ノードを一つ進める
 		} else {
-			compressed.push_back(output_dic.SearchNode(w)->data);
-			output_dic.AddNodes(wc);
-			w = std::string(1, c);
+			compressed.push_back(current_node->getData());
+			output_dic.AddNode(current_node, c);
+			current_node = output_dic.getRoot()->FindChild(c);	//最初から検索し直す
 		}
 	}
-
-	if (!w.empty()){
-		compressed.push_back(output_dic.SearchNode(w)->data);
-	}
+	compressed.push_back(current_node->getData());
 }
-
+void compress_with_outer_dictionary(const std::string &uncompressed, std::vector<int> &compressed,
+		Dictionary &output_dic) {
+}
 }

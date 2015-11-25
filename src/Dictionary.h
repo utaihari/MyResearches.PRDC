@@ -8,7 +8,7 @@
 #ifndef DICTIONARY_H_
 #define DICTIONARY_H_
 
-#include <map>
+#include <vector>
 #include <string>
 
 ///PRDCで用いるLZW圧縮に関する名前空間
@@ -17,16 +17,31 @@ namespace prdc_lzw {
 /**
  * @brief LZW辞書のノード
  *
- * 内部に辞書番号（辞書に何個目に追加されたか）を持つ
+ * 内部に辞書番号（辞書に何個目に追加されたか）と単語(検索用)を持つ
  */
 class LzwNode {
+	friend class Dictionary;
 public:
+	int getData() {
+		return data;
+	}
+	LzwNode* FindChild(char c);
+private:
 	LzwNode();
-	LzwNode(int);
+	LzwNode(int d, char c);
 	virtual ~LzwNode();
 
-	///辞書番号
-	int data;
+	/**
+	 * @brief 文字cを子供に持っていればそれを返す
+	 * @param c 探索したい文字
+	 * @return 存在すればノードのポインタ、なければNULL
+	 */
+
+	void InsertChild(int data, char c);
+
+	int data; ///辞書番号
+	char content; ///格納文字
+	std::vector<LzwNode*> children;
 };
 
 /**
@@ -39,12 +54,16 @@ class Dictionary {
 public:
 	Dictionary();
 	virtual ~Dictionary();
+	LzwNode* getRoot() {
+		return root;
+	}
 
 	/**
-	 * @brief 辞書に文字列を追加する
-	 * @param key_word 追加する文字列
+	 * @brief 辞書中の指定したノードに文字を追加する
+	 * @param key_word 追加する文字
+	 * @param node 文字を追加するノード
 	 */
-	void AddNodes(std::string key_word);
+	void AddNode(LzwNode* node, char key_word);
 
 	/**
 	 * @brief key_wordのノードを辞書から検索し返す。
@@ -53,23 +72,12 @@ public:
 	 */
 	LzwNode* SearchNode(std::string key_word);
 
-	/**
-	 * @brief key_wordが辞書に存在するかどうか
-	 * @param key_word 検索する文字列
-	 * @return 辞書中に文字列が存在すればtrue
-	 */
-	bool IsExist(std::string key_word);
-
-
-
 private:
 	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
+	LzwNode* root; ///ルートノード
 
-	///辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ）
-	std::map<std::string, LzwNode*> nodes;
 };
-
 
 } /* namespace prdc_lzw */
 #endif /* DICTIONARY_H_ */

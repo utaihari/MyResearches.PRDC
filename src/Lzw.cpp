@@ -27,13 +27,32 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
 			current_node = q;	//探索ノードを一つ進める
 		} else {
 			compressed.push_back(current_node->getData());
-			output_dic.AddNode(current_node, c);
+			output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
 			current_node = output_dic.getRoot()->FindChild(c);	//最初から検索し直す
 		}
 	}
 	compressed.push_back(current_node->getData());
 }
-void compress_with_outer_dictionary(const std::string &uncompressed, std::vector<int> &compressed,
-		Dictionary &output_dic) {
+
+void compress_with_outer_dictionary(const std::string &uncompressed,
+		std::vector<int> &compressed, Dictionary &input_dic) {
+	LzwNode* current_node = input_dic.getRoot(); //初期位置
+
+	for (std::string::const_iterator it = uncompressed.begin();
+			it != uncompressed.end(); it++) {
+
+		char c = *it;	//未圧縮の文字列から一文字取り出す
+
+		LzwNode* q = current_node->FindChild(c);
+		if (q != NULL) {
+			//辞書に文字列が追加されていたら
+			current_node = q;	//探索ノードを一つ進める
+		} else {
+			compressed.push_back(current_node->getData());
+			current_node = input_dic.getRoot()->FindChild(c);	//最初から検索し直す
+		}
+	}
+	compressed.push_back(current_node->getData());
+
 }
 }

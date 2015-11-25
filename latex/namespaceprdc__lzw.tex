@@ -17,7 +17,9 @@ class \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary}
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}{compress} (const std\-::string \&uncompressed, std\-::vector$<$ int $>$ \&compressed, \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary} \&output\-\_\-dic)
-\begin{DoxyCompactList}\small\item\em 文字列を圧縮し、辞書を抽出する \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em 文字列を圧縮し、辞書を抽出する \end{DoxyCompactList}\item 
+void \hyperlink{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}{compress\-\_\-with\-\_\-outer\-\_\-dictionary} (const std\-::string \&uncompressed, std\-::vector$<$ int $>$ \&compressed, \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary} \&output\-\_\-dic)
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -52,9 +54,22 @@ Definition at line 14 of file Lzw.\-cpp.
 
 
 
-References prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Nodes(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::data, prdc\-\_\-lzw\-::\-Dictionary\-::\-Is\-Exist(), and prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Nord().
+References prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Node(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Find\-Child(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::get\-Data(), and prdc\-\_\-lzw\-::\-Dictionary\-::get\-Root().
 
 
 
 Referenced by main().
+
+\hypertarget{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}{\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}!compress\-\_\-with\-\_\-outer\-\_\-dictionary@{compress\-\_\-with\-\_\-outer\-\_\-dictionary}}
+\index{compress\-\_\-with\-\_\-outer\-\_\-dictionary@{compress\-\_\-with\-\_\-outer\-\_\-dictionary}!prdc_lzw@{prdc\-\_\-lzw}}
+\subsubsection[{compress\-\_\-with\-\_\-outer\-\_\-dictionary}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::compress\-\_\-with\-\_\-outer\-\_\-dictionary (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{uncompressed, }
+\item[{std\-::vector$<$ int $>$ \&}]{compressed, }
+\item[{Dictionary \&}]{output\-\_\-dic}
+\end{DoxyParamCaption}
+)}}\label{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}
+
+
+Definition at line 36 of file Lzw.\-cpp.
 

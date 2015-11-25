@@ -70,6 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li class="current"><a href="functions.html"><span>All</span></a></li>
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
+      <li><a href="functions_rela.html"><span>Related&#160;Functions</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -78,7 +79,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -89,8 +90,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="contents">
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div><ul>
-<li>AddNodes()
-: <a class="el" href="classprdc__lzw_1_1Dictionary.html#a1eb03039cfef0b86a1198bd256a7f057">prdc_lzw::Dictionary</a>
+<li>AddNode()
+: <a class="el" href="classprdc__lzw_1_1Dictionary.html#ad9a68c58a75d9eec5eb2aaf528b9fbe4">prdc_lzw::Dictionary</a>
+</li>
+<li>children
+: <a class="el" href="classprdc__lzw_1_1LzwNode.html#abc56c04f0b0f97baf8e2b3f08d736463">prdc_lzw::LzwNode</a>
+</li>
+<li>content
+: <a class="el" href="classprdc__lzw_1_1LzwNode.html#acb2b7cb34053125cfdf7595aba9bc172">prdc_lzw::LzwNode</a>
 </li>
 <li>data
 : <a class="el" href="classprdc__lzw_1_1LzwNode.html#ac85178681ea1181b22c3ac43af32515a">prdc_lzw::LzwNode</a>
@@ -100,18 +107,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>Dictionary()
 : <a class="el" href="classprdc__lzw_1_1Dictionary.html#a7a53efd7967e59748f321938aa983368">prdc_lzw::Dictionary</a>
+, <a class="el" href="classprdc__lzw_1_1LzwNode.html#a61780a02d5e0994eb40a4b79f9c007ad">prdc_lzw::LzwNode</a>
 </li>
-<li>IsExist()
-: <a class="el" href="classprdc__lzw_1_1Dictionary.html#acfa8394907b51708efd8009ee0c5269f">prdc_lzw::Dictionary</a>
+<li>FindChild()
+: <a class="el" href="classprdc__lzw_1_1LzwNode.html#a4dbccb5fb97eae6f622a66a53eda46a3">prdc_lzw::LzwNode</a>
+</li>
+<li>getData()
+: <a class="el" href="classprdc__lzw_1_1LzwNode.html#ab9beb4b1fd0020fd63d05bb73efa0ba9">prdc_lzw::LzwNode</a>
+</li>
+<li>getRoot()
+: <a class="el" href="classprdc__lzw_1_1Dictionary.html#a4ac9a03c8ead8d6ca17e080ff9227fd9">prdc_lzw::Dictionary</a>
+</li>
+<li>InsertChild()
+: <a class="el" href="classprdc__lzw_1_1LzwNode.html#adcb9f453effcb8fac95bb08a59665eb7">prdc_lzw::LzwNode</a>
 </li>
 <li>LzwNode()
 : <a class="el" href="classprdc__lzw_1_1LzwNode.html#aecd8429cfcb52da0c5a88c2eb2ce8f17">prdc_lzw::LzwNode</a>
 </li>
-<li>nodes
-: <a class="el" href="classprdc__lzw_1_1Dictionary.html#af204400d56e05c8a3fcc25bfd0990ff9">prdc_lzw::Dictionary</a>
+<li>root
+: <a class="el" href="classprdc__lzw_1_1Dictionary.html#a95b84d2d9ebb6277cfc6bffba5dee738">prdc_lzw::Dictionary</a>
 </li>
-<li>SearchNord()
-: <a class="el" href="classprdc__lzw_1_1Dictionary.html#a7e292cd6ceadd969caed403db3a05483">prdc_lzw::Dictionary</a>
+<li>SearchNode()
+: <a class="el" href="classprdc__lzw_1_1Dictionary.html#ac5577ef2e482e191a0b6376e28564b7e">prdc_lzw::Dictionary</a>
 </li>
 <li>~Dictionary()
 : <a class="el" href="classprdc__lzw_1_1Dictionary.html#a953fce0e9128a8e48b62779fdefcc051">prdc_lzw::Dictionary</a>
@@ -123,7 +140,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 20 2015 02:59:22 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

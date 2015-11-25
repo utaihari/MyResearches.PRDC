@@ -10,6 +10,15 @@ L\-Z\-W辞書クラス
 
 {\ttfamily \#include $<$Dictionary.\-h$>$}
 
+
+
+Collaboration diagram for prdc\-\_\-lzw\-:\-:Dictionary\-:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{classprdc__lzw_1_1Dictionary__coll__graph}
+\end{center}
+\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -17,19 +26,19 @@ L\-Z\-W辞書クラス
 \item 
 virtual \hyperlink{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{$\sim$\-Dictionary} ()
 \item 
-void \hyperlink{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}{Add\-Nodes} (std\-::string key\-\_\-word)
-\begin{DoxyCompactList}\small\item\em 辞書に文字列を追加する \end{DoxyCompactList}\item 
-\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}{Search\-Nord} (std\-::string key\-\_\-word)
-\begin{DoxyCompactList}\small\item\em key\-\_\-wordのノードを辞書から検索し返す。 \end{DoxyCompactList}\item 
-bool \hyperlink{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}{Is\-Exist} (std\-::string key\-\_\-word)
-\begin{DoxyCompactList}\small\item\em key\-\_\-wordが辞書に存在するかどうか \end{DoxyCompactList}\end{DoxyCompactItemize}
+\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}{get\-Root} ()
+\item 
+void \hyperlink{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}{Add\-Node} (\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$node, char key\-\_\-word)
+\begin{DoxyCompactList}\small\item\em 辞書中の指定したノードに文字を追加する \end{DoxyCompactList}\item 
+\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}{Search\-Node} (std\-::string key\-\_\-word)
+\begin{DoxyCompactList}\small\item\em key\-\_\-wordのノードを辞書から検索し返す。 \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
 int \hyperlink{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{dict\-\_\-size}
-\begin{DoxyCompactList}\small\item\em 辞書に単語がいくつ登録されているか \end{DoxyCompactList}\item 
-std\-::map$<$ std\-::string, \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ $>$ \hyperlink{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}{nodes}
-\begin{DoxyCompactList}\small\item\em 辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em 辞書に単語がいくつ登録されているか(辞書番号をつける際に利用) \end{DoxyCompactList}\item 
+\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}{root}
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -40,7 +49,7 @@ uchino
 \end{DoxyAuthor}
 
 
-Definition at line 38 of file Dictionary.\-h.
+Definition at line 60 of file Dictionary.\-h.
 
 
 
@@ -54,11 +63,11 @@ Definition at line 38 of file Dictionary.\-h.
 )}}\label{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}
 
 
-Definition at line 13 of file Dictionary.\-cpp.
+Definition at line 41 of file Dictionary.\-cpp.
 
 
 
-References nodes.
+References prdc\-\_\-lzw\-::\-Lzw\-Node\-::children, and root.
 
 \hypertarget{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!$\sim$\-Dictionary@{$\sim$\-Dictionary}}
 \index{$\sim$\-Dictionary@{$\sim$\-Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
@@ -69,81 +78,75 @@ References nodes.
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}
 
 
-Definition at line 22 of file Dictionary.\-cpp.
+Definition at line 51 of file Dictionary.\-cpp.
 
 
 
-References nodes.
+References root.
 
 
 
 \subsection{Member Function Documentation}
-\hypertarget{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Add\-Nodes@{Add\-Nodes}}
-\index{Add\-Nodes@{Add\-Nodes}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{Add\-Nodes}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Nodes (
+\hypertarget{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Add\-Node@{Add\-Node}}
+\index{Add\-Node@{Add\-Node}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Add\-Node}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Node (
 \begin{DoxyParamCaption}
-\item[{std\-::string}]{key\-\_\-word}
+\item[{{\bf Lzw\-Node} $\ast$}]{node, }
+\item[{char}]{key\-\_\-word}
 \end{DoxyParamCaption}
-)}}\label{classprdc__lzw_1_1Dictionary_a1eb03039cfef0b86a1198bd256a7f057}
+)}}\label{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}
 
 
-辞書に文字列を追加する 
+辞書中の指定したノードに文字を追加する 
 
 
 \begin{DoxyParams}{Parameters}
-{\em key\-\_\-word} & 追加する文字列 \\
+{\em key\-\_\-word} & 追加する文字 \\
+\hline
+{\em node} & 文字を追加するノード \\
 \hline
 \end{DoxyParams}
+\begin{DoxyNote}{Note}
+辞書番号の管理のため直接ノードに子を追加させない 
+\end{DoxyNote}
 
 
-Definition at line 47 of file Dictionary.\-cpp.
+Definition at line 55 of file Dictionary.\-cpp.
 
 
 
-References dict\-\_\-size, and nodes.
+References dict\-\_\-size, and prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Insert\-Child().
 
 
 
 Referenced by prdc\-\_\-lzw\-::compress().
 
-\hypertarget{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Is\-Exist@{Is\-Exist}}
-\index{Is\-Exist@{Is\-Exist}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{Is\-Exist}]{\setlength{\rightskip}{0pt plus 5cm}bool prdc\-\_\-lzw\-::\-Dictionary\-::\-Is\-Exist (
+\hypertarget{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!get\-Root@{get\-Root}}
+\index{get\-Root@{get\-Root}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{get\-Root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::get\-Root (
 \begin{DoxyParamCaption}
-\item[{std\-::string}]{key\-\_\-word}
+{}
 \end{DoxyParamCaption}
-)}}\label{classprdc__lzw_1_1Dictionary_acfa8394907b51708efd8009ee0c5269f}
+)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}
 
 
-key\-\_\-wordが辞書に存在するかどうか 
-
-
-\begin{DoxyParams}{Parameters}
-{\em key\-\_\-word} & 検索する文字列 \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-辞書中に文字列が存在すればtrue 
-\end{DoxyReturn}
-
-
-Definition at line 52 of file Dictionary.\-cpp.
+Definition at line 64 of file Dictionary.\-h.
 
 
 
-References nodes.
+References root.
 
 
 
 Referenced by prdc\-\_\-lzw\-::compress().
 
-\hypertarget{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Nord@{Search\-Nord}}
-\index{Search\-Nord@{Search\-Nord}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{Search\-Nord}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node} $\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Nord (
+\hypertarget{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Node@{Search\-Node}}
+\index{Search\-Node@{Search\-Node}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Search\-Node}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Node (
 \begin{DoxyParamCaption}
 \item[{std\-::string}]{key\-\_\-word}
 \end{DoxyParamCaption}
-)}}\label{classprdc__lzw_1_1Dictionary_a7e292cd6ceadd969caed403db3a05483}
+)}}\label{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}
 
 
 key\-\_\-wordのノードを辞書から検索し返す。 
@@ -158,48 +161,32 @@ key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返�
 \end{DoxyReturn}
 
 
-Definition at line 40 of file Dictionary.\-cpp.
-
-
-
-References nodes.
-
-
-
-Referenced by prdc\-\_\-lzw\-::compress().
-
-
-
 \subsection{Member Data Documentation}
 \hypertarget{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!dict\-\_\-size@{dict\-\_\-size}}
 \index{dict\-\_\-size@{dict\-\_\-size}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{dict\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}int prdc\-\_\-lzw\-::\-Dictionary\-::dict\-\_\-size\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}
 
 
-辞書に単語がいくつ登録されているか 
+辞書に単語がいくつ登録されているか(辞書番号をつける際に利用) 
 
 
 
-Definition at line 67 of file Dictionary.\-h.
+Definition at line 85 of file Dictionary.\-h.
 
 
 
-Referenced by Add\-Nodes().
+Referenced by Add\-Node().
 
-\hypertarget{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!nodes@{nodes}}
-\index{nodes@{nodes}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{nodes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::map$<$std\-::string, {\bf Lzw\-Node}$\ast$$>$ prdc\-\_\-lzw\-::\-Dictionary\-::nodes\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_af204400d56e05c8a3fcc25bfd0990ff9}
-
-
-辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） 
+\hypertarget{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!root@{root}}
+\index{root@{root}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::root\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}
 
 
-
-Definition at line 70 of file Dictionary.\-h.
+Definition at line 86 of file Dictionary.\-h.
 
 
 
-Referenced by Add\-Nodes(), Dictionary(), Is\-Exist(), Search\-Nord(), and $\sim$\-Dictionary().
+Referenced by Dictionary(), get\-Root(), and $\sim$\-Dictionary().
 
 
 

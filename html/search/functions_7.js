@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7edictionary',['~Dictionary',['../classprdc__lzw_1_1Dictionary.html#a953fce0e9128a8e48b62779fdefcc051',1,'prdc_lzw::Dictionary']]],
-  ['_7elzwnode',['~LzwNode',['../classprdc__lzw_1_1LzwNode.html#ab7c9e93839328025287d465734dfba4a',1,'prdc_lzw::LzwNode']]]
+  ['main',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]]
 ];

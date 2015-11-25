@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -98,6 +98,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <a href="classprdc__lzw_1_1Dictionary.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for prdc_lzw::Dictionary:</div>
+<div class="dyncontent">
+<div class="center"><img src="classprdc__lzw_1_1Dictionary__coll__graph.png" border="0" usemap="#prdc__lzw_1_1Dictionary_coll__map" alt="Collaboration graph"/></div>
+<map name="prdc__lzw_1_1Dictionary_coll__map" id="prdc__lzw_1_1Dictionary_coll__map">
+<area shape="rect" id="node2" href="classprdc__lzw_1_1LzwNode.html" title="LZW辞書のノード " alt="" coords="6,5,143,32"/></map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -105,31 +112,29 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7a53efd7967e59748f321938aa983368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a953fce0e9128a8e48b62779fdefcc051"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a953fce0e9128a8e48b62779fdefcc051">~Dictionary</a> ()</td></tr>
 <tr class="separator:a953fce0e9128a8e48b62779fdefcc051"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1eb03039cfef0b86a1198bd256a7f057"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a1eb03039cfef0b86a1198bd256a7f057">AddNodes</a> (std::string key_word)</td></tr>
-<tr class="memdesc:a1eb03039cfef0b86a1198bd256a7f057"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書に文字列を追加する  <a href="#a1eb03039cfef0b86a1198bd256a7f057">More...</a><br/></td></tr>
-<tr class="separator:a1eb03039cfef0b86a1198bd256a7f057"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e292cd6ceadd969caed403db3a05483"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a7e292cd6ceadd969caed403db3a05483">SearchNord</a> (std::string key_word)</td></tr>
-<tr class="memdesc:a7e292cd6ceadd969caed403db3a05483"><td class="mdescLeft">&#160;</td><td class="mdescRight">key_wordのノードを辞書から検索し返す。  <a href="#a7e292cd6ceadd969caed403db3a05483">More...</a><br/></td></tr>
-<tr class="separator:a7e292cd6ceadd969caed403db3a05483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfa8394907b51708efd8009ee0c5269f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#acfa8394907b51708efd8009ee0c5269f">IsExist</a> (std::string key_word)</td></tr>
-<tr class="memdesc:acfa8394907b51708efd8009ee0c5269f"><td class="mdescLeft">&#160;</td><td class="mdescRight">key_wordが辞書に存在するかどうか  <a href="#acfa8394907b51708efd8009ee0c5269f">More...</a><br/></td></tr>
-<tr class="separator:acfa8394907b51708efd8009ee0c5269f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ac9a03c8ead8d6ca17e080ff9227fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a4ac9a03c8ead8d6ca17e080ff9227fd9">getRoot</a> ()</td></tr>
+<tr class="separator:a4ac9a03c8ead8d6ca17e080ff9227fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ad9a68c58a75d9eec5eb2aaf528b9fbe4">AddNode</a> (<a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *node, char key_word)</td></tr>
+<tr class="memdesc:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書中の指定したノードに文字を追加する  <a href="#ad9a68c58a75d9eec5eb2aaf528b9fbe4">More...</a><br/></td></tr>
+<tr class="separator:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5577ef2e482e191a0b6376e28564b7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ac5577ef2e482e191a0b6376e28564b7e">SearchNode</a> (std::string key_word)</td></tr>
+<tr class="memdesc:ac5577ef2e482e191a0b6376e28564b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">key_wordのノードを辞書から検索し返す。  <a href="#ac5577ef2e482e191a0b6376e28564b7e">More...</a><br/></td></tr>
+<tr class="separator:ac5577ef2e482e191a0b6376e28564b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ac96b4db6d4692ba9b082fe32e54bcf0d">dict_size</a></td></tr>
-<tr class="memdesc:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書に単語がいくつ登録されているか  <a href="#ac96b4db6d4692ba9b082fe32e54bcf0d">More...</a><br/></td></tr>
+<tr class="memdesc:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)  <a href="#ac96b4db6d4692ba9b082fe32e54bcf0d">More...</a><br/></td></tr>
 <tr class="separator:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af204400d56e05c8a3fcc25bfd0990ff9"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, <a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#af204400d56e05c8a3fcc25bfd0990ff9">nodes</a></td></tr>
-<tr class="memdesc:af204400d56e05c8a3fcc25bfd0990ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ）  <a href="#af204400d56e05c8a3fcc25bfd0990ff9">More...</a><br/></td></tr>
-<tr class="separator:af204400d56e05c8a3fcc25bfd0990ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95b84d2d9ebb6277cfc6bffba5dee738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a95b84d2d9ebb6277cfc6bffba5dee738">root</a></td></tr>
+<tr class="separator:a95b84d2d9ebb6277cfc6bffba5dee738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LZW辞書クラス </p>
 <p>文字列の登録と検索ができる </p>
 <dl class="section author"><dt>Author</dt><dd>uchino </dd></dl>
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00038">38</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00060">60</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7a53efd7967e59748f321938aa983368"></a>
 <div class="memitem">
@@ -144,9 +149,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00013">13</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00041">41</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00070">nodes</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00051">prdc_lzw::LzwNode::children</a>, and <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
 
 </div>
 </div>
@@ -171,80 +176,90 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00022">22</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00051">51</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00070">nodes</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1eb03039cfef0b86a1198bd256a7f057"></a>
+<a class="anchor" id="ad9a68c58a75d9eec5eb2aaf528b9fbe4"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void prdc_lzw::Dictionary::AddNodes </td>
+          <td class="memname">void prdc_lzw::Dictionary::AddNode </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>key_word</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td>
+          <td class="paramname"><em>node</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>key_word</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>辞書に文字列を追加する </p>
+<p>辞書中の指定したノードに文字を追加する </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key_word</td><td>追加する文字列 </td></tr>
+    <tr><td class="paramname">key_word</td><td>追加する文字 </td></tr>
+    <tr><td class="paramname">node</td><td>文字を追加するノード </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>辞書番号の管理のため直接ノードに子を追加させない </dd></dl>
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00047">47</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00055">55</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00067">dict_size</a>, and <a class="el" href="Dictionary_8h_source.html#l00070">nodes</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00085">dict_size</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00036">prdc_lzw::LzwNode::InsertChild()</a>.</p>
 
 <p>Referenced by <a class="el" href="Lzw_8cpp_source.html#l00014">prdc_lzw::compress()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="acfa8394907b51708efd8009ee0c5269f"></a>
+<a class="anchor" id="a4ac9a03c8ead8d6ca17e080ff9227fd9"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool prdc_lzw::Dictionary::IsExist </td>
+          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>* prdc_lzw::Dictionary::getRoot </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>key_word</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>key_wordが辞書に存在するかどうか </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">key_word</td><td>検索する文字列 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>辞書中に文字列が存在すればtrue </dd></dl>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00064">64</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00052">52</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
-
-<p>References <a class="el" href="Dictionary_8h_source.html#l00070">nodes</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
 
 <p>Referenced by <a class="el" href="Lzw_8cpp_source.html#l00014">prdc_lzw::compress()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a7e292cd6ceadd969caed403db3a05483"></a>
+<a class="anchor" id="ac5577ef2e482e191a0b6376e28564b7e"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> * prdc_lzw::Dictionary::SearchNord </td>
+          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>* prdc_lzw::Dictionary::SearchNode </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>key_word</em></td><td>)</td>
@@ -261,12 +276,6 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>key_wordのノード。辞書中に存在しなければNULLを返す </dd></dl>
-
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00040">40</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
-
-<p>References <a class="el" href="Dictionary_8h_source.html#l00070">nodes</a>.</p>
-
-<p>Referenced by <a class="el" href="Lzw_8cpp_source.html#l00014">prdc_lzw::compress()</a>.</p>
 
 </div>
 </div>
@@ -289,15 +298,15 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>辞書に単語がいくつ登録されているか </p>
+<p>辞書に単語がいくつ登録されているか(辞書番号をつける際に利用) </p>
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00067">67</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00085">85</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00047">AddNodes()</a>.</p>
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00055">AddNode()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="af204400d56e05c8a3fcc25bfd0990ff9"></a>
+<a class="anchor" id="a95b84d2d9ebb6277cfc6bffba5dee738"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -305,7 +314,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;std::string, <a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>*&gt; prdc_lzw::Dictionary::nodes</td>
+          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>* prdc_lzw::Dictionary::root</td>
         </tr>
       </table>
   </td>
@@ -315,11 +324,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>辞書を構成するノード（それぞれ一つの文字列に対し１つの値を持つ） </p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00086">86</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00070">70</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
-
-<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00047">AddNodes()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00013">Dictionary()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00052">IsExist()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00040">SearchNord()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00022">~Dictionary()</a>.</p>
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00041">Dictionary()</a>, <a class="el" href="Dictionary_8h_source.html#l00064">getRoot()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00051">~Dictionary()</a>.</p>
 
 </div>
 </div>
@@ -330,7 +337,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 20 2015 02:59:22 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

@@ -70,7 +70,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -92,17 +92,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>This is the complete list of members for <a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a1eb03039cfef0b86a1198bd256a7f057">AddNodes</a>(std::string key_word)</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ad9a68c58a75d9eec5eb2aaf528b9fbe4">AddNode</a>(LzwNode *node, char key_word)</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ac96b4db6d4692ba9b082fe32e54bcf0d">dict_size</a></td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a7a53efd7967e59748f321938aa983368">Dictionary</a>()</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#acfa8394907b51708efd8009ee0c5269f">IsExist</a>(std::string key_word)</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#af204400d56e05c8a3fcc25bfd0990ff9">nodes</a></td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a7e292cd6ceadd969caed403db3a05483">SearchNord</a>(std::string key_word)</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a4ac9a03c8ead8d6ca17e080ff9227fd9">getRoot</a>()</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a95b84d2d9ebb6277cfc6bffba5dee738">root</a></td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ac5577ef2e482e191a0b6376e28564b7e">SearchNode</a>(std::string key_word)</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a953fce0e9128a8e48b62779fdefcc051">~Dictionary</a>()</td><td class="entry"><a class="el" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 20 2015 02:59:22 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

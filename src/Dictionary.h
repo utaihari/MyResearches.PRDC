@@ -25,6 +25,12 @@ public:
 	int getData() {
 		return data;
 	}
+
+	/**
+	 * @brief 文字cを子供に持っていればそれを返す
+	 * @param c 探索したい文字
+	 * @return 存在すればノードのポインタ、なければNULL
+	 */
 	LzwNode* FindChild(char c);
 private:
 	LzwNode();
@@ -32,16 +38,17 @@ private:
 	virtual ~LzwNode();
 
 	/**
-	 * @brief 文字cを子供に持っていればそれを返す
-	 * @param c 探索したい文字
-	 * @return 存在すればノードのポインタ、なければNULL
+	 * @brief 子ノードの挿入
+	 *
+	 * @note 辞書クラスからのみ呼び出される\n(外部から直接子ノードを挿入させない)
+	 * @param data 辞書番号
+	 * @param c 格納文字
 	 */
-
 	void InsertChild(int data, char c);
 
 	int data; ///辞書番号
 	char content; ///格納文字
-	std::vector<LzwNode*> children;
+	std::vector<LzwNode*> children;///子ノード
 };
 
 /**
@@ -62,6 +69,7 @@ public:
 	 * @brief 辞書中の指定したノードに文字を追加する
 	 * @param key_word 追加する文字
 	 * @param node 文字を追加するノード
+	 * @note 辞書番号の管理のため直接ノードに子を追加させない
 	 */
 	void AddNode(LzwNode* node, char key_word);
 

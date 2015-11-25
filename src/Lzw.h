@@ -23,5 +23,13 @@ namespace prdc_lzw {
 void compress(const std::string &uncompressed, std::vector<int> &compressed,
 		Dictionary &output_dic);
 
+/**
+ * @brief 指定辞書で文字列を圧縮する。
+ * @param uncompressed 圧縮する文字列
+ * @param compressed 圧縮された文字列（数値）
+ * @param input_dic 圧縮に用いる辞書
+ */
+void compress_with_outer_dictionary(const std::string &uncompressed, std::vector<int> &compressed,
+		Dictionary &input_dic);
 }
 #endif /* LZW_H_ */

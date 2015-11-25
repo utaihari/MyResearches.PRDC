@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -105,6 +105,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a09931e4cc68e675f2058ee251b1e761f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a09931e4cc68e675f2058ee251b1e761f">compress</a> (const std::string &amp;uncompressed, std::vector&lt; int &gt; &amp;compressed, <a class="el" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a> &amp;output_dic)</td></tr>
 <tr class="memdesc:a09931e4cc68e675f2058ee251b1e761f"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を圧縮し、辞書を抽出する  <a href="#a09931e4cc68e675f2058ee251b1e761f">More...</a><br/></td></tr>
 <tr class="separator:a09931e4cc68e675f2058ee251b1e761f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81663f550046c9a805ca2e4d60df03dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a81663f550046c9a805ca2e4d60df03dc">compress_with_outer_dictionary</a> (const std::string &amp;uncompressed, std::vector&lt; int &gt; &amp;compressed, <a class="el" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a> &amp;output_dic)</td></tr>
+<tr class="separator:a81663f550046c9a805ca2e4d60df03dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>PRDCで用いるLZW圧縮に関する名前空間 </p>
@@ -151,16 +153,50 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="Lzw_8cpp_source.html#l00014">14</a> of file <a class="el" href="Lzw_8cpp_source.html">Lzw.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8cpp_source.html#l00047">prdc_lzw::Dictionary::AddNodes()</a>, <a class="el" href="Dictionary_8h_source.html#l00029">prdc_lzw::LzwNode::data</a>, <a class="el" href="Dictionary_8cpp_source.html#l00052">prdc_lzw::Dictionary::IsExist()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00040">prdc_lzw::Dictionary::SearchNord()</a>.</p>
+<p>References <a class="el" href="Dictionary_8cpp_source.html#l00055">prdc_lzw::Dictionary::AddNode()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00026">prdc_lzw::LzwNode::FindChild()</a>, <a class="el" href="Dictionary_8h_source.html#l00025">prdc_lzw::LzwNode::getData()</a>, and <a class="el" href="Dictionary_8h_source.html#l00064">prdc_lzw::Dictionary::getRoot()</a>.</p>
 
 <p>Referenced by <a class="el" href="main_8cpp_source.html#l00014">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a81663f550046c9a805ca2e4d60df03dc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void prdc_lzw::compress_with_outer_dictionary </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>uncompressed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>compressed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Dictionary &amp;&#160;</td>
+          <td class="paramname"><em>output_dic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Lzw_8cpp_source.html#l00036">36</a> of file <a class="el" href="Lzw_8cpp_source.html">Lzw.cpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 20 2015 02:59:22 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

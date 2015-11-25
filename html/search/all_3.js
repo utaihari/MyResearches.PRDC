@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isexist',['IsExist',['../classprdc__lzw_1_1Dictionary.html#acfa8394907b51708efd8009ee0c5269f',1,'prdc_lzw::Dictionary']]]
+  ['findchild',['FindChild',['../classprdc__lzw_1_1LzwNode.html#a4dbccb5fb97eae6f622a66a53eda46a3',1,'prdc_lzw::LzwNode']]]
 ];

@@ -27,33 +27,39 @@ int main() {
 	const string B = "TOUKYOUTOKKYOKYOKAKYOKU";
 
 #else
-	string filenameA = "./data/text/buildings-00.txt";
-	string filenameB = "./data/text/forest-00.txt";
-	string filenameC = "./data/text/forest-01.txt";
-	ifstream ifsA(filenameA);
-	ifstream ifsB(filenameB);
-	ifstream ifsC(filenameB);
-	if (ifsA.fail() || ifsB.fail() || ifsC.fail()) {
-		cerr << "読み込みエラー" << endl;
-		return -1;
+
+	vector<string> filename;
+	vector<string> file_contents;
+	vector<ifstream> ifs;
+	vector<prdc_lzw::Dictionary*> dics;
+
+	filename.push_back("./data/text/buildings-00.txt");
+	filename.push_back("./data/text/buildings-10.txt");
+	filename.push_back("./data/text/denseresidential-20.txt");
+	filename.push_back("./data/text/forest-30.txt");
+	filename.push_back("./data/text/intersection-40.txt");
+	filename.push_back("./data/text/river-50.txt");
+
+	for (auto file : filename) {
+		ifstream ifs(file);
+		if (ifs.fail()) {
+			cerr << "読み込みエラー" << endl;
+		}
+		file_contents.push_back(
+				string((istreambuf_iterator<char>(ifs)),
+						istreambuf_iterator<char>()));
 	}
-	const string A((istreambuf_iterator<char>(ifsA)),
-			istreambuf_iterator<char>());
-	const string B((istreambuf_iterator<char>(ifsB)),
-			istreambuf_iterator<char>());
-	const string C((istreambuf_iterator<char>(ifsC)),
-			istreambuf_iterator<char>());
 
 #endif
 
 #if compStr
-	cout << "Source A = " << A << endl;
-	cout << "Source B = " << B << endl;
+	cout << "String A = " << A << endl;
+	cout << "String B = " << B << endl;
 	cout << endl;
 #else
-	cout << "Source A = " << filenameA << endl;
-	cout << "Source B = " << filenameB << endl;
-	cout << "Source C = " << filenameC << endl;
+	for (int i = 0; i < (int) filename.size(); i++) {
+		cout << "Source " << i << " = \"" << filename.at(i) <<"\""<< endl;
+	}
 	cout << endl;
 #endif
 #if compStr
@@ -61,14 +67,14 @@ int main() {
 	prdc_lzw::compress(A, compressed, dic1);
 	prdc_lzw::compress_with_outer_dictionary(A, recompressed, dic1);
 
-	cout << "Source A compression with dic1: size = " << compressed.size()
+	cout << "String A compression with dic1: size = " << compressed.size()
 	<< endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
 
 	cout << endl;
-	cout << "Source A recompression with dic1: size = " << recompressed.size()
+	cout << "String A recompression with dic1: size = " << recompressed.size()
 	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
@@ -81,13 +87,13 @@ int main() {
 
 	prdc_lzw::compress(B, compressed, dic2);
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic2);
-	cout << "Source B compression with dic2: size = " << compressed.size()
+	cout << "String B compression with dic2: size = " << compressed.size()
 	<< endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
 	cout << endl;
-	cout << "Source B recompression with dic2: size = " << recompressed.size()
+	cout << "String B recompression with dic2: size = " << recompressed.size()
 	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
@@ -96,7 +102,7 @@ int main() {
 	recompressed.clear();
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic1);
 
-	cout << "Source B recompression with dic1: size = " << recompressed.size()
+	cout << "String B recompression with dic1: size = " << recompressed.size()
 	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
@@ -104,27 +110,30 @@ int main() {
 	cout << endl;
 #else
 
-	prdc_lzw::compress(A, compressed, dic1);
+	//辞書作成
+	for (int i = 0; i < (int) file_contents.size(); i++) {
+		prdc_lzw::Dictionary* tempDic = new prdc_lzw::Dictionary();
+		dics.push_back(tempDic);
+		prdc_lzw::compress(file_contents.at(i), compressed, *dics.at(i));
+		cout << "Source " << i << " compression for extract dic " << i
+				<< ": size = " << compressed.size() << endl;
+		compressed.clear();
+	}
 
-	cout << "Source A compression with dic1: size = " << compressed.size()
-			<< endl;
-	compressed.clear();
-
-	prdc_lzw::compress(B, compressed, dic2);
-	cout << "Source B compression with dic2: size = " << compressed.size()
-			<< endl;
-	compressed.clear();
+	cout << endl;
+	//比較
+	for (int i = 0; i < (int) file_contents.size(); i++) {
+		prdc_lzw::compress_with_outer_dictionary(file_contents.at(0),
+				compressed, *dics.at(i));
+		cout << "Source 0 compression with dic " << i << ": size = "
+				<< compressed.size() << endl;
+		compressed.clear();
+	}
 	cout << endl;
 
-	prdc_lzw::compress_with_outer_dictionary(C, compressed, dic1);
-	cout << "Source C compression with dic1: size = " << compressed.size()
-			<< endl;
-	compressed.clear();
-	prdc_lzw::compress_with_outer_dictionary(B, compressed, dic2);
-
-	cout << "Source C compression with dic2: size = " << compressed.size()
-			<< endl;
-	cout << endl;
+	for(auto d:dics){
+		delete d;
+	}
 #endif
 
 	return 0;

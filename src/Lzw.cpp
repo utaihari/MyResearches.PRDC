@@ -27,7 +27,7 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
 			current_node = q;	//探索ノードを一つ進める
 		} else {
 			compressed.push_back(current_node->getData());
-			output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
+			output_dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
 			current_node = output_dic.getRoot()->FindChild(c);	//最初から検索し直す
 		}
 	}

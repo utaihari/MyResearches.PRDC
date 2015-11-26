@@ -13,7 +13,7 @@
 #include "Lzw.h"
 #include "Dictionary.h"
 
-#define compStr 0
+#define compStr 1
 
 using namespace std;
 int main() {
@@ -56,9 +56,10 @@ int main() {
 	cout << "String A = " << A << endl;
 	cout << "String B = " << B << endl;
 	cout << endl;
+	cout << endl;
 #else
 	for (int i = 0; i < (int) filename.size(); i++) {
-		cout << "Source " << i << " = \"" << filename.at(i) <<"\""<< endl;
+		cout << "Source" << i << " = \"" << filename.at(i) <<"\""<< endl;
 	}
 	cout << endl;
 #endif
@@ -67,18 +68,19 @@ int main() {
 	prdc_lzw::compress(A, compressed, dic1);
 	prdc_lzw::compress_with_outer_dictionary(A, recompressed, dic1);
 
-	cout << "String A compression with dic1: size = " << compressed.size()
-	<< endl;
+	cout << "String A compression for extract dic1: size = " << compressed.size()
+			<< endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
-
 	cout << endl;
-	cout << "String A recompression with dic1: size = " << recompressed.size()
-	<< endl;
+	cout << endl;
+	cout << "String A compression with dic1: size = " << recompressed.size()
+			<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
+	cout << endl;
 	cout << endl;
 	cout << endl;
 
@@ -87,23 +89,27 @@ int main() {
 
 	prdc_lzw::compress(B, compressed, dic2);
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic2);
-	cout << "String B compression with dic2: size = " << compressed.size()
-	<< endl;
+	cout << "String B compression for extract dic2 = " << compressed.size()
+			<< endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
 	cout << endl;
-	cout << "String B recompression with dic2: size = " << recompressed.size()
-	<< endl;
+	cout << endl;
+
+	cout << "String B compression with dic2: size = " << recompressed.size()
+			<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
 	cout << endl;
+	cout << endl;
+
 	recompressed.clear();
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic1);
 
-	cout << "String B recompression with dic1: size = " << recompressed.size()
-	<< endl;
+	cout << "String B compression with dic1: size = " << recompressed.size()
+			<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
@@ -115,8 +121,8 @@ int main() {
 		prdc_lzw::Dictionary* tempDic = new prdc_lzw::Dictionary();
 		dics.push_back(tempDic);
 		prdc_lzw::compress(file_contents.at(i), compressed, *dics.at(i));
-		cout << "Source " << i << " compression for extract dic " << i
-				<< ": size = " << compressed.size() << endl;
+		cout << "Source" << i << " compression for extract dic" << i
+		<< ": size = " << compressed.size() << endl;
 		compressed.clear();
 	}
 
@@ -125,13 +131,13 @@ int main() {
 	for (int i = 0; i < (int) file_contents.size(); i++) {
 		prdc_lzw::compress_with_outer_dictionary(file_contents.at(0),
 				compressed, *dics.at(i));
-		cout << "Source 0 compression with dic " << i << ": size = "
-				<< compressed.size() << endl;
+		cout << "Source0 compression with dic" << i << ": size = "
+		<< compressed.size() << endl;
 		compressed.clear();
 	}
 	cout << endl;
 
-	for(auto d:dics){
+	for(auto d:dics) {
 		delete d;
 	}
 #endif

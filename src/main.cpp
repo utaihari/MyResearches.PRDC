@@ -13,7 +13,7 @@
 #include "Lzw.h"
 #include "Dictionary.h"
 
-#define compStr 1
+#define compStr 0
 
 using namespace std;
 int main() {
@@ -68,8 +68,8 @@ int main() {
 	prdc_lzw::compress(A, compressed, dic1);
 	prdc_lzw::compress_with_outer_dictionary(A, recompressed, dic1);
 
-	cout << "String A compression for extract dic1: size = " << compressed.size()
-			<< endl;
+	cout << "String A compression for extract dic1: size = "
+			<< compressed.size() << endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
@@ -123,6 +123,14 @@ int main() {
 		prdc_lzw::compress(file_contents.at(i), compressed, *dics.at(i));
 		cout << "Source" << i << " compression for extract dic" << i
 		<< ": size = " << compressed.size() << endl;
+
+		string filename = "output" + to_string(i) + ".txt";
+		ofstream outputfile(filename);
+		for (auto c : compressed) {
+			outputfile << c << ",";
+		}
+		outputfile.close();
+
 		compressed.clear();
 	}
 
@@ -141,6 +149,8 @@ int main() {
 		delete d;
 	}
 #endif
+
+
 
 	return 0;
 }

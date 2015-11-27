@@ -25,6 +25,9 @@ public:
 	int getData() {
 		return data;
 	}
+	char getContent(){
+		return content;
+	}
 
 	/**
 	 * @brief 文字cを子供に持っていればそれを返す
@@ -32,6 +35,7 @@ public:
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
 	LzwNode* FindChild(char c);
+	std::vector<LzwNode*> children;///子ノード
 private:
 	LzwNode();
 	LzwNode(int d, char c);
@@ -48,7 +52,7 @@ private:
 
 	int data; ///辞書番号
 	char content; ///格納文字
-	std::vector<LzwNode*> children;///子ノード
+
 };
 
 /**

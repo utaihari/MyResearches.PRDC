@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 ///PRDCで用いるLZW圧縮に関する名前空間
 namespace prdc_lzw {
@@ -25,7 +26,7 @@ public:
 	int getData() {
 		return data;
 	}
-	char getContent(){
+	char getContent() {
 		return content;
 	}
 
@@ -35,7 +36,7 @@ public:
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
 	LzwNode* FindChild(char c);
-	std::vector<LzwNode*> children;///子ノード
+	std::vector<LzwNode*> children; ///子ノード
 private:
 	LzwNode();
 	LzwNode(int d, char c);
@@ -84,10 +85,16 @@ public:
 	 */
 	LzwNode* SearchNode(std::string key_word);
 
+	void AddPair(int a, int b);
+	std::map<std::string,int>::iterator SearchPair(int a, int b);
+	std::map<std::string, int> pair;
+
 private:
 	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
 	LzwNode* root; ///ルートノード
+	int current_pair;
+
 
 };
 

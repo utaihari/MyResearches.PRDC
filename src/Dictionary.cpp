@@ -7,6 +7,7 @@
  */
 
 #include "Dictionary.h"
+#include "tools.h"
 #include <stdlib.h>
 namespace prdc_lzw {
 
@@ -39,7 +40,7 @@ void LzwNode::InsertChild(int data, char c) {
 }
 
 Dictionary::Dictionary() :
-		dict_size(256) {
+		dict_size(256), current_pair(0) {
 	root = new LzwNode();
 
 	root->children.resize(256);
@@ -55,6 +56,17 @@ Dictionary::~Dictionary() {
 void Dictionary::AddNode(LzwNode* node, char key_word) {
 	node->InsertChild(dict_size, key_word);
 	dict_size++;
+}
+
+void Dictionary::AddPair(int a, int b) {
+	std::string temp = to_string(a) + "," + to_string(b);
+	pair[temp] = current_pair;
+	current_pair++;
+}
+std::map<std::string, int>::iterator Dictionary::SearchPair(int a, int b) {
+	std::string temp = to_string(a) + "," + to_string(b);
+	auto i = pair.find(temp);
+	return i;
 }
 
 } /* namespace prdc_lzw */

@@ -20,30 +20,25 @@
 using namespace std;
 int main() {
 
-	vector<int> compressed, recompressed;
+	vector<string> compressed, recompressed;
 	prdc_lzw::Dictionary dic1, dic2;
 
 #if compStr
 	vector<string> split;
 	const string A = "TOBEORNOTTOBEORTOBEORNOT";
 	const string B = "TOUKYOUTOKKYOKYOKAKYOKU";
-	const string C = "0123456789";
-	split_string(A, split, 15);
 
-	for (auto s : split) {
-		cout << s << endl;
-	}
 #else
 
 	vector<string> filename;
 	vector<string> file_contents;
 	vector<vector<string>> split_string;
 	vector<vector<prdc_lzw::Dictionary*>> dics;
-	const int split_number = 3;
+	const int split_number = 1;
 
 	filename.push_back("./data/text/buildings-00.txt");
 	filename.push_back("./data/text/buildings-01.txt");
-	filename.push_back("./data/text/denseresidential-10.txt");
+	filename.push_back("./data/text/denseresidential-20.txt");
 
 	split_string.resize(filename.size());
 	dics.resize(filename.size());
@@ -80,14 +75,14 @@ int main() {
 
 	cout << "String A compression for extract dic1: size = "
 	<< compressed.size() << endl;
-	for (int i : compressed) {
+	for (auto i : compressed) {
 		cout << i << ",";
 	}
 	cout << endl;
 	cout << endl;
 	cout << "String A compression with dic1: size = " << recompressed.size()
 	<< endl;
-	for (int i : recompressed) {
+	for (auto i : recompressed) {
 		cout << i << ",";
 	}
 	cout << endl;
@@ -101,7 +96,7 @@ int main() {
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic2);
 	cout << "String B compression for extract dic2 = " << compressed.size()
 	<< endl;
-	for (int i : compressed) {
+	for (auto i : compressed) {
 		cout << i << ",";
 	}
 	cout << endl;
@@ -109,7 +104,7 @@ int main() {
 
 	cout << "String B compression with dic2: size = " << recompressed.size()
 	<< endl;
-	for (int i : recompressed) {
+	for (auto i : recompressed) {
 		cout << i << ",";
 	}
 	cout << endl;
@@ -120,7 +115,7 @@ int main() {
 
 	cout << "String B compression with dic1: size = " << recompressed.size()
 	<< endl;
-	for (int i : recompressed) {
+	for (auto i : recompressed) {
 		cout << i << ",";
 	}
 	cout << endl;
@@ -147,12 +142,20 @@ int main() {
 		int total = 0;
 		for (int p = 0; p < split_number; p++) {
 			for (int q = 0; q < split_number; q++) {
+				ofstream ofs("output"+to_string(i)+".txt");
+
 				prdc_lzw::compress_with_outer_dictionary(
 						split_string.at(0).at(p), compressed,
 						*dics.at(i).at(q));
 				cout << "Source0 compression with dic" << i << ": size = "
 						<< compressed.size() << endl;
 				total += (int) compressed.size();
+
+				//出力
+				for(auto s:compressed){
+					ofs << s << endl;
+				}
+
 				compressed.clear();
 			}
 		}

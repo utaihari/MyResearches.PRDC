@@ -11,6 +11,7 @@
 
 #include "Dictionary.h"
 #include <vector>
+#include <string>
 
 namespace prdc_lzw {
 
@@ -20,7 +21,7 @@ namespace prdc_lzw {
  * @param compressed 圧縮された文字列（数値）
  * @param output_dic 出力される辞書
  */
-void compress(const std::string &uncompressed, std::vector<int> &compressed,
+void compress(const std::string &uncompressed, std::vector<std::string> &compressed,
 		Dictionary &output_dic);
 
 /**
@@ -29,7 +30,7 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
  * @param compressed 圧縮された文字列（数値）
  * @param input_dic 圧縮に用いる辞書
  */
-void compress_with_outer_dictionary(const std::string &uncompressed, std::vector<int> &compressed,
-		Dictionary &input_dic);
+void compress_with_outer_dictionary(const std::string &uncompressed,
+		std::vector<std::string> &compressed, Dictionary &input_dic);
 }
 #endif /* LZW_H_ */

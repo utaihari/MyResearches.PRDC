@@ -28,6 +28,8 @@ void compress(const std::string &uncompressed, std::vector<int> &compressed,
 		} else {
 			compressed.push_back(current_node->getData());
 			output_dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
+
+			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
 			current_node = output_dic.getRoot()->FindChild(c);	//最初から検索し直す
 		}
 	}

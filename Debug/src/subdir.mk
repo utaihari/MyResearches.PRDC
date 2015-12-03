@@ -6,24 +6,27 @@
 CPP_SRCS += \
 ../src/Dictionary.cpp \
 ../src/Lzw.cpp \
-../src/main.cpp 
+../src/main.cpp \
+../src/tools.cpp 
 
 OBJS += \
 ./src/Dictionary.o \
 ./src/Lzw.o \
-./src/main.o 
+./src/main.o \
+./src/tools.o 
 
 CPP_DEPS += \
 ./src/Dictionary.d \
 ./src/Lzw.d \
-./src/main.d 
+./src/main.d \
+./src/tools.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
-	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++0x -D_GXX_EXPERIMENTAL_CXX0X_ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	@echo 'Invoking: Cygwin C++ Compiler'
+	g++ -std=c++14 -D_GXX_EXPERIMENTAL_CXX0X_ -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

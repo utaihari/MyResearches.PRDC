@@ -10,6 +10,8 @@
 #include <fstream>
 #include <string>
 #include <iterator>
+#include <sstream>
+#include "tools.h"
 #include "Lzw.h"
 #include "Dictionary.h"
 
@@ -22,32 +24,40 @@ int main() {
 	prdc_lzw::Dictionary dic1, dic2;
 
 #if compStr
-
+	vector<string> split;
 	const string A = "TOBEORNOTTOBEORTOBEORNOT";
 	const string B = "TOUKYOUTOKKYOKYOKAKYOKU";
+	const string C = "0123456789";
+	split_string(A, split, 15);
 
+	for (auto s : split) {
+		cout << s << endl;
+	}
 #else
 
 	vector<string> filename;
 	vector<string> file_contents;
-	vector<ifstream> ifs;
-	vector<prdc_lzw::Dictionary*> dics;
+	vector<vector<string>> split_string;
+	vector<vector<prdc_lzw::Dictionary*>> dics;
+	const int split_number = 3;
 
 	filename.push_back("./data/text/buildings-00.txt");
-	filename.push_back("./data/text/buildings-10.txt");
-	filename.push_back("./data/text/denseresidential-20.txt");
-	filename.push_back("./data/text/forest-30.txt");
-	filename.push_back("./data/text/intersection-40.txt");
-	filename.push_back("./data/text/river-50.txt");
+	filename.push_back("./data/text/buildings-01.txt");
+	filename.push_back("./data/text/denseresidential-10.txt");
 
-	for (auto file : filename) {
-		ifstream ifs(file);
+	split_string.resize(filename.size());
+	dics.resize(filename.size());
+
+	for (int i = 0; i < (int) filename.size(); i++) {
+		ifstream ifs(filename.at(i));
 		if (ifs.fail()) {
 			cerr << "読み込みエラー" << endl;
 		}
 		file_contents.push_back(
 				string((istreambuf_iterator<char>(ifs)),
 						istreambuf_iterator<char>()));
+
+		SplitString(file_contents.at(i), split_string.at(i), split_number);
 	}
 
 #endif
@@ -59,7 +69,7 @@ int main() {
 	cout << endl;
 #else
 	for (int i = 0; i < (int) filename.size(); i++) {
-		cout << "Source" << i << " = \"" << filename.at(i) <<"\""<< endl;
+		cout << "Source" << i << " = \"" << filename.at(i) << "\"" << endl;
 	}
 	cout << endl;
 #endif
@@ -69,14 +79,14 @@ int main() {
 	prdc_lzw::compress_with_outer_dictionary(A, recompressed, dic1);
 
 	cout << "String A compression for extract dic1: size = "
-			<< compressed.size() << endl;
+	<< compressed.size() << endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
 	cout << endl;
 	cout << endl;
 	cout << "String A compression with dic1: size = " << recompressed.size()
-			<< endl;
+	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
@@ -90,7 +100,7 @@ int main() {
 	prdc_lzw::compress(B, compressed, dic2);
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic2);
 	cout << "String B compression for extract dic2 = " << compressed.size()
-			<< endl;
+	<< endl;
 	for (int i : compressed) {
 		cout << i << ",";
 	}
@@ -98,7 +108,7 @@ int main() {
 	cout << endl;
 
 	cout << "String B compression with dic2: size = " << recompressed.size()
-			<< endl;
+	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
@@ -109,7 +119,7 @@ int main() {
 	prdc_lzw::compress_with_outer_dictionary(B, recompressed, dic1);
 
 	cout << "String B compression with dic1: size = " << recompressed.size()
-			<< endl;
+	<< endl;
 	for (int i : recompressed) {
 		cout << i << ",";
 	}
@@ -118,39 +128,45 @@ int main() {
 
 	//辞書作成
 	for (int i = 0; i < (int) file_contents.size(); i++) {
-		prdc_lzw::Dictionary* tempDic = new prdc_lzw::Dictionary();
-		dics.push_back(tempDic);
-		prdc_lzw::compress(file_contents.at(i), compressed, *dics.at(i));
-		cout << "Source" << i << " compression for extract dic" << i
-		<< ": size = " << compressed.size() << endl;
+		for (int p = 0; p < split_number; p++) {
+			prdc_lzw::Dictionary* tempDic = new prdc_lzw::Dictionary();
+			dics.at(i).push_back(tempDic);
+			prdc_lzw::compress(split_string.at(i).at(p), compressed,
+					*dics.at(i).at(p));
+			cout << "Source" << i << " compression for extract dic" << i
+					<< ": size = " << compressed.size() << endl;
 
-		string filename = "output" + to_string(i) + ".txt";
-		ofstream outputfile(filename);
-		for (auto c : compressed) {
-			outputfile << c << ",";
+			compressed.clear();
 		}
-		outputfile.close();
-
-		compressed.clear();
 	}
 
 	cout << endl;
+
 	//比較
-	for (int i = 0; i < (int) file_contents.size(); i++) {
-		prdc_lzw::compress_with_outer_dictionary(file_contents.at(0),
-				compressed, *dics.at(i));
-		cout << "Source0 compression with dic" << i << ": size = "
-		<< compressed.size() << endl;
-		compressed.clear();
+	for (int i = 0; i < (int) split_string.size(); i++) {
+		int total = 0;
+		for (int p = 0; p < split_number; p++) {
+			for (int q = 0; q < split_number; q++) {
+				prdc_lzw::compress_with_outer_dictionary(
+						split_string.at(0).at(p), compressed,
+						*dics.at(i).at(q));
+				cout << "Source0 compression with dic" << i << ": size = "
+						<< compressed.size() << endl;
+				total += (int) compressed.size();
+				compressed.clear();
+			}
+		}
+		cout << "total:" << total << endl;
 	}
 	cout << endl;
 
-	for(auto d:dics) {
-		delete d;
+	for (auto dic : dics) {
+		for (auto d : dic) {
+			delete d;
+		}
 	}
 #endif
 
-
-
+	getchar();
 	return 0;
 }

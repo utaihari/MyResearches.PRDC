@@ -12,6 +12,7 @@
 #include "Dictionary.h"
 #include <vector>
 #include <string>
+#include <map>
 
 namespace prdc_lzw {
 
@@ -32,5 +33,12 @@ void compress(const std::string &uncompressed, std::vector<std::string> &compres
  */
 void compress_with_outer_dictionary(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &input_dic);
+
+void AddPair(int a, int b,int pair_number,std::map<std;;string,int>& pair);
+std::map<std::string,int>::iterator SearchPair(int a, int b);
+
 }
+
+
+
 #endif /* LZW_H_ */

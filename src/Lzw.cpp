@@ -85,4 +85,10 @@ void compress_with_outer_dictionary(const std::string &uncompressed,
 	}
 	compressed.push_back(to_string(current_node->getData()));
 }
+
+void AddPair(int a,int b,int pair_number,std::map<std;;string,int>& pair){
+	std::string temp = to_string(a) + "," + to_string(b);
+	pair[temp] = pair_number;
+}
+std::map<std::string,int>::iterator SearchPair(int a, int b);
 }

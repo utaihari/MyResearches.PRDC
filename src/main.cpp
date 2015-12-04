@@ -32,7 +32,7 @@ int main() {
 
 	vector<string> filename;
 	vector<string> file_contents;
-	vector<vector<string>> split_string;
+	vector < vector < string >> split_string;
 	vector<vector<prdc_lzw::Dictionary*>> dics;
 	const int split_number = 1;
 
@@ -142,7 +142,7 @@ int main() {
 		int total = 0;
 		for (int p = 0; p < split_number; p++) {
 			for (int q = 0; q < split_number; q++) {
-				ofstream ofs("output"+to_string(i)+".txt");
+				ofstream ofs("output" + to_string(i) + ".txt");
 
 				prdc_lzw::compress_with_outer_dictionary(
 						split_string.at(0).at(p), compressed,
@@ -152,7 +152,7 @@ int main() {
 				total += (int) compressed.size();
 
 				//出力
-				for(auto s:compressed){
+				for (auto s : compressed) {
 					ofs << s << endl;
 				}
 

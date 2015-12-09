@@ -12,13 +12,11 @@
 
 namespace prdc_lzw {
 
-void compress(const std::string &uncompressed,
-		std::vector<std::string> &compressed, Dictionary &output_dic) {
+void Compress(const std::string &uncompressed,
+		std::vector<std::string> &compressed, Dictionary &output_dic,
+		bool allow_edit_dictionary) {
 
-	int last_number = 0;
-	int pair_num =0;
-
-	LzwNode* current_node = output_dic.getRoot(); //初期位置
+	LzwNode* current_node = output_dic.get_root(); //初期位置
 
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); it++) {
@@ -30,36 +28,25 @@ void compress(const std::string &uncompressed,
 			//辞書に文字列が追加されていたら
 			current_node = q;	//探索ノードを一つ進める
 		} else {
-			compressed.push_back(to_string(current_node->getData()));
-			output_dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
+			compressed.push_back(to_string(current_node->get_data()));
 
-			std::map<std::string,int>::iterator temp = output_dic.SearchPair(last_number,
-					current_node->getData());
-			if (temp != output_dic.pair.end()) {
-				compressed.push_back(temp->first +":"+ to_string(temp->second));
-			} else {
-				output_dic.AddPair(last_number, current_node->getData());
-				compressed.push_back(
-						"(" + to_string(last_number) + ","
-								+ to_string(current_node->getData()) + "):"+to_string(pair_num));
-				pair_num++;
-			}
-			last_number = current_node->getData();
+			if (allow_edit_dictionary)
+				output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
 
 			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
-			current_node = output_dic.getRoot()->FindChild(c);	//最初から検索し直す
-
-
+			current_node = output_dic.get_root()->FindChild(c);	//最初から検索し直す
 		}
 	}
-	compressed.push_back(to_string(current_node->getData()));
+	compressed.push_back(to_string(current_node->get_data()));
 }
 
-void compress_with_outer_dictionary(const std::string &uncompressed,
-		std::vector<std::string> &compressed, Dictionary &input_dic) {
-	LzwNode* current_node = input_dic.getRoot(); //初期位置
+void CompressWithMakePair(const std::string &uncompressed,
+		std::vector<std::string> &compressed, Dictionary &output_dic,
+		LzwPair& pair, bool allow_edit_dictionary, bool allow_edit_pair) {
 
 	int last_number = 0;
+
+	LzwNode* current_node = output_dic.get_root(); //初期位置
 
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); it++) {
@@ -71,24 +58,33 @@ void compress_with_outer_dictionary(const std::string &uncompressed,
 			//辞書に文字列が追加されていたら
 			current_node = q;	//探索ノードを一つ進める
 		} else {
-			compressed.push_back(to_string(current_node->getData()));
-			current_node = input_dic.getRoot()->FindChild(c);	//最初から検索し直す
+			compressed.push_back(to_string(current_node->get_data()));
+			if (allow_edit_dictionary)
+				output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
 
-			auto temp = input_dic.SearchPair(last_number,
-					current_node->getData());
-			if (temp != input_dic.pair.end()) {
-				compressed.push_back(temp->first +":"+ to_string(temp->second));
+			std::map<std::string, int>::iterator temp = pair.SearchPair(
+					last_number, current_node->get_data());
+			if (temp != pair.get_end()) {
+				//以前に作成したペアを発見
+				compressed.push_back(
+						"<" + to_string(temp->second) + ">find pair:(" + temp->first
+								+ ")");
+			} else {
+				//新たなペアを登録
+				if (allow_edit_pair) {
+					pair.AddPair(last_number, current_node->get_data());
+					compressed.push_back(
+							"<"+to_string(pair.get_current_pair_num()) +">"+ "add new pair:(" + to_string(last_number)
+									+ "," + to_string(current_node->get_data())
+									+ ")");
+				}
 			}
-			last_number = current_node->getData();
+			last_number = current_node->get_data();
+
+			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
+			current_node = output_dic.get_root()->FindChild(c);	//最初から検索し直す
 		}
-
 	}
-	compressed.push_back(to_string(current_node->getData()));
+	compressed.push_back(to_string(current_node->get_data()));
 }
-
-void AddPair(int a,int b,int pair_number,std::map<std;;string,int>& pair){
-	std::string temp = to_string(a) + "," + to_string(b);
-	pair[temp] = pair_number;
-}
-std::map<std::string,int>::iterator SearchPair(int a, int b);
 }

@@ -40,7 +40,7 @@ void LzwNode::InsertChild(int data, char c) {
 }
 
 Dictionary::Dictionary() :
-		dict_size(256), current_pair(0) {
+		dict_size(256){
 	root = new LzwNode();
 
 	root->children.resize(256);
@@ -58,12 +58,12 @@ void Dictionary::AddNode(LzwNode* node, char key_word) {
 	dict_size++;
 }
 
-void Dictionary::AddPair(int a, int b) {
+void LzwPair::AddPair(int a, int b) {
 	std::string temp = to_string(a) + "," + to_string(b);
-	pair[temp] = current_pair;
-	current_pair++;
+	pair[temp] = current_pair_num;
+	current_pair_num++;
 }
-std::map<std::string, int>::iterator Dictionary::SearchPair(int a, int b) {
+std::map<std::string,int>::iterator LzwPair::SearchPair(int a, int b){
 	std::string temp = to_string(a) + "," + to_string(b);
 	auto i = pair.find(temp);
 	return i;

@@ -23,10 +23,10 @@ namespace prdc_lzw {
 class LzwNode {
 	friend class Dictionary;
 public:
-	int getData() {
+	int get_data() {
 		return data;
 	}
-	char getContent() {
+	char get_content() {
 		return content;
 	}
 
@@ -66,7 +66,7 @@ class Dictionary {
 public:
 	Dictionary();
 	virtual ~Dictionary();
-	LzwNode* getRoot() {
+	LzwNode* get_root() {
 		return root;
 	}
 
@@ -85,17 +85,26 @@ public:
 	 */
 	LzwNode* SearchNode(std::string key_word);
 
-	void AddPair(int a, int b);
-	std::map<std::string,int>::iterator SearchPair(int a, int b);
-	std::map<std::string, int> pair;
-
 private:
 	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
 	LzwNode* root; ///ルートノード
-	int current_pair;
+};
 
-
+class LzwPair{
+public:
+	LzwPair():current_pair_num(0){};
+	void AddPair(int a, int b);
+	std::map<std::string,int>::iterator SearchPair(int a, int b);
+	std::map<std::string,int>::iterator get_end(){
+		return pair.end();
+	}
+	int get_current_pair_num(){
+		return current_pair_num;
+	}
+private:
+	std::map<std::string, int> pair;
+	int current_pair_num;
 };
 
 } /* namespace prdc_lzw */

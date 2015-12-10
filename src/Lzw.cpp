@@ -67,16 +67,16 @@ void CompressWithMakePair(const std::string &uncompressed,
 			if (temp != pair.get_end()) {
 				//以前に作成したペアを発見
 				compressed.push_back(
-						"<" + to_string(temp->second) + ">find pair:(" + temp->first
-								+ ")");
+						":" + to_string(temp->second) + " (" + temp->first
+								+ ") <-find_pair");
 			} else {
 				//新たなペアを登録
 				if (allow_edit_pair) {
 					pair.AddPair(last_number, current_node->get_data());
 					compressed.push_back(
-							"<"+to_string(pair.get_current_pair_num()) +">"+ "add new pair:(" + to_string(last_number)
+							":"+to_string(pair.get_current_pair_num()) +" (" + to_string(last_number)
 									+ "," + to_string(current_node->get_data())
-									+ ")");
+									+ ") <-add_pair");
 				}
 			}
 			last_number = current_node->get_data();

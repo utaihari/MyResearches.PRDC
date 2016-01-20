@@ -16,16 +16,20 @@
 
 namespace prdc_lzw {
 
+//フラグ処理のための定数定義
+const unsigned int ARROW_EDIT_DICTIONARY = 1;
+const unsigned int ARROW_EDIT_PAIR = 2;
+
 /**
  * @brief 文字列を圧縮し、辞書を抽出する
  * @param uncompressed 圧縮する文字列
  * @param compressed 圧縮された文字列（数値）
  * @param output_dic 圧縮に用いる辞書
- * @param allow_edit_dictionary 辞書に新たな文字列を追加するならtrue
+ * @param flags 辞書に新たな文字列を追加するなら ARROW_EDIT_DICTIONARY を指定
  */
 void Compress(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		bool allow_edit_dictionary = true);
+		unsigned int flags = 0);
 
 /**
  * @brief 文字列を圧縮し、圧縮後データ列からペアを作成する。以前に作成されたペアの探索も行う。
@@ -33,13 +37,11 @@ void Compress(const std::string &uncompressed,
  * @param compressed 圧縮されたデータ列(数値)
  * @param output_dic 圧縮に用いる辞書
  * @param pair 作成されたペア、もしくは探索するペア
- * @param allow_edit_dictionary 辞書に新たな文字列を追加するならtrue
- * @param allow_edit_pair 新たなpairを登録するならtrue
+ * @param flags ペアを作成する | 辞書に新たな文字列を追加する
  */
 void CompressWithMakePair(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		LzwPair& pair, bool allow_edit_dictionary = true, bool allow_edit_pair =
-				true);
+		LzwPair& pair,unsigned int flags = 0);
 
 }
 

@@ -53,11 +53,6 @@ int main() {
 	//file0の辞書作成
 	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
 			pair.at(0));
-	//compressed.at(0).clear();
-
-//	//file0の辞書作成
-//	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
-//			pair.at(0),false,false);
 
 	//file0の圧縮後文字列出力
 	ofstream ofs0("file0_compress.txt");
@@ -71,6 +66,20 @@ int main() {
 
 	compressed.at(0).clear();
 
+
+	//file0から作成した辞書でfile1を圧縮
+	CompressWithMakePair(file_contents.at(2), compressed.at(0), *dics.at(0),
+			pair.at(1), prdc_lzw::ARROW_EDIT_PAIR);
+
+	//file1をfile0で圧縮した時に作成したペアがfile0を再圧縮した時に現れるか調べる
+	CompressWithMakePair(file_contents.at(0), compressed.at(1), *dics.at(0),
+			pair.at(1));
+
+	ofstream ofs1("file0_recompress_with_dic0_pair2.txt");
+	for (auto c : compressed.at(1)) {
+		ofs1 << c << endl;
+	}
+	ofs1.close();
 
 	for (auto dic : dics) {
 		delete dic;

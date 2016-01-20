@@ -9,12 +9,14 @@
 #include "Dictionary.h"
 #include "tools.h"
 #include <string>
+#include <ctype.h>
 
 namespace prdc_lzw {
 
+
 void Compress(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		bool allow_edit_dictionary) {
+		unsigned int flags) {
 
 	LzwNode* current_node = output_dic.get_root(); //初期位置
 
@@ -30,7 +32,7 @@ void Compress(const std::string &uncompressed,
 		} else {
 			compressed.push_back(to_string(current_node->get_data()));
 
-			if (allow_edit_dictionary)
+			if (flags & ARROW_EDIT_DICTIONARY)
 				output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
 
 			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
@@ -42,7 +44,7 @@ void Compress(const std::string &uncompressed,
 
 void CompressWithMakePair(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		LzwPair& pair, bool allow_edit_dictionary, bool allow_edit_pair) {
+		LzwPair& pair,unsigned int flags) {
 
 	int last_number = 0;
 
@@ -59,7 +61,7 @@ void CompressWithMakePair(const std::string &uncompressed,
 			current_node = q;	//探索ノードを一つ進める
 		} else {
 			compressed.push_back(to_string(current_node->get_data()));
-			if (allow_edit_dictionary)
+			if (flags & ARROW_EDIT_DICTIONARY)
 				output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
 
 			std::map<std::string, int>::iterator temp = pair.SearchPair(
@@ -71,11 +73,12 @@ void CompressWithMakePair(const std::string &uncompressed,
 								+ ") <-find_pair");
 			} else {
 				//新たなペアを登録
-				if (allow_edit_pair) {
+				if (flags & ARROW_EDIT_PAIR) {
 					pair.AddPair(last_number, current_node->get_data());
 					compressed.push_back(
-							":"+to_string(pair.get_current_pair_num()) +" (" + to_string(last_number)
-									+ "," + to_string(current_node->get_data())
+							":" + to_string(pair.get_current_pair_num()) + " ("
+									+ to_string(last_number) + ","
+									+ to_string(current_node->get_data())
 									+ ") <-add_pair");
 				}
 			}

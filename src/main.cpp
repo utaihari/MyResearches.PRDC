@@ -24,9 +24,8 @@ int main() {
 	vector<vector<string>> compressed;
 	vector<prdc_lzw::LzwPair> pair;
 
-	filename.push_back("./data/text/buildings-33.txt");
-	filename.push_back("./data/text/buildings-32.txt");
-	filename.push_back("./data/text/denseresidential-01.txt");
+	filename.push_back("./data/corel/0.txt");
+
 
 	for (int i = 0; i < (int) filename.size(); i++) {
 		prdc_lzw::Dictionary* temp = new prdc_lzw::Dictionary;
@@ -54,6 +53,11 @@ int main() {
 	//file0の辞書作成
 	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
 			pair.at(0));
+	//compressed.at(0).clear();
+
+//	//file0の辞書作成
+//	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
+//			pair.at(0),false,false);
 
 	//file0の圧縮後文字列出力
 	ofstream ofs0("file0_compress.txt");
@@ -61,54 +65,12 @@ int main() {
 		ofs0 << c << endl;
 	}
 	ofs0.close();
+
 	cout << "file0 size:" << compressed.at(0).size() << endl;
 	cout << endl;
 
 	compressed.at(0).clear();
 
-	//file0から作成した辞書でfile1を圧縮
-	CompressWithMakePair(file_contents.at(2), compressed.at(0), *dics.at(0),
-			pair.at(1), false, true);
-
-	//file1をfile0で圧縮した時に作成したペアがfile0を再圧縮した時に現れるか調べる
-	CompressWithMakePair(file_contents.at(0), compressed.at(1), *dics.at(0),
-			pair.at(1), false, false);
-
-	ofstream ofs1("file0_recompress_with_dic0_pair2.txt");
-	for (auto c : compressed.at(1)) {
-		ofs1 << c << endl;
-	}
-	ofs1.close();
-
-	compressed.at(0).clear();
-	compressed.at(1).clear();
-
-	//file0から作成した辞書でfile0を圧縮
-	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
-			pair.at(2), false, true);
-
-	//file0を再圧縮した時に作成したペアがfile1をfile0で圧縮した時に現れるか調べる
-	CompressWithMakePair(file_contents.at(2), compressed.at(1), *dics.at(0),
-			pair.at(2), false, false);
-
-	ofstream ofs2("file2_recompress_with_dic0_pair0.txt");
-	for (auto c : compressed.at(1)) {
-		ofs2 << c << endl;
-	}
-	ofs2.close();
-
-	compressed.at(0).clear();
-	compressed.at(1).clear();
-
-	//file0から作成した辞書でfile0を圧縮
-	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
-			pair.at(3), false, true);
-
-	ofstream ofs3("file0_recompress_with_dic0_and_find_pair.txt");
-	for (auto c : compressed.at(0)) {
-		ofs3 << c << endl;
-	}
-	ofs3.close();
 
 	for (auto dic : dics) {
 		delete dic;

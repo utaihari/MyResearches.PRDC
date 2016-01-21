@@ -57,7 +57,6 @@ int main() {
 			ofs << c << "\n";
 		}
 		ofs.close();
-
 	}
 	for (auto dic : dics) {
 		delete dic;

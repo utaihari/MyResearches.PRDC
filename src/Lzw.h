@@ -41,8 +41,13 @@ void Compress(const std::string &uncompressed,
  */
 void CompressWithMakePair(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		LzwPair& pair,unsigned int flags = 0);
+		LzwPair& pair, unsigned int flags = 0);
 
+void CompressBoundData(const std::string &uncompressed,
+		std::vector<std::string> &compressed, Dictionary &output_dic,
+		BindingMap &binding_data, unsigned int flags = 0,
+		unsigned int max_dicsize = -1);
+int ReturnMapValue(std::map<std::string, int>& binding_data,
+		std::string origin_text, int get_data);
 }
-
 #endif /* LZW_H_ */

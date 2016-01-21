@@ -4,9 +4,20 @@
 /output3.txt
 /output4.txt
 /output5.txt
+<<<<<<< HEAD
 /output/
 /data/
 /Debug/
 /html/
 /latex/
 /Release/
+=======
+/data/
+/Debug/
+/html/
+/latex/
+/Release/
+/output/
+>>>>>>> refs/remotes/origin/UsingMap
+/.cproject
+/.gitignore

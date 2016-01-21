@@ -91,20 +91,36 @@ private:
 	LzwNode* root; ///ルートノード
 };
 
-class LzwPair{
+class LzwPair {
 public:
-	LzwPair():current_pair_num(0){};
+	LzwPair() :
+			current_pair_num(0) {
+	}
+	;
 	void AddPair(int a, int b);
-	std::map<std::string,int>::iterator SearchPair(int a, int b);
-	std::map<std::string,int>::iterator get_end(){
+	std::map<std::string, int>::iterator SearchPair(int a, int b);
+	std::map<std::string, int>::iterator get_end() {
 		return pair.end();
 	}
-	int get_current_pair_num(){
+	int get_current_pair_num() {
 		return current_pair_num;
 	}
 private:
 	std::map<std::string, int> pair;
 	int current_pair_num;
+};
+
+class BindingMap: public std::map<std::string, int> {
+public:
+	BindingMap() :
+			id(256) {
+		for (int i = 0; i < 256; i++){
+			this->insert(std::make_pair(std::string(1, i),i));
+		}
+	}
+	int AddMap(std::string text);
+private:
+	int id;
 };
 
 } /* namespace prdc_lzw */

@@ -68,6 +68,21 @@ std::map<std::string,int>::iterator LzwPair::SearchPair(int a, int b){
 	auto i = pair.find(temp);
 	return i;
 }
+int BindingMap::AddMap(std::string text) {
+	int return_value;
+	auto result = this->find(text);
+
+	if(result == this->end()){
+		//textが登録されていない時の処理
+		this->insert(std::make_pair(text,id));
+		return_value = id;
+		id++;
+	}else{
+		return_value = result->second;
+	}
+	return return_value;
+}
 
 } /* namespace prdc_lzw */
+
 

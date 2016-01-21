@@ -23,19 +23,13 @@ int main() {
 	vector<prdc_lzw::Dictionary*> dics;
 	vector<vector<string>> compressed;
 	vector<prdc_lzw::LzwPair> pair;
+	prdc_lzw::BindingMap bind_data;
 
-	filename.push_back("./data/text/buildings-33.txt");
-	filename.push_back("./data/text/buildings-32.txt");
-	filename.push_back("./data/text/denseresidential-01.txt");
+	filename.push_back("./data/corel/354.txt");
+	filename.push_back("./data/corel/377.txt");
+	filename.push_back("./data/corel/1.txt");
 
-	for (int i = 0; i < (int) filename.size(); i++) {
-		prdc_lzw::Dictionary* temp = new prdc_lzw::Dictionary;
-		dics.push_back(temp);
-	}
-	compressed.resize(4);
-	pair.resize(4);
-
-	for (int i = 0; i < (int) filename.size(); i++) {
+	for (int i = 0; i < (int) filename.size(); ++i) {
 		ifstream ifs(filename.at(i));
 		if (ifs.fail()) {
 			cerr << "読み込みエラー" << endl;
@@ -46,44 +40,57 @@ int main() {
 
 	}
 
-	for (int i = 0; i < (int) filename.size(); i++) {
-		cout << "Source" << i << " = \"" << filename.at(i) << "\"" << endl;
+	for (int i = 0; i < (int) filename.size(); ++i) {
+		prdc_lzw::Dictionary* temp = new prdc_lzw::Dictionary;
+		dics.push_back(temp);
 	}
-	cout << endl;
+	compressed.resize(filename.size());
 
-	//file0の辞書作成
-	CompressWithMakePair(file_contents.at(0), compressed.at(0), *dics.at(0),
-			pair.at(0));
+	for (int i = 0; i < (int) filename.size(); ++i) {
+		//fileiの辞書作成
+		prdc_lzw::CompressBoundData(file_contents.at(i), compressed.at(i),
+				*dics.at(i), bind_data, prdc_lzw::ARROW_EDIT_DICTIONARY);
 
-	//file0の圧縮後文字列出力
-	ofstream ofs0("file0_compress.txt");
-	for (auto c : compressed.at(0)) {
-		ofs0 << c << endl;
+		//file0の圧縮後文字列出力
+		ofstream ofs("output/file" + to_string(i) + "compressed.txt");
+		for (auto c : compressed.at(i)) {
+			ofs << c << "\n";
+		}
+		ofs.close();
+
 	}
-	ofs0.close();
-	cout << "file0 size:" << compressed.at(0).size() << endl;
-	cout << endl;
-
-	compressed.at(0).clear();
-
-	//file0から作成した辞書でfile1を圧縮
-	CompressWithMakePair(file_contents.at(2), compressed.at(0), *dics.at(0),
-			pair.at(1), prdc_lzw::ARROW_EDIT_PAIR);
-
-	//file1をfile0で圧縮した時に作成したペアがfile0を再圧縮した時に現れるか調べる
-	CompressWithMakePair(file_contents.at(0), compressed.at(1), *dics.at(0),
-			pair.at(1));
-
-	ofstream ofs1("file0_recompress_with_dic0_pair2.txt");
-	for (auto c : compressed.at(1)) {
-		ofs1 << c << endl;
-	}
-	ofs1.close();
-
 	for (auto dic : dics) {
 		delete dic;
 	}
 
+
+//	string A = "aaaaaiiiii";
+//	string B = "iiiiiaaaaa";
+//
+//	prdc_lzw::Dictionary dicA;
+//	prdc_lzw::Dictionary dicB;
+//
+//	vector<string> comp;
+//	prdc_lzw::CompressBoundData(A, comp, dicA, bind_data,
+//			prdc_lzw::ARROW_EDIT_DICTIONARY);
+//	cout << A << endl;
+//	for (auto s : comp) {
+//		cout << s << ", ";
+//	}
+//	cout << endl;
+//	comp.clear();
+//	prdc_lzw::CompressBoundData(B, comp, dicB, bind_data,
+//			prdc_lzw::ARROW_EDIT_DICTIONARY);
+//	cout << B << endl;
+//	for (auto s : comp) {
+//		cout << s << ", ";
+//	}
+//	cout << endl;
+//	cout << "Binding" << endl;
+//	for (auto m : bind_data) {
+//		if (m.second > 255)
+//			cout << m.first << "->" << m.second << endl;
+//	}
 	getchar();
 	return 0;
 }

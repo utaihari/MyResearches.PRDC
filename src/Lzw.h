@@ -47,6 +47,9 @@ void CompressBoundData(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
 		BindingMap &binding_data, unsigned int flags = 0,
 		unsigned int max_dicsize = -1);
+void CompressOriginString(const std::string &uncompressed,
+		std::vector<std::string> &compressed, Dictionary &output_dic,
+		unsigned int flags = 0, unsigned int max_dicsize = -1);
 int ReturnMapValue(std::map<std::string, int>& binding_data,
 		std::string origin_text, int get_data);
 }

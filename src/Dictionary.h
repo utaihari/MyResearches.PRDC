@@ -84,6 +84,9 @@ public:
 	 * @return key_wordのノード。辞書中に存在しなければNULLを返す
 	 */
 	LzwNode* SearchNode(std::string key_word);
+	unsigned int max_dicsize;//辞書に登録できる単語の数
+	std::vector<std::string> binding;
+	void OutputBinding(std::map<int,std::string>& output);
 
 private:
 	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)

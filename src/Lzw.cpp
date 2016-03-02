@@ -7,38 +7,51 @@
  */
 #include "Lzw.h"
 #include "Dictionary.h"
-#include "tools.h"
 #include <string>
 #include <ctype.h>
+#include "util.h"
 
 namespace prdc_lzw {
 
 void Compress(const std::string &uncompressed,
-		std::vector<std::string> &compressed, Dictionary &output_dic,
+		std::vector<int> &compressed, Dictionary &output_dic,
 		unsigned int flags) {
 
 	LzwNode* current_node = output_dic.get_root(); //初期位置
+	unsigned int dicsize = 256;
+	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
+
+	//数値→文字列変換のための配列のサイズ設定
+	output_dic.binding.reserve(output_dic.max_dicsize + 256);
 
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); it++) {
 
 		char c = *it;	//未圧縮の文字列から一文字取り出す
+		std::string wc = w + c;
 
 		LzwNode* q = current_node->FindChild(c);
 		if (q != NULL) {
 			//辞書に文字列が追加されていたら
 			current_node = q;	//探索ノードを一つ進める
+			w = wc;
 		} else {
-			compressed.push_back(to_string(current_node->get_data()));
+			compressed.push_back(current_node->get_data());
 
-			if (flags & ARROW_EDIT_DICTIONARY)
-				output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
-
+			if (flags & ARROW_EDIT_DICTIONARY) {
+				if (dicsize < output_dic.max_dicsize) {
+					dicsize++;
+					output_dic.AddNode(current_node, c);//current_nodeの下に文字cのノードを作成
+					output_dic.binding.push_back(wc);
+				}
+			}
 			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
 			current_node = output_dic.get_root()->FindChild(c);	//最初から検索し直す
+			w = std::string(1, c);
 		}
 	}
-	compressed.push_back(to_string(current_node->get_data()));
+	std::vector<std::string>(output_dic.binding).swap(output_dic.binding);
+	compressed.push_back(current_node->get_data());
 }
 
 void CompressWithMakePair(const std::string &uncompressed,
@@ -124,14 +137,13 @@ void CompressBoundData(const std::string &uncompressed,
 			w = std::string(1, c);
 		}
 	}
-	if(!w.empty()){
-	compressed.push_back(to_string(binding_data[w]));
+	if (!w.empty()) {
+		compressed.push_back(to_string(binding_data[w]));
 	}
 }
 void CompressOriginString(const std::string &uncompressed,
 		std::vector<std::string> &compressed, Dictionary &output_dic,
-		unsigned int flags,
-		unsigned int max_dicsize) {
+		unsigned int flags, unsigned int max_dicsize) {
 
 	LzwNode* current_node = output_dic.get_root(); //初期位置
 	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
@@ -161,8 +173,8 @@ void CompressOriginString(const std::string &uncompressed,
 			w = std::string(1, c);
 		}
 	}
-	if(!w.empty()){
-	compressed.push_back(w);
+	if (!w.empty()) {
+		compressed.push_back(w);
 	}
 }
 }

@@ -1,10 +1,10 @@
 /*
- * tools.cpp
+ * util.cpp
  *
  *  Created on: 2015/12/03
  *      Author: taichi
  */
-#include "tools.h"
+#include "util.h"
 
 void SplitString(const std::string s, std::vector<std::string>& output,
 		int number_of_partitions) {

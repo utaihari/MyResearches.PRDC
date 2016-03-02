@@ -27,9 +27,8 @@ const unsigned int ARROW_EDIT_PAIR = 2;
  * @param output_dic 圧縮に用いる辞書
  * @param flags 辞書に新たな文字列を追加するなら ARROW_EDIT_DICTIONARY を指定
  */
-void Compress(const std::string &uncompressed,
-		std::vector<std::string> &compressed, Dictionary &output_dic,
-		unsigned int flags = 0);
+void Compress(const std::string& uncompressed, std::vector<int>& compressed,
+		Dictionary &output_dic, unsigned int flags = 0);
 
 /**
  * @brief 文字列を圧縮し、圧縮後データ列からペアを作成する。以前に作成されたペアの探索も行う。

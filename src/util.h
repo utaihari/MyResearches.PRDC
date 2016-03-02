@@ -1,12 +1,12 @@
 /*
- * tools.h
+ * util.h
  *
  *  Created on: 2015/12/03
  *      Author: taichi
  */
 
-#ifndef SRC_TOOLS_H_
-#define SRC_TOOLS_H_
+#ifndef SRC_UTIL_H_
+#define SRC_UTIL_H_
 
 #include <string>
 #include <sstream>
@@ -20,4 +20,4 @@ std::string to_string(T value) {
 }
 
 void SplitString(const std::string s, std::vector<std::string>& output ,int number_of_partitions);
-#endif /* SRC_TOOLS_H_ */
+#endif /* SRC_UTIL_H_ */

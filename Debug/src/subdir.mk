@@ -5,21 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Dictionary.cpp \
-../src/Lzw.cpp \
 ../src/main.cpp \
-../src/tools.cpp 
+../src/util.cpp 
 
 OBJS += \
 ./src/Dictionary.o \
-./src/Lzw.o \
 ./src/main.o \
-./src/tools.o 
+./src/util.o 
 
 CPP_DEPS += \
 ./src/Dictionary.d \
-./src/Lzw.d \
 ./src/main.d \
-./src/tools.d 
+./src/util.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -9,6 +9,7 @@
 #include "Dictionary.h"
 #include <stdlib.h>
 #include <stack>
+#include <algorithm>
 #include "util.h"
 
 namespace prdc_lzw {
@@ -73,30 +74,62 @@ LzwNode* Dictionary::SearchNode(std::string keyword) {
 	return current_node;
 }
 
-void LzwPair::AddPair(int a, int b) {
-	std::string temp = to_string(a) + "," + to_string(b);
-	pair[temp] = current_pair_num;
-	current_pair_num++;
-}
-std::map<std::string, int>::iterator LzwPair::SearchPair(int a, int b) {
-	std::string temp = to_string(a) + "," + to_string(b);
-	auto i = pair.find(temp);
-	return i;
-}
-int BindingMap::AddMap(std::string text) {
-	int return_value;
-	auto result = this->find(text);
+std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
+		unsigned int flags) {
 
-	if (result == this->end()) {
-		//textが登録されていない時の処理
-		this->insert(std::make_pair(text, id));
-		return_value = id;
-		id++;
-	} else {
-		return_value = result->second;
+	LzwNode* current_node = root; //初期位置
+	unsigned int dicsize = 256;
+	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
+
+	//数値→文字列変換のための配列のサイズ設定
+	binding.reserve(max_dicsize + 256);
+
+	for (std::string::const_iterator it = uncompressed.begin();
+			it != uncompressed.end(); it++) {
+
+		char c = *it;	//未圧縮の文字列から一文字取り出す
+		std::string wc = w + c;
+
+		LzwNode* q = current_node->FindChild(c);
+		if (q != NULL) {
+			//辞書に文字列が追加されていたら
+			current_node = q;	//探索ノードを一つ進める
+			w = wc;
+		} else {
+			compressed.push_back(current_node->get_data());
+
+			if (flags & ARROW_EDIT_DICTIONARY) {
+				if (dicsize < max_dicsize) {
+					dicsize++;
+					AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
+					binding.push_back(wc);
+				}
+			}
+			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
+			current_node = root->FindChild(c);	//最初から検索し直す
+			w = std::string(1, c);
+		}
 	}
-	return return_value;
+	std::vector<std::string>(binding).swap(binding);
+	compressed.push_back(current_node->get_data());
+	return compressed;
 }
+std::vector<std::pair<std::string, int>>& Dictionary::MakeHistgram() {
+	std::vector<int> output;
+	const int max_value = binding.size();
+	output.resize(max_value, 0);
+	histgram.resize(max_value);
 
+	for (auto i : compressed) {
+		output[i]++;
+	}
+
+	for (int i = 0; i < max_value; ++i) {
+		histgram.at(i) = std::make_pair(binding.at(i), output.at(i));
+	}
+
+	std::sort(histgram.begin(), histgram.end());
+	return histgram;
+}
 } /* namespace prdc_lzw */
 

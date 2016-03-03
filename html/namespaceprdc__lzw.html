@@ -82,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">prdc_lzw Namespace Reference</div>  </div>
 </div><!--header-->
@@ -100,103 +100,34 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LZW辞書クラス  <a href="classprdc__lzw_1_1Dictionary.html#details">More...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a09931e4cc68e675f2058ee251b1e761f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a09931e4cc68e675f2058ee251b1e761f">compress</a> (const std::string &amp;uncompressed, std::vector&lt; int &gt; &amp;compressed, <a class="el" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a> &amp;output_dic)</td></tr>
-<tr class="memdesc:a09931e4cc68e675f2058ee251b1e761f"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を圧縮し、辞書を抽出する  <a href="#a09931e4cc68e675f2058ee251b1e761f">More...</a><br/></td></tr>
-<tr class="separator:a09931e4cc68e675f2058ee251b1e761f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81663f550046c9a805ca2e4d60df03dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a81663f550046c9a805ca2e4d60df03dc">compress_with_outer_dictionary</a> (const std::string &amp;uncompressed, std::vector&lt; int &gt; &amp;compressed, <a class="el" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a> &amp;output_dic)</td></tr>
-<tr class="separator:a81663f550046c9a805ca2e4d60df03dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ab7c4b021388100d7ca25d23ae566f917"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#ab7c4b021388100d7ca25d23ae566f917">ARROW_EDIT_DICTIONARY</a> = 1</td></tr>
+<tr class="separator:ab7c4b021388100d7ca25d23ae566f917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>PRDCで用いるLZW圧縮に関する名前空間 </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a09931e4cc68e675f2058ee251b1e761f"></a>
+</div><h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="ab7c4b021388100d7ca25d23ae566f917"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void prdc_lzw::compress </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>uncompressed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>compressed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Dictionary &amp;&#160;</td>
-          <td class="paramname"><em>output_dic</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname">const unsigned int prdc_lzw::ARROW_EDIT_DICTIONARY = 1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>文字列を圧縮し、辞書を抽出する </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">uncompressed</td><td>圧縮する文字列 </td></tr>
-    <tr><td class="paramname">compressed</td><td>圧縮された文字列（数値） </td></tr>
-    <tr><td class="paramname">output_dic</td><td>出力される辞書 </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00019">19</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 
-<p>Definition at line <a class="el" href="Lzw_8cpp_source.html#l00014">14</a> of file <a class="el" href="Lzw_8cpp_source.html">Lzw.cpp</a>.</p>
-
-<p>References <a class="el" href="Dictionary_8cpp_source.html#l00055">prdc_lzw::Dictionary::AddNode()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00026">prdc_lzw::LzwNode::FindChild()</a>, <a class="el" href="Dictionary_8h_source.html#l00025">prdc_lzw::LzwNode::getData()</a>, and <a class="el" href="Dictionary_8h_source.html#l00064">prdc_lzw::Dictionary::getRoot()</a>.</p>
-
-<p>Referenced by <a class="el" href="main_8cpp_source.html#l00014">main()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a81663f550046c9a805ca2e4d60df03dc"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void prdc_lzw::compress_with_outer_dictionary </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>uncompressed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::vector&lt; int &gt; &amp;&#160;</td>
-          <td class="paramname"><em>compressed</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Dictionary &amp;&#160;</td>
-          <td class="paramname"><em>output_dic</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="Lzw_8cpp_source.html#l00036">36</a> of file <a class="el" href="Lzw_8cpp_source.html">Lzw.cpp</a>.</p>
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">prdc_lzw::Dictionary::Compress()</a>, and <a class="el" href="main_8cpp_source.html#l00019">main()</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 2 2016 23:05:24 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

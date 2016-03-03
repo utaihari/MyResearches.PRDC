@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['searchnode',['SearchNode',['../classprdc__lzw_1_1Dictionary.html#ac5577ef2e482e191a0b6376e28564b7e',1,'prdc_lzw::Dictionary']]]
+  ['prdc_5flzw',['prdc_lzw',['../namespaceprdc__lzw.html',1,'']]]
 ];

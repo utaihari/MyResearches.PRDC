@@ -24,3 +24,79 @@ void SplitString(const std::string s, std::vector<std::string>& output,
 	}
 }
 
+double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
+		std::vector<std::pair<std::string, int>> B) {
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+
+	double Asize = 0;
+	double Bsize = 0;
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	double H = 0;
+
+	while (!(Afinished && Bfinished)) {
+		//Aのデータ番号とBのデータ番号が同じだったら頻度が小さい方を足す
+		if (Aiter->first == Biter->first) {
+			//小さい方の頻度を足す
+			H += Aiter->second < Biter->second ? Aiter->second : Biter->second;
+			if (!Bfinished) {
+				Bsize += Biter->second;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				Asize += Aiter->second;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのデータ番号のほうが小さければ、Bを進める
+		else if (Aiter->first > Biter->first) {
+			if (Bfinished) {
+				//Bが終わっていたらAを進める
+				Asize += Aiter->second;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				Bsize += Biter->second;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			if (Afinished) {
+				Bsize += Biter->second;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				Asize += Aiter->second;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+	//AsizeとBsizeの小さい方で割る
+	H = H / (Asize < Bsize ? Asize : Bsize);
+	return H;
+}
+

@@ -87,6 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classprdc__lzw_1_1Dictionary-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -112,14 +114,38 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7a53efd7967e59748f321938aa983368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a953fce0e9128a8e48b62779fdefcc051"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a953fce0e9128a8e48b62779fdefcc051">~Dictionary</a> ()</td></tr>
 <tr class="separator:a953fce0e9128a8e48b62779fdefcc051"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ac9a03c8ead8d6ca17e080ff9227fd9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a4ac9a03c8ead8d6ca17e080ff9227fd9">getRoot</a> ()</td></tr>
-<tr class="separator:a4ac9a03c8ead8d6ca17e080ff9227fd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcdd828822905288df0f7e1015671c3f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#afcdd828822905288df0f7e1015671c3f">Compress</a> (const std::string &amp;uncompressed, unsigned int flags=0)</td></tr>
+<tr class="memdesc:afcdd828822905288df0f7e1015671c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列を圧縮し、辞書を抽出する  <a href="#afcdd828822905288df0f7e1015671c3f">More...</a><br/></td></tr>
+<tr class="separator:afcdd828822905288df0f7e1015671c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29102f3ebd6a703f1775e65e3af6aeb0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair<br class="typebreak"/>
+&lt; std::string, int &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a29102f3ebd6a703f1775e65e3af6aeb0">MakeHistgram</a> ()</td></tr>
+<tr class="memdesc:a29102f3ebd6a703f1775e65e3af6aeb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う  <a href="#a29102f3ebd6a703f1775e65e3af6aeb0">More...</a><br/></td></tr>
+<tr class="separator:a29102f3ebd6a703f1775e65e3af6aeb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a27f3bda2d7baeb3c7a62db57de66ffb7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a27f3bda2d7baeb3c7a62db57de66ffb7">max_dicsize</a></td></tr>
+<tr class="memdesc:a27f3bda2d7baeb3c7a62db57de66ffb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書に登録できる単語の数  <a href="#a27f3bda2d7baeb3c7a62db57de66ffb7">More...</a><br/></td></tr>
+<tr class="separator:a27f3bda2d7baeb3c7a62db57de66ffb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c7156370b9ee5d0e060624d409bce1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#af5c7156370b9ee5d0e060624d409bce1">binding</a></td></tr>
+<tr class="memdesc:af5c7156370b9ee5d0e060624d409bce1"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字と辞書番号を関連付ける配列  <a href="#af5c7156370b9ee5d0e060624d409bce1">More...</a><br/></td></tr>
+<tr class="separator:af5c7156370b9ee5d0e060624d409bce1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18e15168c7acd82f062141627e5a8b75"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a18e15168c7acd82f062141627e5a8b75">compressed</a></td></tr>
+<tr class="memdesc:a18e15168c7acd82f062141627e5a8b75"><td class="mdescLeft">&#160;</td><td class="mdescRight">圧縮後の辞書番号配列  <a href="#a18e15168c7acd82f062141627e5a8b75">More...</a><br/></td></tr>
+<tr class="separator:a18e15168c7acd82f062141627e5a8b75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66677a981aa5a55b91978a5f642b9c06"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair<br class="typebreak"/>
+&lt; std::string, int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a66677a981aa5a55b91978a5f642b9c06">histgram</a></td></tr>
+<tr class="memdesc:a66677a981aa5a55b91978a5f642b9c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">圧縮後文字列中にそれぞれの単語が何回存在するか  <a href="#a66677a981aa5a55b91978a5f642b9c06">More...</a><br/></td></tr>
+<tr class="separator:a66677a981aa5a55b91978a5f642b9c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
 <tr class="memitem:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ad9a68c58a75d9eec5eb2aaf528b9fbe4">AddNode</a> (<a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *node, char key_word)</td></tr>
 <tr class="memdesc:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書中の指定したノードに文字を追加する  <a href="#ad9a68c58a75d9eec5eb2aaf528b9fbe4">More...</a><br/></td></tr>
 <tr class="separator:ad9a68c58a75d9eec5eb2aaf528b9fbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5577ef2e482e191a0b6376e28564b7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#ac5577ef2e482e191a0b6376e28564b7e">SearchNode</a> (std::string key_word)</td></tr>
-<tr class="memdesc:ac5577ef2e482e191a0b6376e28564b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">key_wordのノードを辞書から検索し返す。  <a href="#ac5577ef2e482e191a0b6376e28564b7e">More...</a><br/></td></tr>
-<tr class="separator:ac5577ef2e482e191a0b6376e28564b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d5f9c58f6aede7507b08d07d0ad7875"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a4d5f9c58f6aede7507b08d07d0ad7875">SearchNode</a> (std::string key_word)</td></tr>
+<tr class="memdesc:a4d5f9c58f6aede7507b08d07d0ad7875"><td class="mdescLeft">&#160;</td><td class="mdescRight">key_wordのノードを辞書から検索し返す。  <a href="#a4d5f9c58f6aede7507b08d07d0ad7875">More...</a><br/></td></tr>
+<tr class="separator:a4d5f9c58f6aede7507b08d07d0ad7875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -127,6 +153,7 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)  <a href="#ac96b4db6d4692ba9b082fe32e54bcf0d">More...</a><br/></td></tr>
 <tr class="separator:ac96b4db6d4692ba9b082fe32e54bcf0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95b84d2d9ebb6277cfc6bffba5dee738"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classprdc__lzw_1_1Dictionary.html#a95b84d2d9ebb6277cfc6bffba5dee738">root</a></td></tr>
+<tr class="memdesc:a95b84d2d9ebb6277cfc6bffba5dee738"><td class="mdescLeft">&#160;</td><td class="mdescRight">ルートノード  <a href="#a95b84d2d9ebb6277cfc6bffba5dee738">More...</a><br/></td></tr>
 <tr class="separator:a95b84d2d9ebb6277cfc6bffba5dee738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -134,7 +161,7 @@ Private Attributes</h2></td></tr>
 <p>文字列の登録と検索ができる </p>
 <dl class="section author"><dt>Author</dt><dd>uchino </dd></dl>
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00060">60</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00068">68</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a7a53efd7967e59748f321938aa983368"></a>
 <div class="memitem">
@@ -149,9 +176,9 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00041">41</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00045">45</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00051">prdc_lzw::LzwNode::children</a>, and <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00077">binding</a>, <a class="el" href="Dictionary_8h_source.html#l00042">prdc_lzw::LzwNode::children</a>, and <a class="el" href="Dictionary_8h_source.html#l00116">root</a>.</p>
 
 </div>
 </div>
@@ -176,9 +203,9 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00051">51</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00057">57</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00116">root</a>.</p>
 
 </div>
 </div>
@@ -186,6 +213,9 @@ Private Attributes</h2></td></tr>
 <a class="anchor" id="ad9a68c58a75d9eec5eb2aaf528b9fbe4"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void prdc_lzw::Dictionary::AddNode </td>
@@ -205,6 +235,11 @@ Private Attributes</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>辞書中の指定したノードに文字を追加する </p>
@@ -217,15 +252,78 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>辞書番号の管理のため直接ノードに子を追加させない </dd></dl>
 
-<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00055">55</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00061">61</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
 
-<p>References <a class="el" href="Dictionary_8h_source.html#l00085">dict_size</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00036">prdc_lzw::LzwNode::InsertChild()</a>.</p>
+<p>References <a class="el" href="Dictionary_8h_source.html#l00113">dict_size</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00040">prdc_lzw::LzwNode::InsertChild()</a>.</p>
 
-<p>Referenced by <a class="el" href="Lzw_8cpp_source.html#l00014">prdc_lzw::compress()</a>.</p>
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">Compress()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a4ac9a03c8ead8d6ca17e080ff9227fd9"></a>
+<a class="anchor" id="afcdd828822905288df0f7e1015671c3f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int &gt; &amp; prdc_lzw::Dictionary::Compress </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>uncompressed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>flags</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>文字列を圧縮し、辞書を抽出する </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uncompressed</td><td>圧縮する文字列 </td></tr>
+    <tr><td class="paramname">flags</td><td>辞書に新たな文字列を追加するなら ARROW_EDIT_DICTIONARY を指定 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00077">77</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+
+<p>References <a class="el" href="Dictionary_8cpp_source.html#l00061">AddNode()</a>, <a class="el" href="Dictionary_8h_source.html#l00019">prdc_lzw::ARROW_EDIT_DICTIONARY</a>, <a class="el" href="Dictionary_8h_source.html#l00077">binding</a>, <a class="el" href="Dictionary_8h_source.html#l00079">compressed</a>, <a class="el" href="Dictionary_8cpp_source.html#l00030">prdc_lzw::LzwNode::FindChild()</a>, <a class="el" href="Dictionary_8h_source.html#l00029">prdc_lzw::LzwNode::get_data()</a>, <a class="el" href="Dictionary_8h_source.html#l00074">max_dicsize</a>, and <a class="el" href="Dictionary_8h_source.html#l00116">root</a>.</p>
+
+<p>Referenced by <a class="el" href="main_8cpp_source.html#l00019">main()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a29102f3ebd6a703f1775e65e3af6aeb0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::pair&lt; std::string, int &gt; &gt; &amp; prdc_lzw::Dictionary::MakeHistgram </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う </p>
+<dl class="section note"><dt>Note</dt><dd>ソートまで行うことに注意 </dd></dl>
+
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00117">117</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+
+<p>References <a class="el" href="Dictionary_8h_source.html#l00077">binding</a>, <a class="el" href="Dictionary_8h_source.html#l00079">compressed</a>, and <a class="el" href="Dictionary_8h_source.html#l00081">histgram</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4d5f9c58f6aede7507b08d07d0ad7875"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -233,39 +331,18 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>* prdc_lzw::Dictionary::getRoot </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00064">64</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
-
-<p>References <a class="el" href="Dictionary_8h_source.html#l00086">root</a>.</p>
-
-<p>Referenced by <a class="el" href="Lzw_8cpp_source.html#l00014">prdc_lzw::compress()</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="ac5577ef2e482e191a0b6376e28564b7e"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a>* prdc_lzw::Dictionary::SearchNode </td>
+          <td class="memname"><a class="el" href="classprdc__lzw_1_1LzwNode.html">LzwNode</a> * prdc_lzw::Dictionary::SearchNode </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>key_word</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>key_wordのノードを辞書から検索し返す。 </p>
@@ -277,9 +354,49 @@ Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>key_wordのノード。辞書中に存在しなければNULLを返す </dd></dl>
 
+<p>Definition at line <a class="el" href="Dictionary_8cpp_source.html#l00066">66</a> of file <a class="el" href="Dictionary_8cpp_source.html">Dictionary.cpp</a>.</p>
+
+<p>References <a class="el" href="Dictionary_8cpp_source.html#l00030">prdc_lzw::LzwNode::FindChild()</a>, and <a class="el" href="Dictionary_8h_source.html#l00116">root</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="af5c7156370b9ee5d0e060624d409bce1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::string&gt; prdc_lzw::Dictionary::binding</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>文字と辞書番号を関連付ける配列 </p>
+
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00077">77</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">Compress()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00045">Dictionary()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00117">MakeHistgram()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a18e15168c7acd82f062141627e5a8b75"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;int&gt; prdc_lzw::Dictionary::compressed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>圧縮後の辞書番号配列 </p>
+
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00079">79</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">Compress()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00117">MakeHistgram()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ac96b4db6d4692ba9b082fe32e54bcf0d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -300,9 +417,45 @@ Private Attributes</h2></td></tr>
 
 <p>辞書に単語がいくつ登録されているか(辞書番号をつける際に利用) </p>
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00085">85</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00113">113</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00055">AddNode()</a>.</p>
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00061">AddNode()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a66677a981aa5a55b91978a5f642b9c06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::pair&lt;std::string, int&gt; &gt; prdc_lzw::Dictionary::histgram</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>圧縮後文字列中にそれぞれの単語が何回存在するか </p>
+
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00081">81</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00117">MakeHistgram()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a27f3bda2d7baeb3c7a62db57de66ffb7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int prdc_lzw::Dictionary::max_dicsize</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>辞書に登録できる単語の数 </p>
+
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00074">74</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">Compress()</a>.</p>
 
 </div>
 </div>
@@ -324,9 +477,11 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00086">86</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+<p>ルートノード </p>
 
-<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00041">Dictionary()</a>, <a class="el" href="Dictionary_8h_source.html#l00064">getRoot()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00051">~Dictionary()</a>.</p>
+<p>Definition at line <a class="el" href="Dictionary_8h_source.html#l00116">116</a> of file <a class="el" href="Dictionary_8h_source.html">Dictionary.h</a>.</p>
+
+<p>Referenced by <a class="el" href="Dictionary_8cpp_source.html#l00077">Compress()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00045">Dictionary()</a>, <a class="el" href="Dictionary_8cpp_source.html#l00066">SearchNode()</a>, and <a class="el" href="Dictionary_8cpp_source.html#l00057">~Dictionary()</a>.</p>
 
 </div>
 </div>
@@ -337,7 +492,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Nov 25 2015 17:13:07 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Mar 2 2016 23:05:24 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

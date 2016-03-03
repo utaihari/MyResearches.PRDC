@@ -13,63 +13,25 @@ class \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node}
 \begin{DoxyCompactList}\small\item\em L\-Z\-W辞書のノード \end{DoxyCompactList}\item 
 class \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary}
 \begin{DoxyCompactList}\small\item\em L\-Z\-W辞書クラス \end{DoxyCompactList}\end{DoxyCompactItemize}
-\subsection*{Functions}
+\subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}{compress} (const std\-::string \&uncompressed, std\-::vector$<$ int $>$ \&compressed, \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary} \&output\-\_\-dic)
-\begin{DoxyCompactList}\small\item\em 文字列を圧縮し、辞書を抽出する \end{DoxyCompactList}\item 
-void \hyperlink{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}{compress\-\_\-with\-\_\-outer\-\_\-dictionary} (const std\-::string \&uncompressed, std\-::vector$<$ int $>$ \&compressed, \hyperlink{classprdc__lzw_1_1Dictionary}{Dictionary} \&output\-\_\-dic)
+const unsigned int \hyperlink{namespaceprdc__lzw_ab7c4b021388100d7ca25d23ae566f917}{A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y} = 1
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 P\-R\-D\-Cで用いる\-L\-Z\-W圧縮に関する名前空間 
 
-\subsection{Function Documentation}
-\hypertarget{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}{\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}!compress@{compress}}
-\index{compress@{compress}!prdc_lzw@{prdc\-\_\-lzw}}
-\subsubsection[{compress}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::compress (
-\begin{DoxyParamCaption}
-\item[{const std\-::string \&}]{uncompressed, }
-\item[{std\-::vector$<$ int $>$ \&}]{compressed, }
-\item[{Dictionary \&}]{output\-\_\-dic}
-\end{DoxyParamCaption}
-)}}\label{namespaceprdc__lzw_a09931e4cc68e675f2058ee251b1e761f}
+\subsection{Variable Documentation}
+\hypertarget{namespaceprdc__lzw_ab7c4b021388100d7ca25d23ae566f917}{\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}!A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y@{A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y}}
+\index{A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y@{A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y}!prdc_lzw@{prdc\-\_\-lzw}}
+\subsubsection[{A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y}]{\setlength{\rightskip}{0pt plus 5cm}const unsigned int prdc\-\_\-lzw\-::\-A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y = 1}}\label{namespaceprdc__lzw_ab7c4b021388100d7ca25d23ae566f917}
 
 
-文字列を圧縮し、辞書を抽出する 
-
-
-\begin{DoxyParams}{Parameters}
-{\em uncompressed} & 圧縮する文字列 \\
-\hline
-{\em compressed} & 圧縮された文字列（数値） \\
-\hline
-{\em output\-\_\-dic} & 出力される辞書 \\
-\hline
-\end{DoxyParams}
-
-
-Definition at line 14 of file Lzw.\-cpp.
+Definition at line 19 of file Dictionary.\-h.
 
 
 
-References prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Node(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Find\-Child(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::get\-Data(), and prdc\-\_\-lzw\-::\-Dictionary\-::get\-Root().
-
-
-
-Referenced by main().
-
-\hypertarget{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}{\index{prdc\-\_\-lzw@{prdc\-\_\-lzw}!compress\-\_\-with\-\_\-outer\-\_\-dictionary@{compress\-\_\-with\-\_\-outer\-\_\-dictionary}}
-\index{compress\-\_\-with\-\_\-outer\-\_\-dictionary@{compress\-\_\-with\-\_\-outer\-\_\-dictionary}!prdc_lzw@{prdc\-\_\-lzw}}
-\subsubsection[{compress\-\_\-with\-\_\-outer\-\_\-dictionary}]{\setlength{\rightskip}{0pt plus 5cm}void prdc\-\_\-lzw\-::compress\-\_\-with\-\_\-outer\-\_\-dictionary (
-\begin{DoxyParamCaption}
-\item[{const std\-::string \&}]{uncompressed, }
-\item[{std\-::vector$<$ int $>$ \&}]{compressed, }
-\item[{Dictionary \&}]{output\-\_\-dic}
-\end{DoxyParamCaption}
-)}}\label{namespaceprdc__lzw_a81663f550046c9a805ca2e4d60df03dc}
-
-
-Definition at line 36 of file Lzw.\-cpp.
+Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress(), and main().
 

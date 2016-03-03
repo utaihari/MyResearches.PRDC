@@ -26,11 +26,29 @@ Collaboration diagram for prdc\-\_\-lzw\-:\-:Dictionary\-:\nopagebreak
 \item 
 virtual \hyperlink{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{$\sim$\-Dictionary} ()
 \item 
-\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}{get\-Root} ()
+std\-::vector$<$ int $>$ \& \hyperlink{classprdc__lzw_1_1Dictionary_afcdd828822905288df0f7e1015671c3f}{Compress} (const std\-::string \&uncompressed, unsigned int flags=0)
+\begin{DoxyCompactList}\small\item\em 文字列を圧縮し、辞書を抽出する \end{DoxyCompactList}\item 
+std\-::vector$<$ std\-::pair\\*
+$<$ std\-::string, int $>$ $>$ \& \hyperlink{classprdc__lzw_1_1Dictionary_a29102f3ebd6a703f1775e65e3af6aeb0}{Make\-Histgram} ()
+\begin{DoxyCompactList}\small\item\em 圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{classprdc__lzw_1_1Dictionary_a27f3bda2d7baeb3c7a62db57de66ffb7}{max\-\_\-dicsize}
+\begin{DoxyCompactList}\small\item\em 辞書に登録できる単語の数 \end{DoxyCompactList}\item 
+std\-::vector$<$ std\-::string $>$ \hyperlink{classprdc__lzw_1_1Dictionary_af5c7156370b9ee5d0e060624d409bce1}{binding}
+\begin{DoxyCompactList}\small\item\em 文字と辞書番号を関連付ける配列 \end{DoxyCompactList}\item 
+std\-::vector$<$ int $>$ \hyperlink{classprdc__lzw_1_1Dictionary_a18e15168c7acd82f062141627e5a8b75}{compressed}
+\begin{DoxyCompactList}\small\item\em 圧縮後の辞書番号配列 \end{DoxyCompactList}\item 
+std\-::vector$<$ std\-::pair\\*
+$<$ std\-::string, int $>$ $>$ \hyperlink{classprdc__lzw_1_1Dictionary_a66677a981aa5a55b91978a5f642b9c06}{histgram}
+\begin{DoxyCompactList}\small\item\em 圧縮後文字列中にそれぞれの単語が何回存在するか \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
 \item 
 void \hyperlink{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}{Add\-Node} (\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$node, char key\-\_\-word)
 \begin{DoxyCompactList}\small\item\em 辞書中の指定したノードに文字を追加する \end{DoxyCompactList}\item 
-\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}{Search\-Node} (std\-::string key\-\_\-word)
+\hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a4d5f9c58f6aede7507b08d07d0ad7875}{Search\-Node} (std\-::string key\-\_\-word)
 \begin{DoxyCompactList}\small\item\em key\-\_\-wordのノードを辞書から検索し返す。 \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
@@ -38,7 +56,7 @@ void \hyperlink{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}{
 int \hyperlink{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{dict\-\_\-size}
 \begin{DoxyCompactList}\small\item\em 辞書に単語がいくつ登録されているか(辞書番号をつける際に利用) \end{DoxyCompactList}\item 
 \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ \hyperlink{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}{root}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em ルートノード \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
@@ -49,7 +67,7 @@ uchino
 \end{DoxyAuthor}
 
 
-Definition at line 60 of file Dictionary.\-h.
+Definition at line 68 of file Dictionary.\-h.
 
 
 
@@ -63,11 +81,11 @@ Definition at line 60 of file Dictionary.\-h.
 )}}\label{classprdc__lzw_1_1Dictionary_a7a53efd7967e59748f321938aa983368}
 
 
-Definition at line 41 of file Dictionary.\-cpp.
+Definition at line 45 of file Dictionary.\-cpp.
 
 
 
-References prdc\-\_\-lzw\-::\-Lzw\-Node\-::children, and root.
+References binding, prdc\-\_\-lzw\-::\-Lzw\-Node\-::children, and root.
 
 \hypertarget{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!$\sim$\-Dictionary@{$\sim$\-Dictionary}}
 \index{$\sim$\-Dictionary@{$\sim$\-Dictionary}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
@@ -78,7 +96,7 @@ References prdc\-\_\-lzw\-::\-Lzw\-Node\-::children, and root.
 )\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classprdc__lzw_1_1Dictionary_a953fce0e9128a8e48b62779fdefcc051}
 
 
-Definition at line 51 of file Dictionary.\-cpp.
+Definition at line 57 of file Dictionary.\-cpp.
 
 
 
@@ -94,7 +112,7 @@ References root.
 \item[{{\bf Lzw\-Node} $\ast$}]{node, }
 \item[{char}]{key\-\_\-word}
 \end{DoxyParamCaption}
-)}}\label{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_ad9a68c58a75d9eec5eb2aaf528b9fbe4}
 
 
 辞書中の指定したノードに文字を追加する 
@@ -111,7 +129,7 @@ References root.
 \end{DoxyNote}
 
 
-Definition at line 55 of file Dictionary.\-cpp.
+Definition at line 61 of file Dictionary.\-cpp.
 
 
 
@@ -119,34 +137,68 @@ References dict\-\_\-size, and prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Insert\-Child()
 
 
 
-Referenced by prdc\-\_\-lzw\-::compress().
+Referenced by Compress().
 
-\hypertarget{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!get\-Root@{get\-Root}}
-\index{get\-Root@{get\-Root}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{get\-Root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::get\-Root (
+\hypertarget{classprdc__lzw_1_1Dictionary_afcdd828822905288df0f7e1015671c3f}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Compress@{Compress}}
+\index{Compress@{Compress}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Compress}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ int $>$ \& prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress (
+\begin{DoxyParamCaption}
+\item[{const std\-::string \&}]{uncompressed, }
+\item[{unsigned int}]{flags = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}\label{classprdc__lzw_1_1Dictionary_afcdd828822905288df0f7e1015671c3f}
+
+
+文字列を圧縮し、辞書を抽出する 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uncompressed} & 圧縮する文字列 \\
+\hline
+{\em flags} & 辞書に新たな文字列を追加するなら A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y を指定 \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 77 of file Dictionary.\-cpp.
+
+
+
+References Add\-Node(), prdc\-\_\-lzw\-::\-A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y, binding, compressed, prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Find\-Child(), prdc\-\_\-lzw\-::\-Lzw\-Node\-::get\-\_\-data(), max\-\_\-dicsize, and root.
+
+
+
+Referenced by main().
+
+\hypertarget{classprdc__lzw_1_1Dictionary_a29102f3ebd6a703f1775e65e3af6aeb0}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Make\-Histgram@{Make\-Histgram}}
+\index{Make\-Histgram@{Make\-Histgram}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{Make\-Histgram}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$ std\-::pair$<$ std\-::string, int $>$ $>$ \& prdc\-\_\-lzw\-::\-Dictionary\-::\-Make\-Histgram (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [inline]}}}\label{classprdc__lzw_1_1Dictionary_a4ac9a03c8ead8d6ca17e080ff9227fd9}
+)}}\label{classprdc__lzw_1_1Dictionary_a29102f3ebd6a703f1775e65e3af6aeb0}
 
 
-Definition at line 64 of file Dictionary.\-h.
+圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う 
+
+\begin{DoxyNote}{Note}
+ソートまで行うことに注意 
+\end{DoxyNote}
+
+
+Definition at line 117 of file Dictionary.\-cpp.
 
 
 
-References root.
+References binding, compressed, and histgram.
 
-
-
-Referenced by prdc\-\_\-lzw\-::compress().
-
-\hypertarget{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Node@{Search\-Node}}
+\hypertarget{classprdc__lzw_1_1Dictionary_a4d5f9c58f6aede7507b08d07d0ad7875}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!Search\-Node@{Search\-Node}}
 \index{Search\-Node@{Search\-Node}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
-\subsubsection[{Search\-Node}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Node (
+\subsubsection[{Search\-Node}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node} $\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Node (
 \begin{DoxyParamCaption}
 \item[{std\-::string}]{key\-\_\-word}
 \end{DoxyParamCaption}
-)}}\label{classprdc__lzw_1_1Dictionary_ac5577ef2e482e191a0b6376e28564b7e}
+)\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_a4d5f9c58f6aede7507b08d07d0ad7875}
 
 
 key\-\_\-wordのノードを辞書から検索し返す。 
@@ -161,7 +213,45 @@ key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返�
 \end{DoxyReturn}
 
 
+Definition at line 66 of file Dictionary.\-cpp.
+
+
+
+References prdc\-\_\-lzw\-::\-Lzw\-Node\-::\-Find\-Child(), and root.
+
+
+
 \subsection{Member Data Documentation}
+\hypertarget{classprdc__lzw_1_1Dictionary_af5c7156370b9ee5d0e060624d409bce1}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!binding@{binding}}
+\index{binding@{binding}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{binding}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$std\-::string$>$ prdc\-\_\-lzw\-::\-Dictionary\-::binding}}\label{classprdc__lzw_1_1Dictionary_af5c7156370b9ee5d0e060624d409bce1}
+
+
+文字と辞書番号を関連付ける配列 
+
+
+
+Definition at line 77 of file Dictionary.\-h.
+
+
+
+Referenced by Compress(), Dictionary(), and Make\-Histgram().
+
+\hypertarget{classprdc__lzw_1_1Dictionary_a18e15168c7acd82f062141627e5a8b75}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!compressed@{compressed}}
+\index{compressed@{compressed}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{compressed}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$int$>$ prdc\-\_\-lzw\-::\-Dictionary\-::compressed}}\label{classprdc__lzw_1_1Dictionary_a18e15168c7acd82f062141627e5a8b75}
+
+
+圧縮後の辞書番号配列 
+
+
+
+Definition at line 79 of file Dictionary.\-h.
+
+
+
+Referenced by Compress(), and Make\-Histgram().
+
 \hypertarget{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!dict\-\_\-size@{dict\-\_\-size}}
 \index{dict\-\_\-size@{dict\-\_\-size}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{dict\-\_\-size}]{\setlength{\rightskip}{0pt plus 5cm}int prdc\-\_\-lzw\-::\-Dictionary\-::dict\-\_\-size\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_ac96b4db6d4692ba9b082fe32e54bcf0d}
@@ -171,22 +261,56 @@ key\-\_\-wordのノード。辞書中に存在しなければ\-N\-U\-L\-Lを返�
 
 
 
-Definition at line 85 of file Dictionary.\-h.
+Definition at line 113 of file Dictionary.\-h.
 
 
 
 Referenced by Add\-Node().
+
+\hypertarget{classprdc__lzw_1_1Dictionary_a66677a981aa5a55b91978a5f642b9c06}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!histgram@{histgram}}
+\index{histgram@{histgram}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{histgram}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$std\-::pair$<$std\-::string, int$>$ $>$ prdc\-\_\-lzw\-::\-Dictionary\-::histgram}}\label{classprdc__lzw_1_1Dictionary_a66677a981aa5a55b91978a5f642b9c06}
+
+
+圧縮後文字列中にそれぞれの単語が何回存在するか 
+
+
+
+Definition at line 81 of file Dictionary.\-h.
+
+
+
+Referenced by Make\-Histgram().
+
+\hypertarget{classprdc__lzw_1_1Dictionary_a27f3bda2d7baeb3c7a62db57de66ffb7}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!max\-\_\-dicsize@{max\-\_\-dicsize}}
+\index{max\-\_\-dicsize@{max\-\_\-dicsize}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
+\subsubsection[{max\-\_\-dicsize}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int prdc\-\_\-lzw\-::\-Dictionary\-::max\-\_\-dicsize}}\label{classprdc__lzw_1_1Dictionary_a27f3bda2d7baeb3c7a62db57de66ffb7}
+
+
+辞書に登録できる単語の数 
+
+
+
+Definition at line 74 of file Dictionary.\-h.
+
+
+
+Referenced by Compress().
 
 \hypertarget{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}{\index{prdc\-\_\-lzw\-::\-Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}!root@{root}}
 \index{root@{root}!prdc_lzw::Dictionary@{prdc\-\_\-lzw\-::\-Dictionary}}
 \subsubsection[{root}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Lzw\-Node}$\ast$ prdc\-\_\-lzw\-::\-Dictionary\-::root\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1Dictionary_a95b84d2d9ebb6277cfc6bffba5dee738}
 
 
-Definition at line 86 of file Dictionary.\-h.
+ルートノード 
 
 
 
-Referenced by Dictionary(), get\-Root(), and $\sim$\-Dictionary().
+Definition at line 116 of file Dictionary.\-h.
+
+
+
+Referenced by Compress(), Dictionary(), Search\-Node(), and $\sim$\-Dictionary().
 
 
 

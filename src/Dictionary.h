@@ -15,6 +15,9 @@
 ///PRDCで用いるLZW圧縮に関する名前空間
 namespace prdc_lzw {
 
+//フラグ処理のための定数定義
+const unsigned int ARROW_EDIT_DICTIONARY = 1;
+
 /**
  * @brief LZW辞書のノード
  *
@@ -66,10 +69,31 @@ class Dictionary {
 public:
 	Dictionary();
 	virtual ~Dictionary();
-	LzwNode* get_root() {
-		return root;
-	}
 
+	//!辞書に登録できる単語の数
+	unsigned int max_dicsize; //辞書に登録できる単語の数
+
+	//!文字と辞書番号を関連付ける配列
+	std::vector<std::string> binding;
+	//!圧縮後の辞書番号配列
+	std::vector<int> compressed;
+	//!圧縮後文字列中にそれぞれの単語が何回存在するか
+	std::vector<std::pair<std::string, int>> histgram;
+
+	/**
+	 * @brief 文字列を圧縮し、辞書を抽出する
+	 * @param uncompressed 圧縮する文字列
+	 * @param flags 辞書に新たな文字列を追加するなら ARROW_EDIT_DICTIONARY を指定
+	 */
+	std::vector<int>& Compress(const std::string& uncompressed,
+			unsigned int flags = 0);
+
+	/**
+	 * @brief 圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う
+	 * @note ソートまで行うことに注意
+	 */
+	std::vector<std::pair<std::string, int>>& MakeHistgram();
+private:
 	/**
 	 * @brief 辞書中の指定したノードに文字を追加する
 	 * @param key_word 追加する文字
@@ -84,46 +108,12 @@ public:
 	 * @return key_wordのノード。辞書中に存在しなければNULLを返す
 	 */
 	LzwNode* SearchNode(std::string key_word);
-	unsigned int max_dicsize;//辞書に登録できる単語の数
-	std::vector<std::string> binding;
-	void OutputBinding(std::map<int,std::string>& output);
 
-private:
-	///辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
+	//!辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
-	LzwNode* root; ///ルートノード
-};
 
-class LzwPair {
-public:
-	LzwPair() :
-			current_pair_num(0) {
-	}
-	;
-	void AddPair(int a, int b);
-	std::map<std::string, int>::iterator SearchPair(int a, int b);
-	std::map<std::string, int>::iterator get_end() {
-		return pair.end();
-	}
-	int get_current_pair_num() {
-		return current_pair_num;
-	}
-private:
-	std::map<std::string, int> pair;
-	int current_pair_num;
-};
-
-class BindingMap: public std::map<std::string, int> {
-public:
-	BindingMap() :
-			id(256) {
-		for (int i = 0; i < 256; i++){
-			this->insert(std::make_pair(std::string(1, i),i));
-		}
-	}
-	int AddMap(std::string text);
-private:
-	int id;
+	//!ルートノード
+	LzwNode* root;
 };
 
 } /* namespace prdc_lzw */

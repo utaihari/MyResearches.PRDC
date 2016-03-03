@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['insertchild',['InsertChild',['../classprdc__lzw_1_1LzwNode.html#adcb9f453effcb8fac95bb08a59665eb7',1,'prdc_lzw::LzwNode']]]
+  ['histgramintersection',['HistgramIntersection',['../util_8cpp.html#a250cfd334b35eb290123740eae4106ec',1,'HistgramIntersection(std::vector&lt; std::pair&lt; std::string, int &gt;&gt; A, std::vector&lt; std::pair&lt; std::string, int &gt;&gt; B):&#160;util.cpp'],['../util_8h.html#a250cfd334b35eb290123740eae4106ec',1,'HistgramIntersection(std::vector&lt; std::pair&lt; std::string, int &gt;&gt; A, std::vector&lt; std::pair&lt; std::string, int &gt;&gt; B):&#160;util.cpp']]]
 ];

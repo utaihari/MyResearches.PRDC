@@ -15,7 +15,7 @@
 namespace prdc_lzw {
 
 LzwNode::LzwNode() :
-		data(0), content() {
+		data(0), content(-1) {
 }
 LzwNode::LzwNode(int d, char c) :
 		data(d), content(c) {
@@ -25,6 +25,8 @@ LzwNode::~LzwNode() {
 	for (auto c : children) {
 		delete c;
 	}
+	children.clear();
+	std::vector<LzwNode*>().swap(children);
 }
 
 LzwNode* LzwNode::FindChild(char c) {
@@ -43,7 +45,7 @@ void LzwNode::InsertChild(int data, char c) {
 }
 
 Dictionary::Dictionary() :
-		max_dicsize(-1), dict_size(256) {
+		max_dicsize(default_max_dicsize), dict_size(256), root(NULL) {
 	root = new LzwNode();
 
 	root->children.resize(256);
@@ -83,7 +85,6 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 
 	//数値→文字列変換のための配列のサイズ設定
 	binding.reserve(max_dicsize + 256);
-
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); it++) {
 

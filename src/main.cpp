@@ -14,7 +14,7 @@
 #include <functional>
 #include "Dictionary.h"
 #include "util.h"
-
+#define GLIBCXX_FORCE_NEW
 using namespace std;
 int main() {
 	const string dataset_folder =
@@ -47,7 +47,7 @@ int main() {
 
 	for (int i = 0; i < (int) filename.size(); ++i) {
 		//fileiの辞書作成
-		dics.at(i)->max_dicsize = max_dic;
+		//dics.at(i)->max_dicsize = max_dic;
 		dics.at(i)->Compress(file_contents.at(i),
 				prdc_lzw::ARROW_EDIT_DICTIONARY);
 
@@ -68,8 +68,8 @@ int main() {
 	h = HistgramIntersection(dics.at(0)->histgram, dics.at(2)->histgram);
 	cout << "1-3 :" << h << endl;
 
-	for (auto dic : dics) {
-		delete dic;
+	for (int i = 0; i < 3; i++) {
+		delete dics[i];
 	}
 
 //	string A = "aaaaaiiiiiaiueaiueaiue";

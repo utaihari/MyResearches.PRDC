@@ -12,10 +12,15 @@
 #include <string>
 #include <map>
 
+
+
 ///PRDCで用いるLZW圧縮に関する名前空間
 namespace prdc_lzw {
 
-//フラグ処理のための定数定義
+//! 辞書の最大値のデフォルト値(ファイルサイスが大きく、辞書番号が50000では収まらない場合には増やす)
+const unsigned int default_max_dicsize = 50000;
+
+//!フラグ処理のための定数定義
 const unsigned int ARROW_EDIT_DICTIONARY = 1;
 
 /**
@@ -26,6 +31,10 @@ const unsigned int ARROW_EDIT_DICTIONARY = 1;
 class LzwNode {
 	friend class Dictionary;
 public:
+	LzwNode();
+	LzwNode(int d, char c);
+	virtual ~LzwNode();
+
 	int get_data() {
 		return data;
 	}
@@ -41,10 +50,6 @@ public:
 	LzwNode* FindChild(char c);
 	std::vector<LzwNode*> children; ///子ノード
 private:
-	LzwNode();
-	LzwNode(int d, char c);
-	virtual ~LzwNode();
-
 	/**
 	 * @brief 子ノードの挿入
 	 *

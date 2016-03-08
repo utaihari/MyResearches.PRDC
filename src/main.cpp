@@ -12,6 +12,7 @@
 #include <iterator>
 #include <sstream>
 #include <functional>
+#include <memory>
 #include "Dictionary.h"
 #include "util.h"
 #define GLIBCXX_FORCE_NEW
@@ -23,7 +24,7 @@ int main() {
 	vector<string> file_contents;
 	vector<prdc_lzw::Dictionary*> dics;
 
-	const int max_dic = 0;
+	const int max_dic = 256;
 
 	filename.push_back(dataset_folder + "354.txt");
 	filename.push_back(dataset_folder + "377.txt");
@@ -47,7 +48,7 @@ int main() {
 
 	for (int i = 0; i < (int) filename.size(); ++i) {
 		//fileiの辞書作成
-		//dics.at(i)->max_dicsize = max_dic;
+		dics.at(i)->max_dicsize = max_dic;
 		dics.at(i)->Compress(file_contents.at(i),
 				prdc_lzw::ARROW_EDIT_DICTIONARY);
 

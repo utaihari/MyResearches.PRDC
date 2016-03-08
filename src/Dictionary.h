@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <memory>
 
 
 
@@ -48,7 +49,7 @@ public:
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
 	LzwNode* FindChild(char c);
-	std::vector<LzwNode*> children; ///子ノード
+	std::vector<std::unique_ptr<LzwNode>> children; ///子ノード
 private:
 	/**
 	 * @brief 子ノードの挿入
@@ -118,7 +119,7 @@ private:
 	int dict_size;
 
 	//!ルートノード
-	LzwNode* root;
+	std::unique_ptr<LzwNode> root;
 };
 
 } /* namespace prdc_lzw */

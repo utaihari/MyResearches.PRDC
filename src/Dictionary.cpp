@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stack>
 #include <algorithm>
+#include <iostream>
 #include "util.h"
 
 namespace prdc_lzw {
@@ -22,16 +23,14 @@ LzwNode::LzwNode(int d, char c) :
 }
 
 LzwNode::~LzwNode() {
-	for (auto c : children) {
-		delete c;
-	}
-	children.clear();
-	std::vector<LzwNode*>().swap(children);
+//	for (auto c : children) {
+//		delete c;
+//	}
 }
 
 LzwNode* LzwNode::FindChild(char c) {
-	for (auto child : children) {
-		LzwNode* tmp = child;
+	for (unsigned int i = 0; i < children.size(); ++i) {
+		LzwNode* tmp = children.at(i).get();
 		if (tmp->content == c) {
 			return tmp;
 		}
@@ -40,24 +39,24 @@ LzwNode* LzwNode::FindChild(char c) {
 }
 
 void LzwNode::InsertChild(int data, char c) {
-	LzwNode* tmp = new LzwNode(data, c);
-	children.push_back(tmp);
+	children.resize(children.size() + 1);
+	children.at(children.size() - 1).reset(new LzwNode(data, c));
+
+	/*	LzwNode* tmp = new LzwNode(data, c);
+	 children.push_back(tmp);*/
 }
 
 Dictionary::Dictionary() :
-		max_dicsize(default_max_dicsize), dict_size(256), root(NULL) {
-	root = new LzwNode();
-
+		max_dicsize(default_max_dicsize), dict_size(256), root(new LzwNode()) {
 	root->children.resize(256);
 	binding.resize(256);
 	for (int i = 0; i < 256; i++) {
-		root->children.at(i) = new LzwNode(char(i), i);
+		root->children.at(i).reset(new LzwNode(char(i), i));
 		binding.at(i) = char(i);
 	}
 }
 
 Dictionary::~Dictionary() {
-	delete root;
 }
 
 void Dictionary::AddNode(LzwNode* node, char key_word) {
@@ -66,7 +65,7 @@ void Dictionary::AddNode(LzwNode* node, char key_word) {
 }
 
 LzwNode* Dictionary::SearchNode(std::string keyword) {
-	LzwNode* current_node = root;
+	LzwNode* current_node = root.get();
 	for (auto c : keyword) {
 		current_node = current_node->FindChild(c);
 		if (current_node == NULL) {
@@ -79,7 +78,7 @@ LzwNode* Dictionary::SearchNode(std::string keyword) {
 std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 		unsigned int flags) {
 
-	LzwNode* current_node = root; //初期位置
+	LzwNode* current_node = root.get(); //初期位置
 	unsigned int dicsize = 256;
 	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
 
@@ -117,7 +116,7 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 }
 std::vector<std::pair<std::string, int>>& Dictionary::MakeHistgram() {
 	std::vector<int> output;
-	const int max_value = binding.size();
+	const unsigned int max_value = binding.size();
 	output.resize(max_value, 0);
 	histgram.resize(max_value);
 
@@ -125,7 +124,7 @@ std::vector<std::pair<std::string, int>>& Dictionary::MakeHistgram() {
 		output[i]++;
 	}
 
-	for (int i = 0; i < max_value; ++i) {
+	for (unsigned int i = 0; i < max_value; ++i) {
 		histgram.at(i) = std::make_pair(binding.at(i), output.at(i));
 	}
 

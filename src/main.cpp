@@ -16,19 +16,29 @@
 #include "Dictionary.h"
 #include "util.h"
 #define GLIBCXX_FORCE_NEW
+//#define test
+
 using namespace std;
+using namespace prdc_lzw;
+using namespace prdc_util;
 int main() {
+
+#ifndef test
 	const string dataset_folder =
-			"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
+	"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
 	vector<string> filename;
 	vector<string> file_contents;
 	vector<prdc_lzw::Dictionary*> dics;
 
-	const int max_dic = 256;
+	const int max_dic = 0;
 
 	filename.push_back(dataset_folder + "354.txt");
 	filename.push_back(dataset_folder + "377.txt");
 	filename.push_back(dataset_folder + "1.txt");
+
+//	filename.push_back(dataset_folder + "432.txt");
+//	filename.push_back(dataset_folder + "432.txt");
+//	filename.push_back(dataset_folder + "1.txt");
 
 	for (int i = 0; i < (int) filename.size(); ++i) {
 		ifstream ifs(filename.at(i));
@@ -63,40 +73,47 @@ int main() {
 		ofs << flush;
 	}
 
+	double nmd;
+	nmd = NormalizedMultisetDistance(*dics.at(0), *dics.at(1));
+	cout << "nmd 1-2 :" << nmd << endl;
+	nmd = NormalizedMultisetDistance(*dics.at(0), *dics.at(2));
+	cout << "nmd 1-3 :" << nmd << endl;
+
 	double h;
 	h = HistgramIntersection(dics.at(0)->histgram, dics.at(1)->histgram);
-	cout << "1-2 :" << h << endl;
+	cout << "histgram 1-2 :" << h << endl;
 	h = HistgramIntersection(dics.at(0)->histgram, dics.at(2)->histgram);
-	cout << "1-3 :" << h << endl;
+	cout << "histgram 1-3 :" << h << endl;
 
 	for (int i = 0; i < 3; i++) {
 		delete dics[i];
 	}
 
-//	string A = "aaaaaiiiiiaiueaiueaiue";
-//
-//	prdc_lzw::Dictionary dicA;
-//
-//	//dicA.max_dicsize = 259;
-//
-//	dicA.Compress(A,prdc_lzw::ARROW_EDIT_DICTIONARY);
-//	cout << A << endl;
-//	for (auto s : dicA.compressed) {
-//		cout << s << ", ";
-//	}
-//	cout << endl;
-//
-//	cout << "Binding Array size: " << dicA.binding.size() << endl;
-//
-//	for (unsigned int i = 256; i < dicA.binding.size(); ++i) {
-//		cout << i << ":" << dicA.binding.at(i) << endl;
-//	}
-//	vector<pair<string,int>> histgram;
-//	histgram = dicA.MakeHistgram();
-//
-//	for (unsigned int i = 0; i < histgram.size(); ++i) {
-//		cout << histgram.at(i).first << ":" << histgram.at(i).second << endl;
-//	}
+#else
+	string A = "aaa";
+	string B = "bbb";
+
+	prdc_lzw::Dictionary dicA;
+	prdc_lzw::Dictionary dicB;
+
+//	dicA.max_dicsize = 0;
+//	dicB.max_dicsize = 0;
+
+	dicA.Compress(A, prdc_lzw::ARROW_EDIT_DICTIONARY);
+	dicB.Compress(B, prdc_lzw::ARROW_EDIT_DICTIONARY);
+
+	cout << endl;
+
+	double histgram;
+	dicA.MakeHistgram();
+	dicB.MakeHistgram();
+
+	histgram = HistgramIntersection(dicA.histgram, dicB.histgram);
+	cout << "histgram:" << histgram << endl;
+	double nmd = NormalizedMultisetDistance(dicA, dicB);
+	cout << "nmd:" << nmd << endl;
+
+#endif
 
 	return 0;
 }

@@ -84,13 +84,14 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 
 	//数値→文字列変換のための配列のサイズ設定
 	binding.reserve(max_dicsize + 256);
+
 	for (std::string::const_iterator it = uncompressed.begin();
-			it != uncompressed.end(); it++) {
+			it != uncompressed.end(); ++it) {
 
 		char c = *it;	//未圧縮の文字列から一文字取り出す
 		std::string wc = w + c;
-
 		LzwNode* q = current_node->FindChild(c);
+
 		if (q != NULL) {
 			//辞書に文字列が追加されていたら
 			current_node = q;	//探索ノードを一つ進める
@@ -105,7 +106,7 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 					binding.push_back(wc);
 				}
 			}
-			//NOTE:圧縮文字列に256以上の文字コードが入っていた場合エラーになる
+			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
 			current_node = root->FindChild(c);	//最初から検索し直す
 			w = std::string(1, c);
 		}
@@ -114,22 +115,27 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed,
 	compressed.push_back(current_node->get_data());
 	return compressed;
 }
-std::vector<std::pair<std::string, int>>& Dictionary::MakeHistgram() {
+std::vector<std::pair<std::string, double>>& Dictionary::MakeHistgram() {
 	std::vector<int> output;
 	const unsigned int max_value = binding.size();
 	output.resize(max_value, 0);
 	histgram.resize(max_value);
-
 	for (auto i : compressed) {
 		output[i]++;
 	}
 
-	for (unsigned int i = 0; i < max_value; ++i) {
-		histgram.at(i) = std::make_pair(binding.at(i), output.at(i));
+	for (int i = 0; i < output.size(); ++i) {
+		if (output.at(i) == 0) {
+			output.at(i) = 1;
+		}
 	}
+	for (unsigned int i = 0; i < max_value; ++i) {
+	histgram.at(i) = std::make_pair(binding.at(i),
+			(double) (output.at(i)));
+		}
 
-	std::sort(histgram.begin(), histgram.end());
-	return histgram;
-}
-} /* namespace prdc_lzw */
+		std::sort(histgram.begin(), histgram.end());
+		return histgram;
+	}
+	} /* namespace prdc_lzw */
 

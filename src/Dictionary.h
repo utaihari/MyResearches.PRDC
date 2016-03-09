@@ -83,8 +83,8 @@ public:
 	std::vector<std::string> binding;
 	//!圧縮後の辞書番号配列
 	std::vector<int> compressed;
-	//!圧縮後文字列中にそれぞれの単語が何回存在するか
-	std::vector<std::pair<std::string, int>> histgram;
+	//!圧縮後文字列中にそれぞれの単語が何回存在するか(全て足すと１になるように正規化)
+	std::vector<std::pair<std::string, double>> histgram;
 
 	/**
 	 * @brief 文字列を圧縮し、辞書を抽出する
@@ -98,7 +98,7 @@ public:
 	 * @brief 圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う
 	 * @note ソートまで行うことに注意
 	 */
-	std::vector<std::pair<std::string, int>>& MakeHistgram();
+	std::vector<std::pair<std::string, double>>& MakeHistgram();
 private:
 	/**
 	 * @brief 辞書中の指定したノードに文字を追加する

@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "Dictionary.h"
 
 template<typename T>
 std::string to_string(T value) {
@@ -25,9 +26,11 @@ std::string to_string(T value) {
  * @param output number_of_partitionsで指定した数に分けられた入力文字列
  * @param number_of_partitions 何等分したいかの数
  */
-void SplitString(const std::string input, std::vector<std::string>& output,
+void SplitString(const std::string& input, std::vector<std::string>& output,
 		int number_of_partitions);
 
-double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
-		std::vector<std::pair<std::string, int>> B);
+double HistgramIntersection(std::vector<std::pair<std::string, double>>& A,
+		std::vector<std::pair<std::string, double>>& B);
+double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
+		prdc_lzw::Dictionary& dicB);
 #endif /* SRC_UTIL_H_ */

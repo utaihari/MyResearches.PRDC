@@ -6,6 +6,9 @@
  */
 #include "util.h"
 
+#include<iostream>
+
+namespace prdc_util {
 void SplitString(const std::string s, std::vector<std::string>& output,
 		int number_of_partitions) {
 	int string_length = s.length();
@@ -24,13 +27,10 @@ void SplitString(const std::string s, std::vector<std::string>& output,
 	}
 }
 
-double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
-		std::vector<std::pair<std::string, int>> B) {
+double HistgramIntersection(std::vector<std::pair<std::string, double>>& A,
+		std::vector<std::pair<std::string, double>>& B) {
 	auto Aiter = A.begin();
 	auto Biter = B.begin();
-
-	double Asize = 0;
-	double Bsize = 0;
 
 	bool Afinished = false;
 	bool Bfinished = false;
@@ -41,6 +41,78 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 		//Aのデータ番号とBのデータ番号が同じだったら頻度が小さい方を足す
 		if (Aiter->first == Biter->first) {
 			//小さい方の頻度を足す
+			H += Aiter->second > Biter->second ? Aiter->second : Biter->second;
+			if (!Bfinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのデータ番号のほうが小さければ、Bを進める
+		else if (Aiter->first > Biter->first) {
+			H += Biter->second;
+			if (Bfinished) {
+				//Bが終わっていたらAを進める
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			H += Aiter->second;
+			if (Afinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+	return H;
+}
+
+double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
+		prdc_lzw::Dictionary& dicB) {
+
+	std::vector<std::pair<std::string, double>>& A = dicA.histgram;
+	std::vector<std::pair<std::string, double>>& B = dicB.histgram;
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+	double Asize = 0;
+	double Bsize = 0;
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	double H = 0;
+
+	while (!(Afinished && Bfinished)) {
+		//Aのデータ番号とBのデータ番号が同じだったら頻度が大きい方を足す
+		if (Aiter->first == Biter->first) {
+			//大きい方の頻度を足す
 			H += Aiter->second < Biter->second ? Aiter->second : Biter->second;
 			if (!Bfinished) {
 				Bsize += Biter->second;
@@ -63,6 +135,7 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 			if (Bfinished) {
 				//Bが終わっていたらAを進める
 				Asize += Aiter->second;
+				H += Aiter->second;
 				if (Aiter == A.end() - 1) {
 					Afinished = true;
 				} else {
@@ -70,6 +143,7 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 				}
 			} else {
 				Bsize += Biter->second;
+				H += Biter->second;
 				if (Biter == B.end() - 1) {
 					Bfinished = true;
 				} else {
@@ -80,6 +154,7 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 		else {
 			if (Afinished) {
 				Bsize += Biter->second;
+				H += Biter->second;
 				if (Biter == B.end() - 1) {
 					Bfinished = true;
 				} else {
@@ -87,6 +162,7 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 				}
 			} else {
 				Asize += Aiter->second;
+				H += Aiter->second;
 				if (Aiter == A.end() - 1) {
 					Afinished = true;
 				} else {
@@ -95,8 +171,22 @@ double HistgramIntersection(std::vector<std::pair<std::string, int>> A,
 			}
 		}
 	}
-	//AsizeとBsizeの小さい方で割る
-	H = H / (Asize < Bsize ? Asize : Bsize);
-	return H;
-}
 
+	double max_dicsize;
+	double min_dicsize;
+
+	if (Asize > Bsize) {
+		max_dicsize = Asize;
+		min_dicsize = Bsize;
+	} else {
+		max_dicsize = Bsize;
+		min_dicsize = Asize;
+	}
+
+	std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize
+			<< std::endl;
+
+	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
+	return nmd;
+}
+}

@@ -1,0 +1,27 @@
+pair0length: 15457
+pair1length: 16798
+pair2length: 25453
+pair3length: 24211
+pair4length: 14413
+907-908size: 49
+907-507size: 49
+907-508size: 43
+907-475size: 23
+init done 
+opengl support available 
+908-907size: 49
+908-507size: 28
+908-508size: 58
+908-475size: 55
+507-907size: 49
+507-908size: 28
+507-508size: 5890
+507-475size: 78
+508-907size: 43
+508-908size: 58
+508-507size: 5890
+508-475size: 5992
+475-907size: 23
+475-908size: 55
+475-507size: 78
+475-508size: 5992

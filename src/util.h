@@ -11,7 +11,15 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <set>
+#include <iterator>
 #include "Dictionary.h"
+
+namespace prdc_util {
+
+using StringPair = std::pair<std::string,std::string>;
+//!フラグ処理のための定数定義
+const unsigned int ARROW_EDIT_DICTIONARY = 1;
 
 template<typename T>
 std::string to_string(T value) {
@@ -33,4 +41,31 @@ double HistgramIntersection(std::vector<std::pair<std::string, double>>& A,
 		std::vector<std::pair<std::string, double>>& B);
 double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 		prdc_lzw::Dictionary& dicB);
+double NormalizedDictionaryDistance(prdc_lzw::Dictionary& dicA,
+		prdc_lzw::Dictionary& dicB);
+/**
+ * @brief 文字列を圧縮し、辞書を抽出する
+ * @param uncompressed 圧縮する文字列
+ * @param flags 辞書に新たな文字列を追加するなら ARROW_EDIT_DICTIONARY を指定
+ */
+std::vector<int> Compress(const std::string& uncompressed,
+		prdc_lzw::Dictionary& dic, unsigned int flags = 0);
+/**
+ * @brief 圧縮後の辞書番号のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う
+ * @note ソートまで行うことに注意
+ */
+std::vector<std::pair<std::string, double>>& MakeHistgram(
+		prdc_lzw::Dictionary& dic);
+
+/**
+ * @brief 数値列のヒストグラムを作成し、辞書番号を元の文字列に置き換え、ソートを行う
+ * @note ソートまで行うことに注意
+ */
+std::vector<std::pair<std::string, double>> MakeHistgram(
+		std::vector<int> compressed, std::vector<std::string>& bind_data);
+std::vector<std::pair<std::string,std::string>> MakePair(std::vector<std::string> compressed);
+std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
+		std::vector<std::string>& bind_data);
+std::vector<std::pair<std::string,std::string>> FindPair(std::vector<std::pair<std::string,std::string>>& A,std::vector<std::pair<std::string,std::string>>& B);
+}
 #endif /* SRC_UTIL_H_ */

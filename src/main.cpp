@@ -13,6 +13,8 @@
 #include <sstream>
 #include <functional>
 #include <memory>
+#include <set>
+#include "opencv2/opencv.hpp"
 #include "Dictionary.h"
 #include "util.h"
 #define GLIBCXX_FORCE_NEW
@@ -21,25 +23,28 @@
 using namespace std;
 using namespace prdc_lzw;
 using namespace prdc_util;
+using namespace cv;
+
 int main() {
 
 #ifndef test
 	const string dataset_folder =
-	"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
+			"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
+	const string image_folder =
+			"/home/uchinosub/git/MyResearches.ImageToText/dataset/Corel/corel/";
 	vector<string> filename;
+	vector<string> file_image;
 	vector<string> file_contents;
 	vector<prdc_lzw::Dictionary*> dics;
 
-	const int max_dic = 0;
+	vector<string> data_num = { "907", "908", "507", "508", "475" };
+	const int ROOT_NUM = 0; //（全てのデータの圧縮に用いる辞書）の作成に用いるデータの番号
 
-	filename.push_back(dataset_folder + "354.txt");
-	filename.push_back(dataset_folder + "377.txt");
-	filename.push_back(dataset_folder + "1.txt");
+	for (int i = 0; i < (int) data_num.size(); ++i) {
+		filename.push_back(dataset_folder + data_num[i] + ".txt");
+	}
 
-//	filename.push_back(dataset_folder + "432.txt");
-//	filename.push_back(dataset_folder + "432.txt");
-//	filename.push_back(dataset_folder + "1.txt");
-
+	//ファイル読み込み
 	for (int i = 0; i < (int) filename.size(); ++i) {
 		ifstream ifs(filename.at(i));
 		if (ifs.fail()) {
@@ -51,44 +56,134 @@ int main() {
 
 	}
 
+	vector<vector<ofstream*>> ofs;
+	vector<vector<string>> compressed;
+	vector<vector<pair<string, string>>> str_pair;
+	vector<vector<vector<pair<string, string>>> > found_pair;
+
+	compressed.resize(filename.size());
+	str_pair.resize(filename.size());
+	found_pair.resize(filename.size());
+	ofs.resize(filename.size());
 	for (int i = 0; i < (int) filename.size(); ++i) {
-		prdc_lzw::Dictionary* temp = new prdc_lzw::Dictionary;
+		found_pair.at(i).resize(filename.size());
+		ofs.at(i).resize(filename.size());
+	}
+
+	for (int i = 0; i < (int) filename.size(); ++i) {
+		for (int p = 0; p < (int) filename.size(); ++p) {
+			if (i == p)
+				continue;
+			ofstream* temp = new ofstream(
+					"output/pair" + data_num[i] + "-" + data_num[p] + ".txt");
+			ofs[i][p] = temp;
+		}
+	}
+
+	//辞書作成
+	for (int i = 0; i < (int) file_contents.size(); ++i) {
+		Dictionary* temp = new Dictionary(file_contents.at(i));
 		dics.push_back(temp);
 	}
 
+	//画像系定義
+	vector<Mat> image;
+	vector<string> title;
+	vector<string> compress_size;
+	vector<Mat> output_image;
+
+	image.resize(filename.size());
+	title.resize(filename.size());
+	compress_size.resize(filename.size());
+	output_image.resize(filename.size());
+
 	for (int i = 0; i < (int) filename.size(); ++i) {
-		//fileiの辞書作成
-		dics.at(i)->max_dicsize = max_dic;
-		dics.at(i)->Compress(file_contents.at(i),
-				prdc_lzw::ARROW_EDIT_DICTIONARY);
+		compressed[i] = ConvertNumtoStr(
+				Compress(file_contents.at(i), *dics[ROOT_NUM]),
+				dics.at(ROOT_NUM)->binding);
+		str_pair[i] = MakePair(compressed[i]);
+		cout << "pair" << i << "length: " << str_pair[i].size() << endl;
 
-		//fileiのヒストグラム作成
-		dics.at(i)->MakeHistgram();
+		//画像作成
+		image.at(i) = cv::imread(image_folder + data_num[i] + ".jpg");
 
-		ofstream ofs("output/file" + to_string(i) + "histgram.txt");
+		title.at(i) = "\"" + data_num[i] + ".jpg\"";
+		compress_size.at(i) = string("size: ")
+				+ to_string(compressed[i].size());
+		cv::putText(image.at(i), title.at(i), cv::Point(20, 30),
+				cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);
+		cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),
+				cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(255, 255, 255), 6);
 
-		for (auto d : dics.at(i)->histgram) {
-			ofs << d.first << ":" << d.second << "\n";
+		Scalar text_color;
+		if (i == ROOT_NUM) {
+			text_color = Scalar(50, 50, 255);
+
+		} else {
+			text_color = cv::Scalar(0, 0, 0);
 		}
-		ofs << flush;
+
+		cv::putText(image.at(i), title.at(i), cv::Point(20, 30),
+				cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);
+		cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),
+				cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
 	}
 
-	double nmd;
-	nmd = NormalizedMultisetDistance(*dics.at(0), *dics.at(1));
-	cout << "nmd 1-2 :" << nmd << endl;
-	nmd = NormalizedMultisetDistance(*dics.at(0), *dics.at(2));
-	cout << "nmd 1-3 :" << nmd << endl;
+	for (int i = 0; i < (int) filename.size(); ++i) {
 
-	double h;
-	h = HistgramIntersection(dics.at(0)->histgram, dics.at(1)->histgram);
-	cout << "histgram 1-2 :" << h << endl;
-	h = HistgramIntersection(dics.at(0)->histgram, dics.at(2)->histgram);
-	cout << "histgram 1-3 :" << h << endl;
+		int margin = image.at(i).rows;
+		const int STEP = 35;
+		if ((STEP * (int) filename.size()) > image.at(i).rows) {
+			margin = STEP * (int) filename.size();
+		}
+		//output_image作成
+		output_image.at(i) = Mat::zeros(margin, image.at(i).cols + 300,
+		CV_8UC3);
+		Mat roi(output_image.at(i),
+				Rect(0, 0, image.at(i).cols, image.at(i).rows));
+		image.at(i).copyTo(roi);
 
-	for (int i = 0; i < 3; i++) {
-		delete dics[i];
+		int text_nums = 0;
+
+		for (int p = 0; p < (int) filename.size(); ++p) {
+			if (i == p)
+				continue;
+
+			found_pair[i][p] = FindPair(str_pair[i], str_pair[p]);
+			cout << data_num[i] << "-" << data_num[p] << "size: "
+					<< found_pair[i][p].size() << endl;
+			for (auto s : found_pair[i][p]) {
+				*ofs[i][p] << s.first << " , " << s.second << endl;
+			}
+
+			//text挿入
+			string text = string("->\"") + data_num[p] + ".jpg\": "
+					+ to_string(found_pair[i][p].size());
+
+			Scalar text_color(255, 245, 255);
+
+			if (i == ROOT_NUM || p == ROOT_NUM)
+				text_color = Scalar(100, 100, 255);
+
+			cv::putText(output_image.at(i), text,
+					cv::Point(image.at(i).cols + 20, text_nums + 30),
+					cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
+			text_nums += STEP;
+		}
+		imshow(title.at(i), output_image.at(i));
 	}
 
+	for (auto c : dics) {
+		delete c;
+	}
+	for (int i = 0; i < (int) filename.size(); ++i) {
+		for (int p = 0; p < (int) filename.size(); ++p) {
+			if (i == p)
+				continue;
+			delete ofs[i][p];
+		}
+	}
+	cv::waitKey();
 #else
 	string A = "aaa";
 	string B = "bbb";
@@ -99,8 +194,8 @@ int main() {
 //	dicA.max_dicsize = 0;
 //	dicB.max_dicsize = 0;
 
-	dicA.Compress(A, prdc_lzw::ARROW_EDIT_DICTIONARY);
-	dicB.Compress(B, prdc_lzw::ARROW_EDIT_DICTIONARY);
+	dicA.Compress(A, prdc_lzw::DONOT_EDIT_DICTIONARY);
+	dicB.Compress(B, prdc_lzw::DONOT_EDIT_DICTIONARY);
 
 	cout << endl;
 

@@ -5,10 +5,11 @@
  *      Author: taichi
  */
 #include "util.h"
-
-#include<iostream>
-
+#include <iostream>
+#include <set>
+#include <algorithm>
 namespace prdc_util {
+
 void SplitString(const std::string s, std::vector<std::string>& output,
 		int number_of_partitions) {
 	int string_length = s.length();
@@ -41,7 +42,7 @@ double HistgramIntersection(std::vector<std::pair<std::string, double>>& A,
 		//Aのデータ番号とBのデータ番号が同じだったら頻度が小さい方を足す
 		if (Aiter->first == Biter->first) {
 			//小さい方の頻度を足す
-			H += Aiter->second > Biter->second ? Aiter->second : Biter->second;
+			H += Aiter->second < Biter->second ? Aiter->second : Biter->second;
 			if (!Bfinished) {
 				if (Biter == B.end() - 1) {
 					Bfinished = true;
@@ -97,6 +98,20 @@ double HistgramIntersection(std::vector<std::pair<std::string, double>>& A,
 double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 		prdc_lzw::Dictionary& dicB) {
 
+	//前準備 NMDでは0回出力された単語を1回出力されたことにする
+	//TODO 事前に(このメソッドを呼び出す前に)終わらせておくようにする
+	for (int i = 0; i < (int) dicA.histgram.size(); ++i) {
+		if (dicA.histgram.at(i).second == 0) {
+			dicA.histgram.at(i).second = 1;
+		}
+	}
+	for (int i = 0; i < (int) dicB.histgram.size(); ++i) {
+		if (dicB.histgram.at(i).second == 0) {
+			dicB.histgram.at(i).second = 1;
+		}
+	}
+	//前準備ここまで
+
 	std::vector<std::pair<std::string, double>>& A = dicA.histgram;
 	std::vector<std::pair<std::string, double>>& B = dicB.histgram;
 	auto Aiter = A.begin();
@@ -113,9 +128,21 @@ double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 		//Aのデータ番号とBのデータ番号が同じだったら頻度が大きい方を足す
 		if (Aiter->first == Biter->first) {
 			//大きい方の頻度を足す
-			H += Aiter->second < Biter->second ? Aiter->second : Biter->second;
+
+			//以下のコメントアウトされた式では、どちらかの配列が先に終了した場合に不具合が起きる
+			//H += Aiter->second > Biter->second ? Aiter->second : Biter->second;
+
+			int Aplus, Bplus;
+			if (Aiter->second > Biter->second) {
+				Aplus = Aiter->second;
+				Bplus = 0;
+			} else {
+				Aplus = 0;
+				Bplus = Biter->second;
+			}
 			if (!Bfinished) {
 				Bsize += Biter->second;
+				H += Bplus;
 				if (Biter == B.end() - 1) {
 					Bfinished = true;
 				} else {
@@ -124,6 +151,7 @@ double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 			}
 			if (!Afinished) {
 				Asize += Aiter->second;
+				H += Aplus;
 				if (Aiter == A.end() - 1) {
 					Afinished = true;
 				} else {
@@ -183,10 +211,264 @@ double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 		min_dicsize = Asize;
 	}
 
-	std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize
-			<< std::endl;
+	//std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize << std::endl;
 
 	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
 	return nmd;
+}
+double NormalizedDictionaryDistance(prdc_lzw::Dictionary& dicA,
+		prdc_lzw::Dictionary& dicB) {
+
+	std::vector<std::pair<std::string, double>>& A = dicA.histgram;
+	std::vector<std::pair<std::string, double>>& B = dicB.histgram;
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+	int Asize = (int) A.size();
+	int Bsize = (int) B.size();
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	int H = 0;
+
+	while (!(Afinished && Bfinished)) {
+		//Aのデータ番号とBのデータ番号が同じだったら
+		if (Aiter->first == Biter->first) {
+			H++;
+			if (!Bfinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのデータ番号のほうが小さければ、Bを進める
+		else if (Aiter->first > Biter->first) {
+			H++;
+			if (Bfinished) {
+				//Bが終わっていたらAを進める
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			H++;
+			if (Afinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+
+	int max_dicsize;
+	int min_dicsize;
+
+	if (Asize > Bsize) {
+		max_dicsize = Asize;
+		min_dicsize = Bsize;
+	} else {
+		max_dicsize = Bsize;
+		min_dicsize = Asize;
+	}
+
+	//std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize << std::endl;
+
+	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
+	return nmd;
+}
+std::vector<int> Compress(const std::string &uncompressed,
+		prdc_lzw::Dictionary& dic, unsigned int flags) {
+
+	std::vector<int> compressed;
+	prdc_lzw::LzwNode* current_node = dic.get_root(); //初期位置
+	unsigned int dicsize = 256;
+	unsigned int string_length = 1;
+	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
+
+	//数値→文字列変換のための配列のサイズ設定
+	dic.binding.reserve(dic.max_dicsize + 256);
+
+	for (std::string::const_iterator it = uncompressed.begin();
+			it != uncompressed.end(); ++it) {
+
+		char c = *it;	//未圧縮の文字列から一文字取り出す
+		std::string wc = w + c;
+		prdc_lzw::LzwNode* q = current_node->FindChild(c);
+
+		if (q != NULL) {
+			//辞書に文字列が追加されていたら
+			current_node = q;	//探索ノードを一つ進める
+			w = wc;
+			string_length++;
+		} else {
+			compressed.push_back(current_node->get_data());
+
+			if ((flags & ARROW_EDIT_DICTIONARY)) {
+				if (dicsize < dic.max_dicsize
+						&& string_length < dic.max_length) {
+					dicsize++;
+					dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
+					dic.binding.push_back(wc);
+				}
+			}
+			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
+			current_node = dic.get_root()->FindChild(c);	//最初から検索し直す
+			w = std::string(1, c);
+			string_length = 1;
+		}
+	}
+	std::vector<std::string>(dic.binding).swap(dic.binding);
+	compressed.push_back(current_node->get_data());
+	return compressed;
+}
+std::vector<std::pair<std::string, double>>& MakeHistgram(
+		prdc_lzw::Dictionary& dic) {
+	std::vector<int> output;
+	const unsigned int max_value = dic.binding.size();
+	output.resize(max_value, 0);
+	dic.histgram.resize(max_value);
+	for (auto i : dic.compressed) {
+		output[i]++;
+	}
+	for (unsigned int i = 0; i < max_value; ++i) {
+		dic.histgram.at(i) = std::make_pair(dic.binding.at(i),
+				(double) (output.at(i)));
+	}
+
+	std::sort(dic.histgram.begin(), dic.histgram.end());
+	return dic.histgram;
+}
+std::vector<std::pair<std::string, double>> MakeHistgram(
+		std::vector<int> compressed, std::vector<std::string>& bind_data) {
+	std::vector<int> output;
+	std::vector<std::pair<std::string, double>> histgram;
+	const unsigned int max_value = bind_data.size();
+
+	output.resize(max_value, 0);
+	histgram.resize(max_value);
+	for (auto i : compressed) {
+		output[i]++;
+	}
+
+	for (unsigned int i = 0; i < max_value; ++i) {
+		histgram.at(i) = std::make_pair(bind_data.at(i),
+				(double) (output.at(i)));
+	}
+
+	std::sort(histgram.begin(), histgram.end());
+	return histgram;
+}
+std::vector<std::pair<std::string, std::string>> MakePair(
+		std::vector<std::string> compressed) {
+	std::vector<std::pair<std::string, std::string>> output;
+
+	std::string prev = "";
+	std::string next = "";
+
+	for (int i = 0; i < (int) compressed.size() - 1; ++i) {
+		prev = compressed.at(i);
+		next = compressed.at(i + 1);
+		output.push_back(std::make_pair(prev, next));
+	}
+	std::sort(output.begin(),output.end());
+	return output;
+}
+
+std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
+		std::vector<std::string>& bind_data) {
+	std::vector<std::string> output;
+
+	for (int i : compressed) {
+		output.push_back(bind_data.at(i));
+	}
+	return output;
+}
+std::vector<std::pair<std::string,std::string>> FindPair(std::vector<std::pair<std::string,std::string>>& A,std::vector<std::pair<std::string,std::string>>& B){
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	std::vector<std::pair<std::string,std::string>> output;
+
+	while (!(Afinished && Bfinished)) {
+		//AとBが同じだったら出力
+		if (*Aiter == *Biter) {
+			//小さい方の頻度を足す
+			output.push_back(*Aiter);
+			if (!Bfinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのほうが小さければ、Bを進める
+		else if (*Aiter > *Biter) {
+			if (Bfinished) {
+				//Bが終わっていたらAを進める
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			if (Afinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+	return output;
 }
 }

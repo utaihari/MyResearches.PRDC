@@ -1,4 +1,6 @@
 <map id="src/Dictionary.h" name="src/Dictionary.h">
-<area shape="rect" id="node2" href="$Dictionary_8cpp.html" title="辞書クラスの実装 " alt="" coords="5,80,133,107"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="src/main.cpp" alt="" coords="158,80,255,107"/>
+<area shape="rect" id="node2" href="$Dictionary_8cpp.html" title="辞書クラスの実装 " alt="" coords="5,155,133,181"/>
+<area shape="rect" id="node3" href="$util_8h.html" title="src/util.h" alt="" coords="165,80,237,107"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="src/main.cpp" alt="" coords="269,155,365,181"/>
+<area shape="rect" id="node5" href="$util_8cpp.html" title="src/util.cpp" alt="" coords="158,155,244,181"/>
 </map>

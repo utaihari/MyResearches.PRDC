@@ -9,18 +9,21 @@ L\-Z\-W辞書クラス定義ファイル
 {\ttfamily \#include $<$vector$>$}\\*
 {\ttfamily \#include $<$string$>$}\\*
 {\ttfamily \#include $<$map$>$}\\*
-Include dependency graph for Dictionary.\-h\-:\nopagebreak
+{\ttfamily \#include $<$memory$>$}\\*
+Include dependency graph for Dictionary.\-h\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=236pt]{Dictionary_8h__incl}
+\includegraphics[width=307pt]{Dictionary_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\-:\nopagebreak
+This graph shows which files directly or indirectly include this file\-:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=267pt]{Dictionary_8h__dep__incl}
+\includegraphics[width=350pt]{Dictionary_8h__dep__incl}
 \end{center}
 \end{figure}
 \subsection*{Classes}
@@ -38,8 +41,12 @@ class \hyperlink{classprdc__lzw_1_1Dictionary}{prdc\-\_\-lzw\-::\-Dictionary}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-const unsigned int \hyperlink{namespaceprdc__lzw_ab7c4b021388100d7ca25d23ae566f917}{prdc\-\_\-lzw\-::\-A\-R\-R\-O\-W\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y} = 1
-\end{DoxyCompactItemize}
+const unsigned int \hyperlink{namespaceprdc__lzw_a32802f5b39a1712fd52ea244bed3abc6}{prdc\-\_\-lzw\-::default\-\_\-max\-\_\-dicsize} = -\/1
+\begin{DoxyCompactList}\small\item\em 辞書の最大値のデフォルト値(ファイルサイスが大きく、辞書番号が50000では収まらない場合には増やす) \end{DoxyCompactList}\item 
+const unsigned int \hyperlink{namespaceprdc__lzw_a563099246f7864f678056d3c7e583dbf}{prdc\-\_\-lzw\-::default\-\_\-max\-\_\-length} = -\/1
+\item 
+const unsigned int \hyperlink{namespaceprdc__lzw_acf8cc481fd2dd6347b910b0c0befdc84}{prdc\-\_\-lzw\-::\-D\-O\-N\-O\-T\-\_\-\-E\-D\-I\-T\-\_\-\-D\-I\-C\-T\-I\-O\-N\-A\-R\-Y} = 1
+\begin{DoxyCompactList}\small\item\em フラグ処理のための定数定義 \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}

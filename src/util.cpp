@@ -8,6 +8,10 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <time.h>
+#include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 namespace prdc_util {
 
 void SplitString(const std::string s, std::vector<std::string>& output,
@@ -395,7 +399,7 @@ std::vector<std::pair<std::string, std::string>> MakePair(
 		next = compressed.at(i + 1);
 		output.push_back(std::make_pair(prev, next));
 	}
-	std::sort(output.begin(),output.end());
+	std::sort(output.begin(), output.end());
 	return output;
 }
 
@@ -408,14 +412,16 @@ std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
 	}
 	return output;
 }
-std::vector<std::pair<std::string,std::string>> FindPair(std::vector<std::pair<std::string,std::string>>& A,std::vector<std::pair<std::string,std::string>>& B){
+std::vector<std::pair<std::string, std::string>> FindPair(
+		std::vector<std::pair<std::string, std::string>>& A,
+		std::vector<std::pair<std::string, std::string>>& B) {
 	auto Aiter = A.begin();
 	auto Biter = B.begin();
 
 	bool Afinished = false;
 	bool Bfinished = false;
 
-	std::vector<std::pair<std::string,std::string>> output;
+	std::vector<std::pair<std::string, std::string>> output;
 
 	while (!(Afinished && Bfinished)) {
 		//AとBが同じだったら出力
@@ -470,5 +476,65 @@ std::vector<std::pair<std::string,std::string>> FindPair(std::vector<std::pair<s
 		}
 	}
 	return output;
+}
+
+void SavingImages::Push(std::string image_name, const cv::Mat& image) {
+	//タイトルから"/"の抜き取り
+	for (size_t c = image_name.find_first_of("/"); c != std::string::npos; c =
+			image_name.find_first_of("/")) {
+		image_name.erase(c, 1);
+	}
+	image_names.push_back(image_name);
+	images.push_back(image.clone());
+}
+void SavingImages::Save() {
+	//画像保存用フォルダ作成
+	struct tm *date;
+	time_t now = time(NULL);
+	date = localtime(&now);
+
+	std::string today = to_string(date->tm_mon + 1) + "月"
+			+ to_string(date->tm_mday) + "日" + to_string(date->tm_hour) + "時"
+			+ to_string(date->tm_min) + "分" + to_string(date->tm_sec) + "秒";
+
+	std::string path = "output/" + today + ":" + std::to_string(images.size());
+	struct stat st;
+	if (stat(path.c_str(), &st) != 0) {
+		mkdir(path.c_str(), 0775);
+	}
+
+	for (int i = 0; i < (int) image_names.size(); ++i) {
+		//画像保存
+		imwrite(path + "/" + image_names.at(i) + ".png", images.at(i));
+		cv::waitKey(30);
+	}
+
+}
+
+ComparisonImage::ComparisonImage(std::vector<std::string> image_title,
+		cv::Mat origin_image, cv::Scalar text_color, int width, int height) :
+		image(cv::Mat::zeros(cv::Size(width, height), CV_8UC3)), image_title(image_title.at(0)), origin_image(
+				origin_image.clone()), push_times(0) {
+
+	cv::Mat roi(image, cv::Rect(0, 0, origin_image.cols, origin_image.rows));
+	this->origin_image.copyTo(roi);
+
+	//title 縁取り部分挿入
+	for (int i = 0; i < (int) image_title.size(); ++i) {
+		cv::putText(image, image_title.at(i), cv::Point(20, 30 + (i * 40)),
+				cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);
+	}
+
+	//title 挿入
+	for (int i = 0; i < (int) image_title.size(); ++i) {
+		cv::putText(image, image_title.at(i), cv::Point(20, 30 + (i * 40)),
+				cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);
+	}
+}
+
+void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
+	cv::putText(image, text, cv::Point(image.cols + 20, (push_times * 40) + 30),
+			cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
+	push_times++;
 }
 }

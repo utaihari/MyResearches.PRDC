@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['arrow_5fedit_5fdictionary',['ARROW_EDIT_DICTIONARY',['../namespaceprdc__lzw.html#ab7c4b021388100d7ca25d23ae566f917',1,'prdc_lzw']]]
+  ['arrow_5fedit_5fdictionary',['ARROW_EDIT_DICTIONARY',['../namespaceprdc__util.html#a3993c6c2282bad800ca68362b45e6b93',1,'prdc_util']]]
 ];

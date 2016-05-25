@@ -14,6 +14,9 @@
 #include <functional>
 #include <memory>
 #include <set>
+#include <time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "opencv2/opencv.hpp"
 #include "Dictionary.h"
 #include "util.h"
@@ -28,16 +31,21 @@ using namespace cv;
 int main() {
 
 #ifndef test
+//	const string dataset_folder =
+//			"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
+//	const string image_folder =
+//			"/home/uchinosub/git/MyResearches.ImageToText/dataset/Corel/corel/";
+
 	const string dataset_folder =
-			"/home/uchinosub/git/MyResearches.ImageToText/output/corel/";
-	const string image_folder =
-			"/home/uchinosub/git/MyResearches.ImageToText/dataset/Corel/corel/";
+			"/home/uchinosub/git/MyResearches.ImageToText/output/";
+	const string image_folder = "/home/uchinosub/workspace/CreateImage/output/";
 	vector<string> filename;
 	vector<string> file_image;
 	vector<string> file_contents;
 	vector<prdc_lzw::Dictionary*> dics;
 
-	vector<string> data_num = { "907", "908", "507", "508", "475" };
+	vector<string> data_num = { "16()/0", "16()/1", "2(0-)/0", "2(0-)/5",
+			"2(1-)/5" };
 	const int ROOT_NUM = 0; //（全てのデータの圧縮に用いる辞書）の作成に用いるデータの番号
 
 	for (int i = 0; i < (int) data_num.size(); ++i) {
@@ -129,6 +137,21 @@ int main() {
 				cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
 	}
 
+	//画像保存用フォルダ作成
+	struct tm *date;
+	time_t now = time(NULL);
+	date = localtime(&now);
+
+	string today = to_string(date->tm_mon + 1) + "月" + to_string(date->tm_mday)
+			+ "日" + to_string(date->tm_hour) + "時" + to_string(date->tm_min)
+			+ "分" + to_string(date->tm_sec) + "秒";
+
+	string path = "output/" + today + ":" + to_string(data_num.size());
+	struct stat st;
+	if (stat(path.c_str(), &st) != 0) {
+		mkdir(path.c_str(), 0775);
+	}
+
 	for (int i = 0; i < (int) filename.size(); ++i) {
 
 		int margin = image.at(i).rows;
@@ -137,7 +160,7 @@ int main() {
 			margin = STEP * (int) filename.size();
 		}
 		//output_image作成
-		output_image.at(i) = Mat::zeros(margin, image.at(i).cols + 300,
+		output_image.at(i) = Mat::zeros(margin, image.at(i).cols + 350,
 		CV_8UC3);
 		Mat roi(output_image.at(i),
 				Rect(0, 0, image.at(i).cols, image.at(i).rows));
@@ -171,6 +194,15 @@ int main() {
 			text_nums += STEP;
 		}
 		imshow(title.at(i), output_image.at(i));
+
+		//タイトルから"/"の抜き取り
+		for (size_t c = title.at(i).find_first_of("/"); c != string::npos; c =
+				title.at(i).find_first_of("/")) {
+			title.at(i).erase(c, 1);
+		}
+		//画像保存
+		imwrite(path + "/" + title.at(i) + ".png", output_image.at(i));
+		waitKey(30);
 	}
 
 	for (auto c : dics) {

@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -97,96 +97,256 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Dictionary_8h.html">Dictionary.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="util_8h.html">util.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">using namespace </span>std;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">   19</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    vector&lt;string&gt; filename;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    vector&lt;string&gt; file_contents;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    vector&lt;prdc_lzw::Dictionary*&gt; dics;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    filename.push_back(</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            <span class="stringliteral">&quot;/home/uchinosub/git/MyResearches.ImageToText/output/corel/354.txt&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    filename.push_back(</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            <span class="stringliteral">&quot;/home/uchinosub/git/MyResearches.ImageToText/output/corel/377.txt&quot;</span>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    filename.push_back(</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="stringliteral">&quot;/home/uchinosub/git/MyResearches.ImageToText/output/corel/1.txt&quot;</span>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        ifstream ifs(filename.at(i));</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <span class="keywordflow">if</span> (ifs.fail()) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            cerr &lt;&lt; <span class="stringliteral">&quot;読み込みエラー&quot;</span> &lt;&lt; endl;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        file_contents.push_back(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                <span class="keywordtype">string</span>((istreambuf_iterator&lt;char&gt;(ifs)),</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                        istreambuf_iterator&lt;char&gt;()));</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        <a class="code" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a>* temp = <span class="keyword">new</span> <a class="code" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        dics.push_back(temp);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="comment">//fileiの辞書作成</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        dics.at(i)-&gt;<a class="code" href="classprdc__lzw_1_1Dictionary.html#afcdd828822905288df0f7e1015671c3f">Compress</a>(file_contents.at(i),</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                <a class="code" href="namespaceprdc__lzw.html#ab7c4b021388100d7ca25d23ae566f917">prdc_lzw::ARROW_EDIT_DICTIONARY</a>);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="comment">//fileiのヒストグラム作成</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        dics.at(i)-&gt;MakeHistgram();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> h;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    h = <a class="code" href="util_8cpp.html#a250cfd334b35eb290123740eae4106ec">HistgramIntersection</a>(dics.at(0)-&gt;histgram, dics.at(1)-&gt;histgram);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;1-2 :&quot;</span> &lt;&lt; h &lt;&lt;endl;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    h = <a class="code" href="util_8cpp.html#a250cfd334b35eb290123740eae4106ec">HistgramIntersection</a>(dics.at(0)-&gt;histgram, dics.at(2)-&gt;histgram);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;1-3 :&quot;</span> &lt;&lt; h &lt;&lt;endl;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> dic : dics) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keyword">delete</span> dic;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;sys/stat.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;sys/types.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;opencv2/opencv.hpp&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Dictionary_8h.html">Dictionary.h</a>&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="util_8h.html">util.h</a>&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="main_8cpp.html#af6a686609ddd7d510a6d935105eebcfd">   23</a></span>&#160;<span class="preprocessor">#define GLIBCXX_FORCE_NEW</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span><span class="comment">//#define test</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using namespace </span>std;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">using namespace </span>prdc_lzw;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">using namespace </span>prdc_util;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">using namespace </span>cv;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">   31</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a>() {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#ifndef test</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor"></span><span class="comment">//  const string dataset_folder =</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//          &quot;/home/uchinosub/git/MyResearches.ImageToText/output/corel/&quot;;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//  const string image_folder =</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">//          &quot;/home/uchinosub/git/MyResearches.ImageToText/dataset/Corel/corel/&quot;;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> dataset_folder =</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="stringliteral">&quot;/home/uchinosub/git/MyResearches.ImageToText/output/&quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">string</span> image_folder = <span class="stringliteral">&quot;/home/uchinosub/workspace/CreateImage/output/&quot;</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    vector&lt;string&gt; filename;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    vector&lt;string&gt; file_image;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    vector&lt;string&gt; file_contents;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    vector&lt;prdc_lzw::Dictionary*&gt; dics;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    vector&lt;string&gt; data_num = { <span class="stringliteral">&quot;16()/0&quot;</span>, <span class="stringliteral">&quot;16()/1&quot;</span>, <span class="stringliteral">&quot;2(0-)/0&quot;</span>, <span class="stringliteral">&quot;2(0-)/5&quot;</span>,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="stringliteral">&quot;2(1-)/5&quot;</span> };</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">int</span> ROOT_NUM = 0; <span class="comment">//（全てのデータの圧縮に用いる辞書）の作成に用いるデータの番号</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) data_num.size(); ++i) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        filename.push_back(dataset_folder + data_num[i] + <span class="stringliteral">&quot;.txt&quot;</span>);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="comment">//ファイル読み込み</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        ifstream ifs(filename.at(i));</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> (ifs.fail()) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            cerr &lt;&lt; <span class="stringliteral">&quot;読み込みエラー&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        }</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        file_contents.push_back(</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                <span class="keywordtype">string</span>((istreambuf_iterator&lt;char&gt;(ifs)),</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                        istreambuf_iterator&lt;char&gt;()));</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">//  string A = &quot;aaaaaiiiiiaiueaiueaiue&quot;;</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="comment">//  prdc_lzw::Dictionary dicA;</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">//  //dicA.max_dicsize = 259;</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="comment">//  dicA.Compress(A,prdc_lzw::ARROW_EDIT_DICTIONARY);</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">//  cout &lt;&lt; A &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">//  for (auto s : dicA.compressed) {</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">//      cout &lt;&lt; s &lt;&lt; &quot;, &quot;;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//  }</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//  cout &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="comment">//  cout &lt;&lt; &quot;Binding Array size: &quot; &lt;&lt; dicA.binding.size() &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="comment">//  for (unsigned int i = 256; i &lt; dicA.binding.size(); ++i) {</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//      cout &lt;&lt; i &lt;&lt; &quot;:&quot; &lt;&lt; dicA.binding.at(i) &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="comment">//  }</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">//  vector&lt;pair&lt;string,int&gt;&gt; histgram;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="comment">//  histgram = dicA.MakeHistgram();</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="comment">//  for (unsigned int i = 0; i &lt; histgram.size(); ++i) {</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="comment">//      cout &lt;&lt; histgram.at(i).first &lt;&lt; &quot;:&quot; &lt;&lt; histgram.at(i).second &lt;&lt; endl;</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="comment">//  }</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    vector&lt;vector&lt;ofstream*&gt;&gt; ofs;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    vector&lt;vector&lt;string&gt;&gt; compressed;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    vector&lt;vector&lt;pair&lt;string, string&gt;&gt;&gt; str_pair;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    vector&lt;vector&lt;vector&lt;pair&lt;string, string&gt;&gt;&gt; &gt; found_pair;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    compressed.resize(filename.size());</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    str_pair.resize(filename.size());</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    found_pair.resize(filename.size());</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    ofs.resize(filename.size());</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        found_pair.at(i).resize(filename.size());</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        ofs.at(i).resize(filename.size());</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = 0; p &lt; (int) filename.size(); ++p) {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">if</span> (i == p)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            ofstream* temp = <span class="keyword">new</span> ofstream(</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                    <span class="stringliteral">&quot;output/pair&quot;</span> + data_num[i] + <span class="stringliteral">&quot;-&quot;</span> + data_num[p] + <span class="stringliteral">&quot;.txt&quot;</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            ofs[i][p] = temp;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="comment">//辞書作成</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) file_contents.size(); ++i) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a>* temp = <span class="keyword">new</span> <a class="code" href="classprdc__lzw_1_1Dictionary.html">Dictionary</a>(file_contents.at(i));</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        dics.push_back(temp);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="comment">//画像系定義</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    vector&lt;Mat&gt; image;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    vector&lt;string&gt; title;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    vector&lt;string&gt; compress_size;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    vector&lt;Mat&gt; output_image;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    image.resize(filename.size());</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    title.resize(filename.size());</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    compress_size.resize(filename.size());</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    output_image.resize(filename.size());</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        compressed[i] = <a class="code" href="namespaceprdc__util.html#ae32da34bed7d39e37621bebf3c0e69ba">ConvertNumtoStr</a>(</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                <a class="code" href="namespaceprdc__util.html#aaad65f1a3f5b1074629371cc04f93ffc">Compress</a>(file_contents.at(i), *dics[ROOT_NUM]),</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                dics.at(ROOT_NUM)-&gt;binding);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        str_pair[i] = <a class="code" href="namespaceprdc__util.html#a90503b30b916aadf6d0a52c941c03e0d">MakePair</a>(compressed[i]);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        cout &lt;&lt; <span class="stringliteral">&quot;pair&quot;</span> &lt;&lt; i &lt;&lt; <span class="stringliteral">&quot;length: &quot;</span> &lt;&lt; str_pair[i].size() &lt;&lt; endl;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        <span class="comment">//画像作成</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        image.at(i) = cv::imread(image_folder + data_num[i] + <span class="stringliteral">&quot;.jpg&quot;</span>);</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        title.at(i) = <span class="stringliteral">&quot;\&quot;&quot;</span> + data_num[i] + <span class="stringliteral">&quot;.jpg\&quot;&quot;</span>;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        compress_size.at(i) = string(<span class="stringliteral">&quot;size: &quot;</span>)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;                + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(compressed[i].size());</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        cv::putText(image.at(i), title.at(i), cv::Point(20, 30),</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;                cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;                cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(255, 255, 255), 6);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        Scalar text_color;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        <span class="keywordflow">if</span> (i == ROOT_NUM) {</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;            text_color = Scalar(50, 50, 255);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            text_color = cv::Scalar(0, 0, 0);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        }</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        cv::putText(image.at(i), title.at(i), cv::Point(20, 30),</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;                cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;                cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="comment">//画像保存用フォルダ作成</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="keyword">struct </span>tm *date;</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    time_t now = time(NULL);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    date = localtime(&amp;now);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">string</span> today = <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(date-&gt;tm_mon + 1) + <span class="stringliteral">&quot;月&quot;</span> + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(date-&gt;tm_mday)</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;            + <span class="stringliteral">&quot;日&quot;</span> + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(date-&gt;tm_hour) + <span class="stringliteral">&quot;時&quot;</span> + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(date-&gt;tm_min)</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;            + <span class="stringliteral">&quot;分&quot;</span> + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(date-&gt;tm_sec) + <span class="stringliteral">&quot;秒&quot;</span>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordtype">string</span> path = <span class="stringliteral">&quot;output/&quot;</span> + today + <span class="stringliteral">&quot;:&quot;</span> + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(data_num.size());</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keyword">struct </span>stat st;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">if</span> (stat(path.c_str(), &amp;st) != 0) {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        mkdir(path.c_str(), 0775);</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="keywordtype">int</span> margin = image.at(i).rows;</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">int</span> STEP = 35;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">if</span> ((STEP * (<span class="keywordtype">int</span>) filename.size()) &gt; image.at(i).rows) {</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            margin = STEP * (int) filename.size();</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="comment">//output_image作成</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        output_image.at(i) = Mat::zeros(margin, image.at(i).cols + 350,</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        CV_8UC3);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        Mat roi(output_image.at(i),</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;                Rect(0, 0, image.at(i).cols, image.at(i).rows));</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        image.at(i).copyTo(roi);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordtype">int</span> text_nums = 0;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = 0; p &lt; (int) filename.size(); ++p) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">if</span> (i == p)</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;            found_pair[i][p] = <a class="code" href="namespaceprdc__util.html#ac71b6d2bcc059bd6064934865835315d">FindPair</a>(str_pair[i], str_pair[p]);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            cout &lt;&lt; data_num[i] &lt;&lt; <span class="stringliteral">&quot;-&quot;</span> &lt;&lt; data_num[p] &lt;&lt; <span class="stringliteral">&quot;size: &quot;</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                    &lt;&lt; found_pair[i][p].size() &lt;&lt; endl;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            <span class="keywordflow">for</span> (<span class="keyword">auto</span> s : found_pair[i][p]) {</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;                *ofs[i][p] &lt;&lt; s.first &lt;&lt; <span class="stringliteral">&quot; , &quot;</span> &lt;&lt; s.second &lt;&lt; endl;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;            }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            <span class="comment">//text挿入</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            <span class="keywordtype">string</span> text = string(<span class="stringliteral">&quot;-&gt;\&quot;&quot;</span>) + data_num[p] + <span class="stringliteral">&quot;.jpg\&quot;: &quot;</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                    + <a class="code" href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">to_string</a>(found_pair[i][p].size());</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            Scalar text_color(255, 245, 255);</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            <span class="keywordflow">if</span> (i == ROOT_NUM || p == ROOT_NUM)</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                text_color = Scalar(100, 100, 255);</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;            cv::putText(output_image.at(i), text,</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                    cv::Point(image.at(i).cols + 20, text_nums + 30),</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;                    cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;            text_nums += STEP;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        }</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        imshow(title.at(i), output_image.at(i));</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="comment">//タイトルから&quot;/&quot;の抜き取り</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> c = title.at(i).find_first_of(<span class="stringliteral">&quot;/&quot;</span>); c != string::npos; c =</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;                title.at(i).find_first_of(<span class="stringliteral">&quot;/&quot;</span>)) {</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            title.at(i).erase(c, 1);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        }</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;        <span class="comment">//画像保存</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        imwrite(path + <span class="stringliteral">&quot;/&quot;</span> + title.at(i) + <span class="stringliteral">&quot;.png&quot;</span>, output_image.at(i));</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        waitKey(30);</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : dics) {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        <span class="keyword">delete</span> c;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; (int) filename.size(); ++i) {</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> p = 0; p &lt; (int) filename.size(); ++p) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;            <span class="keywordflow">if</span> (i == p)</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <span class="keyword">delete</span> ofs[i][p];</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        }</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    cv::waitKey();</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor"></span>    <span class="keywordtype">string</span> A = <span class="stringliteral">&quot;aaa&quot;</span>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordtype">string</span> B = <span class="stringliteral">&quot;bbb&quot;</span>;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <a class="code" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a> dicA;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    <a class="code" href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a> dicB;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;<span class="comment">//  dicA.max_dicsize = 0;</span></div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;<span class="comment">//  dicB.max_dicsize = 0;</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    dicA.<a class="code" href="classprdc__lzw_1_1Dictionary.html#a2586d5404a25de549bec3629202d9675">Compress</a>(A, <a class="code" href="namespaceprdc__lzw.html#acf8cc481fd2dd6347b910b0c0befdc84">prdc_lzw::DONOT_EDIT_DICTIONARY</a>);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    dicB.<a class="code" href="classprdc__lzw_1_1Dictionary.html#a2586d5404a25de549bec3629202d9675">Compress</a>(B, <a class="code" href="namespaceprdc__lzw.html#acf8cc481fd2dd6347b910b0c0befdc84">prdc_lzw::DONOT_EDIT_DICTIONARY</a>);</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;    cout &lt;&lt; endl;</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keywordtype">double</span> histgram;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    dicA.MakeHistgram();</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    dicB.MakeHistgram();</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    histgram = <a class="code" href="namespaceprdc__util.html#afca125b22be8c05d2e8ede84f8206db7">HistgramIntersection</a>(dicA.<a class="code" href="classprdc__lzw_1_1Dictionary.html#a10f2b395d4021c26d500bf328c7839ac">histgram</a>, dicB.<a class="code" href="classprdc__lzw_1_1Dictionary.html#a10f2b395d4021c26d500bf328c7839ac">histgram</a>);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;histgram:&quot;</span> &lt;&lt; histgram &lt;&lt; endl;</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordtype">double</span> nmd = <a class="code" href="namespaceprdc__util.html#aced3d47bfc1b035e92b6dd347adcfc8d">NormalizedMultisetDistance</a>(dicA, dicB);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;nmd:&quot;</span> &lt;&lt; nmd &lt;&lt; endl;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;}</div>
+<div class="ttc" id="namespaceprdc__util_html_ac71b6d2bcc059bd6064934865835315d"><div class="ttname"><a href="namespaceprdc__util.html#ac71b6d2bcc059bd6064934865835315d">prdc_util::FindPair</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; FindPair(std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; &amp;A, std::vector&lt; std::pair&lt; std::string, std::string &gt;&gt; &amp;B)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00411">util.cpp:411</a></div></div>
 <div class="ttc" id="Dictionary_8h_html"><div class="ttname"><a href="Dictionary_8h.html">Dictionary.h</a></div><div class="ttdoc">LZW辞書クラス定義ファイル </div></div>
-<div class="ttc" id="main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00019">main.cpp:19</a></div></div>
-<div class="ttc" id="classprdc__lzw_1_1Dictionary_html"><div class="ttname"><a href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></div><div class="ttdoc">LZW辞書クラス </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8h_source.html#l00068">Dictionary.h:68</a></div></div>
+<div class="ttc" id="namespaceprdc__lzw_html_acf8cc481fd2dd6347b910b0c0befdc84"><div class="ttname"><a href="namespaceprdc__lzw.html#acf8cc481fd2dd6347b910b0c0befdc84">prdc_lzw::DONOT_EDIT_DICTIONARY</a></div><div class="ttdeci">const unsigned int DONOT_EDIT_DICTIONARY</div><div class="ttdoc">フラグ処理のための定数定義 </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8h_source.html#l00024">Dictionary.h:24</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_af599d800eaeca8838c4decccaf10371f"><div class="ttname"><a href="namespaceprdc__util.html#af599d800eaeca8838c4decccaf10371f">prdc_util::to_string</a></div><div class="ttdeci">std::string to_string(T value)</div><div class="ttdef"><b>Definition:</b> <a href="util_8h_source.html#l00025">util.h:25</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_afca125b22be8c05d2e8ede84f8206db7"><div class="ttname"><a href="namespaceprdc__util.html#afca125b22be8c05d2e8ede84f8206db7">prdc_util::HistgramIntersection</a></div><div class="ttdeci">double HistgramIntersection(std::vector&lt; std::pair&lt; std::string, double &gt;&gt; &amp;A, std::vector&lt; std::pair&lt; std::string, double &gt;&gt; &amp;B)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00031">util.cpp:31</a></div></div>
+<div class="ttc" id="main_8cpp_html_ae66f6b31b5ad750f1fe042a706a4e3d4"><div class="ttname"><a href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a></div><div class="ttdeci">int main()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00031">main.cpp:31</a></div></div>
+<div class="ttc" id="classprdc__lzw_1_1Dictionary_html"><div class="ttname"><a href="classprdc__lzw_1_1Dictionary.html">prdc_lzw::Dictionary</a></div><div class="ttdoc">LZW辞書クラス </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8h_source.html#l00073">Dictionary.h:73</a></div></div>
 <div class="ttc" id="util_8h_html"><div class="ttname"><a href="util_8h.html">util.h</a></div></div>
-<div class="ttc" id="classprdc__lzw_1_1Dictionary_html_afcdd828822905288df0f7e1015671c3f"><div class="ttname"><a href="classprdc__lzw_1_1Dictionary.html#afcdd828822905288df0f7e1015671c3f">prdc_lzw::Dictionary::Compress</a></div><div class="ttdeci">std::vector&lt; int &gt; &amp; Compress(const std::string &amp;uncompressed, unsigned int flags=0)</div><div class="ttdoc">文字列を圧縮し、辞書を抽出する </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8cpp_source.html#l00077">Dictionary.cpp:77</a></div></div>
-<div class="ttc" id="util_8cpp_html_a250cfd334b35eb290123740eae4106ec"><div class="ttname"><a href="util_8cpp.html#a250cfd334b35eb290123740eae4106ec">HistgramIntersection</a></div><div class="ttdeci">double HistgramIntersection(std::vector&lt; std::pair&lt; std::string, int &gt;&gt; A, std::vector&lt; std::pair&lt; std::string, int &gt;&gt; B)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00027">util.cpp:27</a></div></div>
-<div class="ttc" id="namespaceprdc__lzw_html_ab7c4b021388100d7ca25d23ae566f917"><div class="ttname"><a href="namespaceprdc__lzw.html#ab7c4b021388100d7ca25d23ae566f917">prdc_lzw::ARROW_EDIT_DICTIONARY</a></div><div class="ttdeci">const unsigned int ARROW_EDIT_DICTIONARY</div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8h_source.html#l00019">Dictionary.h:19</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_aaad65f1a3f5b1074629371cc04f93ffc"><div class="ttname"><a href="namespaceprdc__util.html#aaad65f1a3f5b1074629371cc04f93ffc">prdc_util::Compress</a></div><div class="ttdeci">std::vector&lt; int &gt; Compress(const std::string &amp;uncompressed, prdc_lzw::Dictionary &amp;dic, unsigned int flags)</div><div class="ttdoc">文字列を圧縮し、辞書を抽出する </div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00304">util.cpp:304</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_aced3d47bfc1b035e92b6dd347adcfc8d"><div class="ttname"><a href="namespaceprdc__util.html#aced3d47bfc1b035e92b6dd347adcfc8d">prdc_util::NormalizedMultisetDistance</a></div><div class="ttdeci">double NormalizedMultisetDistance(prdc_lzw::Dictionary &amp;dicA, prdc_lzw::Dictionary &amp;dicB)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00098">util.cpp:98</a></div></div>
+<div class="ttc" id="classprdc__lzw_1_1Dictionary_html_a10f2b395d4021c26d500bf328c7839ac"><div class="ttname"><a href="classprdc__lzw_1_1Dictionary.html#a10f2b395d4021c26d500bf328c7839ac">prdc_lzw::Dictionary::histgram</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; std::string, double &gt; &gt; histgram</div><div class="ttdoc">圧縮後文字列中にそれぞれの単語が何回存在するか(全て足すと１になるように正規化) </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8h_source.html#l00094">Dictionary.h:94</a></div></div>
+<div class="ttc" id="classprdc__lzw_1_1Dictionary_html_a2586d5404a25de549bec3629202d9675"><div class="ttname"><a href="classprdc__lzw_1_1Dictionary.html#a2586d5404a25de549bec3629202d9675">prdc_lzw::Dictionary::Compress</a></div><div class="ttdeci">std::vector&lt; int &gt; &amp; Compress(const std::string &amp;uncompressed)</div><div class="ttdoc">文字列を圧縮し、辞書を抽出する </div><div class="ttdef"><b>Definition:</b> <a href="Dictionary_8cpp_source.html#l00072">Dictionary.cpp:72</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_ae32da34bed7d39e37621bebf3c0e69ba"><div class="ttname"><a href="namespaceprdc__util.html#ae32da34bed7d39e37621bebf3c0e69ba">prdc_util::ConvertNumtoStr</a></div><div class="ttdeci">std::vector&lt; std::string &gt; ConvertNumtoStr(std::vector&lt; int &gt; compressed, std::vector&lt; std::string &gt; &amp;bind_data)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00402">util.cpp:402</a></div></div>
+<div class="ttc" id="namespaceprdc__util_html_a90503b30b916aadf6d0a52c941c03e0d"><div class="ttname"><a href="namespaceprdc__util.html#a90503b30b916aadf6d0a52c941c03e0d">prdc_util::MakePair</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; std::string, std::string &gt; &gt; MakePair(std::vector&lt; std::string &gt; compressed)</div><div class="ttdef"><b>Definition:</b> <a href="util_8cpp_source.html#l00386">util.cpp:386</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 2 2016 23:05:24 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 25 2016 20:07:57 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

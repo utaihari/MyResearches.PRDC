@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['histgram',['histgram',['../classprdc__lzw_1_1Dictionary.html#a66677a981aa5a55b91978a5f642b9c06',1,'prdc_lzw::Dictionary']]],
-  ['histgramintersection',['HistgramIntersection',['../util_8cpp.html#a250cfd334b35eb290123740eae4106ec',1,'HistgramIntersection(std::vector&lt; std::pair&lt; std::string, int &gt;&gt; A, std::vector&lt; std::pair&lt; std::string, int &gt;&gt; B):&#160;util.cpp'],['../util_8h.html#a250cfd334b35eb290123740eae4106ec',1,'HistgramIntersection(std::vector&lt; std::pair&lt; std::string, int &gt;&gt; A, std::vector&lt; std::pair&lt; std::string, int &gt;&gt; B):&#160;util.cpp']]]
+  ['histgram',['histgram',['../classprdc__lzw_1_1Dictionary.html#a10f2b395d4021c26d500bf328c7839ac',1,'prdc_lzw::Dictionary']]],
+  ['histgramintersection',['HistgramIntersection',['../namespaceprdc__util.html#afca125b22be8c05d2e8ede84f8206db7',1,'prdc_util']]]
 ];

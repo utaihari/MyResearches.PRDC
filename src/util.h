@@ -14,6 +14,7 @@
 #include <set>
 #include <iterator>
 #include "Dictionary.h"
+#include "opencv2/opencv.hpp"
 
 namespace prdc_util {
 
@@ -63,9 +64,37 @@ std::vector<std::pair<std::string, double>>& MakeHistgram(
  */
 std::vector<std::pair<std::string, double>> MakeHistgram(
 		std::vector<int> compressed, std::vector<std::string>& bind_data);
-std::vector<std::pair<std::string,std::string>> MakePair(std::vector<std::string> compressed);
+std::vector<std::pair<std::string, std::string>> MakePair(
+		std::vector<std::string> compressed);
 std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
 		std::vector<std::string>& bind_data);
-std::vector<std::pair<std::string,std::string>> FindPair(std::vector<std::pair<std::string,std::string>>& A,std::vector<std::pair<std::string,std::string>>& B);
+std::vector<std::pair<std::string, std::string>> FindPair(
+		std::vector<std::pair<std::string, std::string>>& A,
+		std::vector<std::pair<std::string, std::string>>& B);
+
+class SavingImages {
+public:
+	SavingImages() {
+	}
+	;
+	virtual ~SavingImages();
+
+	void Push(std::string image_name, const cv::Mat& image);
+	void Save();
+private:
+	std::vector<std::string> image_names;
+	std::vector<cv::Mat> images;
+};
+class ComparisonImage {
+public:
+	ComparisonImage(std::vector<std::string> image_title, cv::Mat origin_image,
+			cv::Scalar text_color, int width, int height);
+	void Push(std::string text,cv::Scalar text_color);
+	cv::Mat image;
+	std::string image_title;
+private:
+	cv::Mat origin_image;
+	int push_times;
+};
 }
 #endif /* SRC_UTIL_H_ */

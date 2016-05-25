@@ -13,6 +13,12 @@ L\-Z\-W辞書のノード
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{classprdc__lzw_1_1LzwNode_aecd8429cfcb52da0c5a88c2eb2ce8f17}{Lzw\-Node} ()
+\item 
+\hyperlink{classprdc__lzw_1_1LzwNode_ab376216cc0c3c4893de9cc82e193bc0a}{Lzw\-Node} (int d, char c)
+\item 
+virtual \hyperlink{classprdc__lzw_1_1LzwNode_ab7c9e93839328025287d465734dfba4a}{$\sim$\-Lzw\-Node} ()
+\item 
 int \hyperlink{classprdc__lzw_1_1LzwNode_a43acbf6c83a319186feb5ff239e6714d}{get\-\_\-data} ()
 \item 
 char \hyperlink{classprdc__lzw_1_1LzwNode_afb7e80f3c9f742548fa9e82b4236ae36}{get\-\_\-content} ()
@@ -22,19 +28,14 @@ char \hyperlink{classprdc__lzw_1_1LzwNode_afb7e80f3c9f742548fa9e82b4236ae36}{get
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-std\-::vector$<$ \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $\ast$ $>$ \hyperlink{classprdc__lzw_1_1LzwNode_abc56c04f0b0f97baf8e2b3f08d736463}{children}
+std\-::vector$<$ std\-::unique\-\_\-ptr\\*
+$<$ \hyperlink{classprdc__lzw_1_1LzwNode}{Lzw\-Node} $>$ $>$ \hyperlink{classprdc__lzw_1_1LzwNode_aa2a491ab33b89986e6086bdf0e48a4d3}{children}
 \end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{classprdc__lzw_1_1LzwNode_aecd8429cfcb52da0c5a88c2eb2ce8f17}{Lzw\-Node} ()
-\begin{DoxyCompactList}\small\item\em 子ノード \end{DoxyCompactList}\item 
-\hyperlink{classprdc__lzw_1_1LzwNode_ab376216cc0c3c4893de9cc82e193bc0a}{Lzw\-Node} (int d, char c)
-\item 
-virtual \hyperlink{classprdc__lzw_1_1LzwNode_ab7c9e93839328025287d465734dfba4a}{$\sim$\-Lzw\-Node} ()
-\item 
 void \hyperlink{classprdc__lzw_1_1LzwNode_adcb9f453effcb8fac95bb08a59665eb7}{Insert\-Child} (int \hyperlink{classprdc__lzw_1_1LzwNode_ac85178681ea1181b22c3ac43af32515a}{data}, char c)
-\begin{DoxyCompactList}\small\item\em 子ノードの挿入 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em 子ノード \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Attributes}
 \begin{DoxyCompactItemize}
 \item 
@@ -54,7 +55,7 @@ L\-Z\-W辞書のノード
 
 内部に辞書番号（辞書に何個目に追加されたか）と単語(検索用)を持つ 
 
-Definition at line 26 of file Dictionary.\-h.
+Definition at line 31 of file Dictionary.\-h.
 
 
 
@@ -65,14 +66,10 @@ Definition at line 26 of file Dictionary.\-h.
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1LzwNode_aecd8429cfcb52da0c5a88c2eb2ce8f17}
+)}}\label{classprdc__lzw_1_1LzwNode_aecd8429cfcb52da0c5a88c2eb2ce8f17}
 
 
-子ノード 
-
-
-
-Definition at line 17 of file Dictionary.\-cpp.
+Definition at line 18 of file Dictionary.\-cpp.
 
 
 
@@ -85,10 +82,10 @@ Referenced by Insert\-Child().
 \item[{int}]{d, }
 \item[{char}]{c}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1LzwNode_ab376216cc0c3c4893de9cc82e193bc0a}
+)}}\label{classprdc__lzw_1_1LzwNode_ab376216cc0c3c4893de9cc82e193bc0a}
 
 
-Definition at line 20 of file Dictionary.\-cpp.
+Definition at line 21 of file Dictionary.\-cpp.
 
 \hypertarget{classprdc__lzw_1_1LzwNode_ab7c9e93839328025287d465734dfba4a}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!$\sim$\-Lzw\-Node@{$\sim$\-Lzw\-Node}}
 \index{$\sim$\-Lzw\-Node@{$\sim$\-Lzw\-Node}!prdc_lzw::LzwNode@{prdc\-\_\-lzw\-::\-Lzw\-Node}}
@@ -96,14 +93,10 @@ Definition at line 20 of file Dictionary.\-cpp.
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [private]}, {\ttfamily [virtual]}}}\label{classprdc__lzw_1_1LzwNode_ab7c9e93839328025287d465734dfba4a}
+)\hspace{0.3cm}{\ttfamily [virtual]}}}\label{classprdc__lzw_1_1LzwNode_ab7c9e93839328025287d465734dfba4a}
 
 
-Definition at line 24 of file Dictionary.\-cpp.
-
-
-
-References children.
+Definition at line 25 of file Dictionary.\-cpp.
 
 
 
@@ -129,7 +122,7 @@ References children.
 \end{DoxyReturn}
 
 
-Definition at line 30 of file Dictionary.\-cpp.
+Definition at line 31 of file Dictionary.\-cpp.
 
 
 
@@ -137,7 +130,7 @@ References children, and content.
 
 
 
-Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress(), and prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Node().
+Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress(), prdc\-\_\-util\-::\-Compress(), and prdc\-\_\-lzw\-::\-Dictionary\-::\-Search\-Node().
 
 \hypertarget{classprdc__lzw_1_1LzwNode_afb7e80f3c9f742548fa9e82b4236ae36}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!get\-\_\-content@{get\-\_\-content}}
 \index{get\-\_\-content@{get\-\_\-content}!prdc_lzw::LzwNode@{prdc\-\_\-lzw\-::\-Lzw\-Node}}
@@ -148,7 +141,7 @@ Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress(), and prdc\-\_\-lzw\-
 )\hspace{0.3cm}{\ttfamily [inline]}}}\label{classprdc__lzw_1_1LzwNode_afb7e80f3c9f742548fa9e82b4236ae36}
 
 
-Definition at line 32 of file Dictionary.\-h.
+Definition at line 41 of file Dictionary.\-h.
 
 
 
@@ -163,7 +156,7 @@ References content.
 )\hspace{0.3cm}{\ttfamily [inline]}}}\label{classprdc__lzw_1_1LzwNode_a43acbf6c83a319186feb5ff239e6714d}
 
 
-Definition at line 29 of file Dictionary.\-h.
+Definition at line 38 of file Dictionary.\-h.
 
 
 
@@ -171,7 +164,7 @@ References data.
 
 
 
-Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress().
+Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress(), and prdc\-\_\-util\-::\-Compress().
 
 \hypertarget{classprdc__lzw_1_1LzwNode_adcb9f453effcb8fac95bb08a59665eb7}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!Insert\-Child@{Insert\-Child}}
 \index{Insert\-Child@{Insert\-Child}!prdc_lzw::LzwNode@{prdc\-\_\-lzw\-::\-Lzw\-Node}}
@@ -183,7 +176,9 @@ Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress().
 )\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1LzwNode_adcb9f453effcb8fac95bb08a59665eb7}
 
 
-子ノードの挿入 
+子ノード 
+
+子ノードの挿入
 
 \begin{DoxyNote}{Note}
 辞書クラスからのみ呼び出される\par
@@ -198,7 +193,7 @@ Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Compress().
 \end{DoxyParams}
 
 
-Definition at line 40 of file Dictionary.\-cpp.
+Definition at line 41 of file Dictionary.\-cpp.
 
 
 
@@ -216,21 +211,21 @@ Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Add\-Node().
 \subsubsection[{Dictionary}]{\setlength{\rightskip}{0pt plus 5cm}friend class {\bf Dictionary}\hspace{0.3cm}{\ttfamily [friend]}}}\label{classprdc__lzw_1_1LzwNode_a61780a02d5e0994eb40a4b79f9c007ad}
 
 
-Definition at line 27 of file Dictionary.\-h.
+Definition at line 32 of file Dictionary.\-h.
 
 
 
 \subsection{Member Data Documentation}
-\hypertarget{classprdc__lzw_1_1LzwNode_abc56c04f0b0f97baf8e2b3f08d736463}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!children@{children}}
+\hypertarget{classprdc__lzw_1_1LzwNode_aa2a491ab33b89986e6086bdf0e48a4d3}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!children@{children}}
 \index{children@{children}!prdc_lzw::LzwNode@{prdc\-\_\-lzw\-::\-Lzw\-Node}}
-\subsubsection[{children}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<${\bf Lzw\-Node}$\ast$$>$ prdc\-\_\-lzw\-::\-Lzw\-Node\-::children}}\label{classprdc__lzw_1_1LzwNode_abc56c04f0b0f97baf8e2b3f08d736463}
+\subsubsection[{children}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<$std\-::unique\-\_\-ptr$<${\bf Lzw\-Node}$>$ $>$ prdc\-\_\-lzw\-::\-Lzw\-Node\-::children}}\label{classprdc__lzw_1_1LzwNode_aa2a491ab33b89986e6086bdf0e48a4d3}
 
 
-Definition at line 42 of file Dictionary.\-h.
+Definition at line 51 of file Dictionary.\-h.
 
 
 
-Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Dictionary(), Find\-Child(), Insert\-Child(), and $\sim$\-Lzw\-Node().
+Referenced by Find\-Child(), and Insert\-Child().
 
 \hypertarget{classprdc__lzw_1_1LzwNode_acb2b7cb34053125cfdf7595aba9bc172}{\index{prdc\-\_\-lzw\-::\-Lzw\-Node@{prdc\-\_\-lzw\-::\-Lzw\-Node}!content@{content}}
 \index{content@{content}!prdc_lzw::LzwNode@{prdc\-\_\-lzw\-::\-Lzw\-Node}}
@@ -241,7 +236,7 @@ Referenced by prdc\-\_\-lzw\-::\-Dictionary\-::\-Dictionary(), Find\-Child(), In
 
 
 
-Definition at line 58 of file Dictionary.\-h.
+Definition at line 63 of file Dictionary.\-h.
 
 
 
@@ -252,7 +247,7 @@ Referenced by Find\-Child(), and get\-\_\-content().
 \subsubsection[{data}]{\setlength{\rightskip}{0pt plus 5cm}int prdc\-\_\-lzw\-::\-Lzw\-Node\-::data\hspace{0.3cm}{\ttfamily [private]}}}\label{classprdc__lzw_1_1LzwNode_ac85178681ea1181b22c3ac43af32515a}
 
 
-Definition at line 57 of file Dictionary.\-h.
+Definition at line 62 of file Dictionary.\-h.
 
 
 

@@ -69,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Friends</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -98,17 +98,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;vector&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;map&gt;</code><br/>
+<code>#include &lt;memory&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Dictionary.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Dictionary_8h__incl.png" border="0" usemap="#src_2Dictionary_8h" alt=""/></div>
+<map name="src_2Dictionary_8h" id="src_2Dictionary_8h">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="Dictionary_8h__dep__incl.png" border="0" usemap="#src_2Dictionary_8hdep" alt=""/></div>
 <map name="src_2Dictionary_8hdep" id="src_2Dictionary_8hdep">
-<area shape="rect" id="node2" href="Dictionary_8cpp.html" title="辞書クラスの実装 " alt="" coords="5,80,133,107"/><area shape="rect" id="node3" href="main_8cpp.html" title="src/main.cpp" alt="" coords="158,80,255,107"/></map>
+<area shape="rect" id="node2" href="Dictionary_8cpp.html" title="辞書クラスの実装 " alt="" coords="5,155,133,181"/><area shape="rect" id="node3" href="util_8h.html" title="src/util.h" alt="" coords="165,80,237,107"/><area shape="rect" id="node4" href="main_8cpp.html" title="src/main.cpp" alt="" coords="269,155,365,181"/><area shape="rect" id="node5" href="util_8cpp.html" title="src/util.cpp" alt="" coords="158,155,244,181"/></map>
 </div>
 </div>
 <p><a href="Dictionary_8h_source.html">Go to the source code of this file.</a></p>
@@ -130,8 +133,14 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ab7c4b021388100d7ca25d23ae566f917"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#ab7c4b021388100d7ca25d23ae566f917">prdc_lzw::ARROW_EDIT_DICTIONARY</a> = 1</td></tr>
-<tr class="separator:ab7c4b021388100d7ca25d23ae566f917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32802f5b39a1712fd52ea244bed3abc6"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a32802f5b39a1712fd52ea244bed3abc6">prdc_lzw::default_max_dicsize</a> = -1</td></tr>
+<tr class="memdesc:a32802f5b39a1712fd52ea244bed3abc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">辞書の最大値のデフォルト値(ファイルサイスが大きく、辞書番号が50000では収まらない場合には増やす)  <a href="#a32802f5b39a1712fd52ea244bed3abc6">More...</a><br/></td></tr>
+<tr class="separator:a32802f5b39a1712fd52ea244bed3abc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a563099246f7864f678056d3c7e583dbf"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#a563099246f7864f678056d3c7e583dbf">prdc_lzw::default_max_length</a> = -1</td></tr>
+<tr class="separator:a563099246f7864f678056d3c7e583dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf8cc481fd2dd6347b910b0c0befdc84"><td class="memItemLeft" align="right" valign="top">const unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceprdc__lzw.html#acf8cc481fd2dd6347b910b0c0befdc84">prdc_lzw::DONOT_EDIT_DICTIONARY</a> = 1</td></tr>
+<tr class="memdesc:acf8cc481fd2dd6347b910b0c0befdc84"><td class="mdescLeft">&#160;</td><td class="mdescRight">フラグ処理のための定数定義  <a href="#acf8cc481fd2dd6347b910b0c0befdc84">More...</a><br/></td></tr>
+<tr class="separator:acf8cc481fd2dd6347b910b0c0befdc84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LZW辞書クラス定義ファイル </p>
@@ -142,7 +151,7 @@ Variables</h2></td></tr>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 2 2016 23:05:24 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 25 2016 20:07:57 for PRDC Project by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

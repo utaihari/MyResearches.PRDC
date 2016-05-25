@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['searchnode',['SearchNode',['../classprdc__lzw_1_1Dictionary.html#a4d5f9c58f6aede7507b08d07d0ad7875',1,'prdc_lzw::Dictionary']]],
-  ['splitstring',['SplitString',['../util_8cpp.html#aa1a3fe9b17b0739730931694ba1fa22c',1,'SplitString(const std::string s, std::vector&lt; std::string &gt; &amp;output, int number_of_partitions):&#160;util.cpp'],['../util_8h.html#aa1a3fe9b17b0739730931694ba1fa22c',1,'SplitString(const std::string s, std::vector&lt; std::string &gt; &amp;output, int number_of_partitions):&#160;util.cpp']]]
+  ['normalizeddictionarydistance',['NormalizedDictionaryDistance',['../namespaceprdc__util.html#a7ee7f5a0d03958c4e7cd59bcf146fc2e',1,'prdc_util']]],
+  ['normalizedmultisetdistance',['NormalizedMultisetDistance',['../namespaceprdc__util.html#aced3d47bfc1b035e92b6dd347adcfc8d',1,'prdc_util']]]
 ];

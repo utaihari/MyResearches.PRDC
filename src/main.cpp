@@ -94,11 +94,12 @@ int main() {
 		dics.push_back(temp);
 	}
 
-	//画像系定義
+	//画像定義
 	vector<Mat> image;
 	vector<string> title;
 	vector<string> compress_size;
-	vector<Mat> output_image;
+	vector<ComparisonImage*> output_image;
+	SavingImages images();
 
 	image.resize(filename.size());
 	title.resize(filename.size());
@@ -118,10 +119,6 @@ int main() {
 		title.at(i) = "\"" + data_num[i] + ".jpg\"";
 		compress_size.at(i) = string("size: ")
 				+ to_string(compressed[i].size());
-		cv::putText(image.at(i), title.at(i), cv::Point(20, 30),
-				cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);
-		cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),
-				cv::FONT_HERSHEY_SIMPLEX, 0.8, cv::Scalar(255, 255, 255), 6);
 
 		Scalar text_color;
 		if (i == ROOT_NUM) {
@@ -131,13 +128,18 @@ int main() {
 			text_color = cv::Scalar(0, 0, 0);
 		}
 
-		cv::putText(image.at(i), title.at(i), cv::Point(20, 30),
-				cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);
-		cv::putText(image.at(i), compress_size.at(i), cv::Point(20, 70),
-				cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
+		int height = image.at(i).rows;
+		const int STEP = 35;
+		if ((STEP * (int) filename.size()) > image.at(i).rows) {
+			height = STEP * (int) filename.size();
+		}
+		//output_image作成
+		output_image.at(i) = new ComparisonImage(
+				{ title.at(i), compress_size.at(i) }, image.at(i), text_color,
+				image.at(i).cols + 350, height);
 	}
 
-	//画像保存用フォルダ作成
+//画像保存用フォルダ作成
 	struct tm *date;
 	time_t now = time(NULL);
 	date = localtime(&now);
@@ -153,20 +155,6 @@ int main() {
 	}
 
 	for (int i = 0; i < (int) filename.size(); ++i) {
-
-		int margin = image.at(i).rows;
-		const int STEP = 35;
-		if ((STEP * (int) filename.size()) > image.at(i).rows) {
-			margin = STEP * (int) filename.size();
-		}
-		//output_image作成
-		output_image.at(i) = Mat::zeros(margin, image.at(i).cols + 350,
-		CV_8UC3);
-		Mat roi(output_image.at(i),
-				Rect(0, 0, image.at(i).cols, image.at(i).rows));
-		image.at(i).copyTo(roi);
-
-		int text_nums = 0;
 
 		for (int p = 0; p < (int) filename.size(); ++p) {
 			if (i == p)
@@ -188,12 +176,10 @@ int main() {
 			if (i == ROOT_NUM || p == ROOT_NUM)
 				text_color = Scalar(100, 100, 255);
 
-			cv::putText(output_image.at(i), text,
-					cv::Point(image.at(i).cols + 20, text_nums + 30),
-					cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
-			text_nums += STEP;
+			output_image.at(i)->Push(text, text_color);
+
 		}
-		imshow(title.at(i), output_image.at(i));
+		imshow(output_image.at(i)->image_title, output_image.at(i)->image);
 
 		//タイトルから"/"の抜き取り
 		for (size_t c = title.at(i).find_first_of("/"); c != string::npos; c =
@@ -201,7 +187,8 @@ int main() {
 			title.at(i).erase(c, 1);
 		}
 		//画像保存
-		imwrite(path + "/" + title.at(i) + ".png", output_image.at(i));
+		imwrite(path + "/" + output_image.at(i)->image_title + ".png",
+				output_image.at(i)->image);
 		waitKey(30);
 	}
 
@@ -214,6 +201,9 @@ int main() {
 				continue;
 			delete ofs[i][p];
 		}
+	}
+	for (auto images : output_image) {
+		delete images;
 	}
 	cv::waitKey();
 #else

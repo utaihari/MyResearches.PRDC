@@ -513,8 +513,9 @@ void SavingImages::Save() {
 
 ComparisonImage::ComparisonImage(std::vector<std::string> image_title,
 		cv::Mat origin_image, cv::Scalar text_color, int width, int height) :
-		image(cv::Mat::zeros(cv::Size(width, height), CV_8UC3)), image_title(image_title.at(0)), origin_image(
-				origin_image.clone()), push_times(0) {
+		image(cv::Mat::zeros(cv::Size(width, height), CV_8UC3)), image_title(
+				image_title.at(0)), origin_image(origin_image.clone()), push_times(
+				0) {
 
 	cv::Mat roi(image, cv::Rect(0, 0, origin_image.cols, origin_image.rows));
 	this->origin_image.copyTo(roi);
@@ -533,7 +534,8 @@ ComparisonImage::ComparisonImage(std::vector<std::string> image_title,
 }
 
 void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
-	cv::putText(image, text, cv::Point(image.cols + 20, (push_times * 40) + 30),
+	cv::putText(image, text,
+			cv::Point(origin_image.cols + 20, (push_times * 40) + 30),
 			cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
 	push_times++;
 }

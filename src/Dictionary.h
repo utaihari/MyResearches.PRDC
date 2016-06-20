@@ -22,6 +22,7 @@ const unsigned int default_max_length = -1;
 
 //!フラグ処理のための定数定義
 const unsigned int DONOT_EDIT_DICTIONARY = 1;
+const unsigned int ARROW_EDIT_DICTIONARY = 2;
 
 /**
  * @brief LZW辞書のノード
@@ -34,6 +35,9 @@ public:
 	LzwNode();
 	LzwNode(int d, char c);
 	virtual ~LzwNode();
+
+	//! 圧縮に利用するかどうか
+	bool abilable;
 
 	int get_data() {
 		return data;
@@ -107,15 +111,15 @@ public:
 	LzwNode* SearchNode(std::string key_word);
 
 	/**
-	 * @brief 文字列を圧縮し、辞書を抽出する
+	 * @brief 引数の文字列を、辞書に登録された単語のみを用いて圧縮する。
 	 * @param uncompressed 圧縮する文字列
 	 */
-	std::vector<int>& Compress(const std::string &uncompressed);
+	std::vector<int> Compress(const std::string &uncompressed);
 
 private:
 	//!辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
-
+	void InnerCompress(const std::string &uncompressed);
 	//!ルートノード
 	std::unique_ptr<LzwNode> root;
 };

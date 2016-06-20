@@ -19,8 +19,6 @@
 namespace prdc_util {
 
 using StringPair = std::pair<std::string,std::string>;
-//!フラグ処理のための定数定義
-const unsigned int ARROW_EDIT_DICTIONARY = 1;
 
 template<typename T>
 std::string to_string(T value) {
@@ -74,11 +72,7 @@ std::vector<std::pair<std::string, std::string>> FindPair(
 
 class SavingImages {
 public:
-	SavingImages() {
-	}
-	;
-	virtual ~SavingImages();
-
+	SavingImages(){};
 	void Push(std::string image_name, const cv::Mat& image);
 	void Save();
 private:

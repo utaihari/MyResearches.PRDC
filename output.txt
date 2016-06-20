@@ -1,0 +1,24 @@
+--DicA-contents--
+ab
+bc
+ca
+abc
+cab
+bca
+--DicB-contents--
+ab
+bc
+cc
+cb
+ba
+aa
+abc
+ccb
+--DicB-contents--
+cc
+cb
+ba
+aa
+ccb
+textA length compression by DicB
+4

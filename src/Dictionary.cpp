@@ -16,10 +16,10 @@
 namespace prdc_lzw {
 
 LzwNode::LzwNode() :
-		data(0), content(-1) {
+		data(0), content(-1), abilable(true) {
 }
 LzwNode::LzwNode(int d, char c) :
-		data(d), content(c) {
+		data(d), content(c), abilable(true) {
 }
 
 LzwNode::~LzwNode() {
@@ -66,10 +66,48 @@ Dictionary::Dictionary(std::string uncompress, unsigned int max_dicsize,
 		root->children.at(i).reset(new LzwNode(char(i), i));
 		binding.at(i) = char(i);
 	}
-	this->Compress(uncompress);
+	InnerCompress(uncompress);
 }
 
-std::vector<int>& Dictionary::Compress(const std::string &uncompressed) {
+std::vector<int> Dictionary::Compress(const std::string &uncompressed) {
+
+	std::vector<int> compressed_string;
+	prdc_lzw::LzwNode* current_node = root.get(); //初期位置
+	unsigned int string_length = 1;
+	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
+
+	for (std::string::const_iterator it = uncompressed.begin();
+			it != uncompressed.end(); ++it) {
+
+		char c = *it;	//未圧縮の文字列から一文字取り出す
+		std::string wc = w + c;
+		prdc_lzw::LzwNode* q = current_node->FindChild(c);
+
+		if (q != NULL) {
+			//辞書に文字列が追加されていたら
+			current_node = q;	//探索ノードを一つ進める
+			w = wc;
+			string_length++;
+		} else {
+			if (current_node->abilable) {
+				compressed_string.push_back(current_node->get_data());
+			} else {
+				//現在のノードが圧縮に使用できない場合は、現在の文字列を圧縮したものを出力する
+				std::vector<int> recursion_string = this->Compress(w);
+				for (auto s : recursion_string) {
+					compressed_string.push_back(s);
+				}
+			}
+			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
+			current_node = get_root()->FindChild(c);	//最初から検索し直す
+			w = std::string(1, c);
+			string_length = 1;
+		}
+	}
+	compressed_string.push_back(current_node->get_data());
+	return compressed_string;
+}
+void Dictionary::InnerCompress(const std::string &uncompressed) {
 
 	prdc_lzw::LzwNode* current_node = root.get(); //初期位置
 	unsigned int dicsize = 256;
@@ -107,7 +145,6 @@ std::vector<int>& Dictionary::Compress(const std::string &uncompressed) {
 	}
 	std::vector<std::string>(binding).swap(binding);
 	compressed.push_back(current_node->get_data());
-	return compressed;
 }
 
 Dictionary::~Dictionary() {

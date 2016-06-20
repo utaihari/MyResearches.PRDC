@@ -5,6 +5,7 @@
  *      Author: taichi
  */
 #include "util.h"
+#include "Dictionary.h"
 #include <iostream>
 #include <set>
 #include <algorithm>
@@ -332,7 +333,7 @@ std::vector<int> Compress(const std::string &uncompressed,
 		} else {
 			compressed.push_back(current_node->get_data());
 
-			if ((flags & ARROW_EDIT_DICTIONARY)) {
+			if ((flags & prdc_lzw::ARROW_EDIT_DICTIONARY)) {
 				if (dicsize < dic.max_dicsize
 						&& string_length < dic.max_length) {
 					dicsize++;
@@ -497,7 +498,7 @@ void SavingImages::Save() {
 			+ to_string(date->tm_mday) + "日" + to_string(date->tm_hour) + "時"
 			+ to_string(date->tm_min) + "分" + to_string(date->tm_sec) + "秒";
 
-	std::string path = "output/" + today + ":" + std::to_string(images.size());
+	std::string path = "output/" + today + "-" + std::to_string(images.size());
 	struct stat st;
 	if (stat(path.c_str(), &st) != 0) {
 		mkdir(path.c_str(), 0775);
@@ -520,15 +521,25 @@ ComparisonImage::ComparisonImage(std::vector<std::string> image_title,
 	cv::Mat roi(image, cv::Rect(0, 0, origin_image.cols, origin_image.rows));
 	this->origin_image.copyTo(roi);
 
+	std::vector<std::string> image_title_short;
+	for (auto s : image_title) {
+		if (s.size() > 11) {
+			image_title_short.push_back(
+					s.substr(0, 5) + "..." + s.substr(s.size() - 5, 5));
+		}else{
+			image_title_short.push_back(s);
+		}
+	}
+
 	//title 縁取り部分挿入
 	for (int i = 0; i < (int) image_title.size(); ++i) {
-		cv::putText(image, image_title.at(i), cv::Point(20, 30 + (i * 40)),
+		cv::putText(image, image_title_short.at(i), cv::Point(20, 30 + (i * 40)),
 				cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);
 	}
 
 	//title 挿入
 	for (int i = 0; i < (int) image_title.size(); ++i) {
-		cv::putText(image, image_title.at(i), cv::Point(20, 30 + (i * 40)),
+		cv::putText(image, image_title_short.at(i), cv::Point(20, 30 + (i * 40)),
 				cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);
 	}
 }

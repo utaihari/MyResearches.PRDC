@@ -52,7 +52,7 @@ public:
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
 	LzwNode* FindChild(char c);
-	std::vector<std::unique_ptr<LzwNode>> children; ///子ノード
+	std::vector<std::shared_ptr<LzwNode>> children; ///子ノード
 private:
 	/**
 	 * @brief 子ノードの挿入
@@ -121,7 +121,7 @@ private:
 	int dict_size;
 	void InnerCompress(const std::string &uncompressed);
 	//!ルートノード
-	std::unique_ptr<LzwNode> root;
+	std::shared_ptr<LzwNode> root;
 };
 
 } /* namespace prdc_lzw */

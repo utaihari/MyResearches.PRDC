@@ -16,10 +16,10 @@
 namespace prdc_lzw {
 
 LzwNode::LzwNode() :
-		data(0), content(-1), abilable(true) {
+		abilable(true), data(0), content(-1) {
 }
 LzwNode::LzwNode(int d, char c) :
-		data(d), content(c), abilable(true) {
+		abilable(true), data(d), content(c) {
 }
 
 LzwNode::~LzwNode() {

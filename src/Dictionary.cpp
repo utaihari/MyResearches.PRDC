@@ -40,8 +40,7 @@ LzwNode* LzwNode::FindChild(char c) {
 
 void LzwNode::InsertChild(int data, char c) {
 	children.resize(children.size() + 1);
-	children.at(children.size() - 1).reset(new LzwNode(data, c));
-
+	children.at(children.size() - 1) = std::make_shared<LzwNode>(data, c);
 	/*	LzwNode* tmp = new LzwNode(data, c);
 	 children.push_back(tmp);*/
 }
@@ -52,7 +51,7 @@ Dictionary::Dictionary() :
 	root->children.resize(256);
 	binding.resize(256);
 	for (int i = 0; i < 256; i++) {
-		root->children.at(i).reset(new LzwNode(char(i), i));
+		root->children.at(i) = std::make_shared<LzwNode>(char(i), i);
 		binding.at(i) = char(i);
 	}
 }
@@ -63,7 +62,7 @@ Dictionary::Dictionary(std::string uncompress, unsigned int max_dicsize,
 	root->children.resize(256);
 	binding.resize(256);
 	for (int i = 0; i < 256; i++) {
-		root->children.at(i).reset(new LzwNode(char(i), i));
+		root->children.at(i) = std::make_shared<LzwNode>(char(i), i);
 		binding.at(i) = char(i);
 	}
 	InnerCompress(uncompress);

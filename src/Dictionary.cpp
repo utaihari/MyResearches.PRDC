@@ -7,7 +7,6 @@
  */
 
 #include "Dictionary.h"
-#include <stdlib.h>
 #include <stack>
 #include <algorithm>
 #include <iostream>
@@ -41,29 +40,28 @@ LzwNode* LzwNode::FindChild(char c) {
 void LzwNode::InsertChild(int data, char c) {
 	children.resize(children.size() + 1);
 	children.at(children.size() - 1) = std::make_shared<LzwNode>(data, c);
-	/*	LzwNode* tmp = new LzwNode(data, c);
-	 children.push_back(tmp);*/
+	children.at(children.size() - 1)->parent_node = this;
 }
 
 Dictionary::Dictionary() :
 		max_dicsize(default_max_dicsize), max_length(default_max_length), dict_size(
-				256), root(new LzwNode()) {
+				256), size(256), root(new LzwNode()) {
 	root->children.resize(256);
-	binding.resize(256);
+	contents.resize(256);
 	for (int i = 0; i < 256; i++) {
 		root->children.at(i) = std::make_shared<LzwNode>(char(i), i);
-		binding.at(i) = char(i);
+		contents.at(i) = char(i);
 	}
 }
 Dictionary::Dictionary(std::string uncompress, unsigned int max_dicsize,
 		unsigned int max_length) :
-		max_dicsize(max_dicsize), max_length(max_length), dict_size(256), root(
-				new LzwNode()) {
+		max_dicsize(max_dicsize), max_length(max_length), dict_size(256), size(
+				256), root(new LzwNode()) {
 	root->children.resize(256);
-	binding.resize(256);
+	contents.resize(256);
 	for (int i = 0; i < 256; i++) {
 		root->children.at(i) = std::make_shared<LzwNode>(char(i), i);
-		binding.at(i) = char(i);
+		contents.at(i) = char(i);
 	}
 	InnerCompress(uncompress);
 }
@@ -113,7 +111,7 @@ void Dictionary::InnerCompress(const std::string &uncompressed) {
 	unsigned int string_length = 1;
 	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
 	//数値→文字列変換のための配列のサイズ設定
-	binding.reserve(max_dicsize + 256);
+	contents.reserve(max_dicsize + 256);
 
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); ++it) {
@@ -131,9 +129,10 @@ void Dictionary::InnerCompress(const std::string &uncompressed) {
 			compressed.push_back(current_node->get_data());
 
 			if (dicsize < max_dicsize && string_length < max_length) {
+				this->size++;
 				dicsize++;
 				AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
-				binding.push_back(wc);
+				contents.push_back(wc);
 			}
 
 			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
@@ -142,7 +141,7 @@ void Dictionary::InnerCompress(const std::string &uncompressed) {
 			string_length = 1;
 		}
 	}
-	std::vector<std::string>(binding).swap(binding);
+	std::vector<std::string>(contents).swap(contents);
 	compressed.push_back(current_node->get_data());
 }
 
@@ -152,9 +151,10 @@ Dictionary::~Dictionary() {
 void Dictionary::AddNode(LzwNode* node, char key_word) {
 	node->InsertChild(dict_size, key_word);
 	dict_size++;
+	this->size++;
 }
 
-LzwNode* Dictionary::SearchNode(std::string keyword) {
+LzwNode* Dictionary::SearchNode(std::string& keyword) {
 	LzwNode* current_node = root.get();
 	for (auto c : keyword) {
 		current_node = current_node->FindChild(c);
@@ -163,6 +163,17 @@ LzwNode* Dictionary::SearchNode(std::string keyword) {
 		}
 	}
 	return current_node;
+}
+
+bool Dictionary::DisableNode(std::string& key_word) {
+	LzwNode* tempNode = SearchNode(key_word);
+	if (tempNode != NULL) {
+		tempNode->abilable = false;
+		this->size--;
+	} else {
+		return false;
+	}
+	return true;
 }
 
 } /* namespace prdc_lzw */

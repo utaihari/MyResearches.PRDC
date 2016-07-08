@@ -5,16 +5,19 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Dictionary.cpp \
+../src/PRDC.cpp \
 ../src/main.cpp \
 ../src/util.cpp 
 
 OBJS += \
 ./src/Dictionary.o \
+./src/PRDC.o \
 ./src/main.o \
 ./src/util.o 
 
 CPP_DEPS += \
 ./src/Dictionary.d \
+./src/PRDC.d \
 ./src/main.d \
 ./src/util.d 
 
@@ -23,7 +26,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++1y -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -std=c++1y -fopenmp -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

@@ -13,6 +13,7 @@
 #include <vector>
 #include <set>
 #include <iterator>
+#include <map>
 #include "Dictionary.h"
 #include "opencv2/opencv.hpp"
 
@@ -62,6 +63,8 @@ std::vector<std::pair<std::string, double>>& MakeHistgram(
  */
 std::vector<std::pair<std::string, double>> MakeHistgram(
 		std::vector<int> compressed, std::vector<std::string>& bind_data);
+std::map<std::pair<std::string, std::string>, int> MakePairHistgram(
+		std::vector<std::pair<std::string, std::string>>& pair);
 std::vector<std::pair<std::string, std::string>> MakePair(
 		std::vector<std::string> compressed);
 std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
@@ -69,10 +72,16 @@ std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
 std::vector<std::pair<std::string, std::string>> FindPair(
 		std::vector<std::pair<std::string, std::string>>& A,
 		std::vector<std::pair<std::string, std::string>>& B);
+void ReadFiles(std::string folder_path,
+		std::vector<std::string>& output_file_contents,
+		std::vector<float>& output_file_classes,
+		std::map<std::string, float>& classes);
 
 class SavingImages {
 public:
-	SavingImages(){};
+	SavingImages() {
+	}
+	;
 	void Push(std::string image_name, const cv::Mat& image);
 	void Save();
 private:
@@ -83,7 +92,7 @@ class ComparisonImage {
 public:
 	ComparisonImage(std::vector<std::string> image_title, cv::Mat origin_image,
 			cv::Scalar text_color, int width, int height);
-	void Push(std::string text,cv::Scalar text_color);
+	void Push(std::string text, cv::Scalar text_color);
 	cv::Mat image;
 	std::string image_title;
 private:

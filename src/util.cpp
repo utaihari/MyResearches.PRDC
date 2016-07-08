@@ -13,6 +13,10 @@
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
+
+namespace fs = boost::filesystem;
 namespace prdc_util {
 
 void SplitString(const std::string s, std::vector<std::string>& output,
@@ -316,7 +320,7 @@ std::vector<int> Compress(const std::string &uncompressed,
 	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
 
 	//数値→文字列変換のための配列のサイズ設定
-	dic.binding.reserve(dic.max_dicsize + 256);
+	dic.contents.reserve(dic.max_dicsize + 256);
 
 	for (std::string::const_iterator it = uncompressed.begin();
 			it != uncompressed.end(); ++it) {
@@ -338,7 +342,7 @@ std::vector<int> Compress(const std::string &uncompressed,
 						&& string_length < dic.max_length) {
 					dicsize++;
 					dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
-					dic.binding.push_back(wc);
+					dic.contents.push_back(wc);
 				}
 			}
 			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
@@ -347,21 +351,21 @@ std::vector<int> Compress(const std::string &uncompressed,
 			string_length = 1;
 		}
 	}
-	std::vector<std::string>(dic.binding).swap(dic.binding);
+	std::vector<std::string>(dic.contents).swap(dic.contents);
 	compressed.push_back(current_node->get_data());
 	return compressed;
 }
 std::vector<std::pair<std::string, double>>& MakeHistgram(
 		prdc_lzw::Dictionary& dic) {
 	std::vector<int> output;
-	const unsigned int max_value = dic.binding.size();
+	const unsigned int max_value = dic.contents.size();
 	output.resize(max_value, 0);
 	dic.histgram.resize(max_value);
 	for (auto i : dic.compressed) {
 		output[i]++;
 	}
 	for (unsigned int i = 0; i < max_value; ++i) {
-		dic.histgram.at(i) = std::make_pair(dic.binding.at(i),
+		dic.histgram.at(i) = std::make_pair(dic.contents.at(i),
 				(double) (output.at(i)));
 	}
 
@@ -388,6 +392,17 @@ std::vector<std::pair<std::string, double>> MakeHistgram(
 	std::sort(histgram.begin(), histgram.end());
 	return histgram;
 }
+std::map<std::pair<std::string, std::string>, int> MakePairHistgram(
+		std::vector<std::pair<std::string, std::string>>& pair) {
+	std::map<std::pair<std::string, std::string>, int> pair_histgram;
+
+	for (auto p : pair) {
+		pair_histgram[p]++;
+	}
+
+	return pair_histgram;
+}
+
 std::vector<std::pair<std::string, std::string>> MakePair(
 		std::vector<std::string> compressed) {
 	std::vector<std::pair<std::string, std::string>> output;
@@ -526,21 +541,23 @@ ComparisonImage::ComparisonImage(std::vector<std::string> image_title,
 		if (s.size() > 11) {
 			image_title_short.push_back(
 					s.substr(0, 5) + "..." + s.substr(s.size() - 5, 5));
-		}else{
+		} else {
 			image_title_short.push_back(s);
 		}
 	}
 
 	//title 縁取り部分挿入
 	for (int i = 0; i < (int) image_title.size(); ++i) {
-		cv::putText(image, image_title_short.at(i), cv::Point(20, 30 + (i * 40)),
-				cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(255, 255, 255), 6);
+		cv::putText(image, image_title_short.at(i),
+				cv::Point(20, 30 + (i * 40)), cv::FONT_HERSHEY_SIMPLEX, 1.0,
+				cv::Scalar(255, 255, 255), 6);
 	}
 
 	//title 挿入
 	for (int i = 0; i < (int) image_title.size(); ++i) {
-		cv::putText(image, image_title_short.at(i), cv::Point(20, 30 + (i * 40)),
-				cv::FONT_HERSHEY_SIMPLEX, 1.0, text_color, 2);
+		cv::putText(image, image_title_short.at(i),
+				cv::Point(20, 30 + (i * 40)), cv::FONT_HERSHEY_SIMPLEX, 1.0,
+				text_color, 2);
 	}
 }
 
@@ -550,4 +567,37 @@ void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
 			cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
 	push_times++;
 }
+void ReadFiles(std::string folder_path,
+		std::vector<std::string>& output_file_paths,
+		std::vector<float>& output_file_classes,
+		std::map<std::string, float>& classes) {
+
+	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
+	float class_num = 1.0;
+	BOOST_FOREACH(const fs::path& p,
+			std::make_pair(fs::recursive_directory_iterator(folder_path),
+					fs::recursive_directory_iterator())){
+
+	if (!fs::is_directory(p)) {
+		std::string file_extension = p.extension().string();
+
+		//それぞれのファイルに対する操作
+		if (file_extension == ".txt") {
+			std::string classname = p.parent_path().stem().string();
+
+			output_file_paths.push_back(p.string());
+
+			if(classes.count(classname) == 0) {
+				classes[classname] = class_num;
+				class_num += 1.0;
+			}
+
+			output_file_classes.push_back(classes[classname]);
+		}
+	}
 }
+
+}
+
+}
+

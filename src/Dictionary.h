@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <map>
 #include <memory>
 
@@ -45,6 +46,16 @@ public:
 	char get_content() {
 		return content;
 	}
+	std::string get_strings() {
+		std::string strings;
+		LzwNode* current_node = this;
+		while (current_node->content != ' ') {
+			strings += current_node->content;
+			current_node = current_node->parent_node;
+		}
+		std::reverse(strings.begin(), strings.end());
+		return strings;
+	}
 
 	/**
 	 * @brief 文字cを子供に持っていればそれを返す
@@ -65,6 +76,7 @@ private:
 
 	int data; ///辞書番号
 	char content; ///格納文字
+	LzwNode* parent_node; ///親ノード
 
 };
 
@@ -84,6 +96,9 @@ public:
 	LzwNode* get_root() {
 		return root.get();
 	}
+	int get_size() {
+		return this->size;
+	}
 
 	//!辞書に登録できる単語の数
 	unsigned int max_dicsize;
@@ -91,7 +106,7 @@ public:
 	unsigned int max_length;
 
 	//!文字と辞書番号を関連付ける配列
-	std::vector<std::string> binding;
+	std::vector<std::string> contents;
 	//!圧縮後の辞書番号配列
 	std::vector<int> compressed;
 	//!圧縮後文字列中にそれぞれの単語が何回存在するか(全て足すと１になるように正規化)
@@ -108,7 +123,7 @@ public:
 	 * @param key_word 検索する文字列
 	 * @return key_wordのノード。辞書中に存在しなければNULLを返す
 	 */
-	LzwNode* SearchNode(std::string key_word);
+	LzwNode* SearchNode(std::string& key_word);
 
 	/**
 	 * @brief 引数の文字列を、辞書に登録された単語のみを用いて圧縮する。
@@ -116,14 +131,23 @@ public:
 	 */
 	std::vector<int> Compress(const std::string &uncompressed);
 
+	/**
+	 * @brief 引数の文字列を圧縮に使用しないようにする
+	 * @param key_word
+	 * @return key_wordが辞書中に存在しなければfalse
+	 */
+	bool DisableNode(std::string& key_word);
+
 private:
 	//!辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	int dict_size;
+	//!実際に圧縮に利用できる単語の数
+	int size;
 	void InnerCompress(const std::string &uncompressed);
 	//!ルートノード
 	std::shared_ptr<LzwNode> root;
 };
-
-} /* namespace prdc_lzw */
+}
+/* namespace prdc_lzw */
 #endif /* DICTIONARY_H_ */
 

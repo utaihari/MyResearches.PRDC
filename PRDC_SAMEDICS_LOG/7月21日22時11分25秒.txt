@@ -1,0 +1,16 @@
+Dataset: /home/uchinosub/git/MyResearches.ImageToText/output/101_ObjectCategories/
+k: 5, loop: 3
+Number of classes: 102
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 9034
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE | PAIR_MULTIPLE_LOG |
+| 1回目 | 0.14 | 0.16 | 0.22 | 
+| 2回目 | 0.06 | 0.09 | 0.1 | 
+| 3回目 | 0.12 | 0.11 | 0.11 | 
+PRDC 平均正解率: 0.106667
+PAIR_MULTIPLE 平均精度上昇率: 0.0133333
+PAIR_MULTIPLE_LOG 平均精度上昇率: 0.0366667
+処理時間:40秒
+

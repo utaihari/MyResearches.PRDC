@@ -1,0 +1,15 @@
+Dataset: /home/uchinosub/git/MyResearches.ImageToText/output/image-orig/
+k: 5, loop: 1
+Number of classes: 10
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 890
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE | PAIR_MULTIPLE_LOG | RECOMPRESSION |
+| 1回目 | 0.66 | 0.71 | 0.66 | 0.6 | 
+PRDC 平均正解率: 0.66
+PAIR_MULTIPLE 平均精度上昇率: 0.05
+PAIR_MULTIPLE_LOG 平均精度上昇率: 0
+RECOMPRESSION 平均精度上昇率: -0.06
+処理時間:107秒
+

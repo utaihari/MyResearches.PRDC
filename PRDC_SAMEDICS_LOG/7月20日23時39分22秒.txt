@@ -1,0 +1,23 @@
+k: 5loop: 5
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 890
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE |
+| 1回目 | 0.33 | 0.41 | 
+PRDC 平均正解率: 0
+PAIR_MULTIPLE 平均精度上昇率: 0.016
+処理時間:10秒
+
+k: 5loop: 5
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 890
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE |
+| 1回目 | 0.33 | 0.41 | 
+2回目 | 0.39 | 0.4 | 
+PRDC 平均正解率: 0
+PAIR_MULTIPLE 平均精度上昇率: 0.018
+処理時間:20秒
+

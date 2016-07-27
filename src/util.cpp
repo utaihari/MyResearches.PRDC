@@ -310,51 +310,51 @@ double NormalizedDictionaryDistance(prdc_lzw::Dictionary& dicA,
 	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
 	return nmd;
 }
-std::vector<int> Compress(const std::string &uncompressed,
-		prdc_lzw::Dictionary& dic, unsigned int flags) {
-
-	std::vector<int> compressed;
-	prdc_lzw::LzwNode* current_node = dic.get_root(); //初期位置
-	unsigned int dicsize = 256;
-	unsigned int string_length = 1;
-	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
-
-	//数値→文字列変換のための配列のサイズ設定
-	dic.contents.reserve(dic.max_dicsize + 256);
-
-	for (std::string::const_iterator it = uncompressed.begin();
-			it != uncompressed.end(); ++it) {
-
-		char c = *it;	//未圧縮の文字列から一文字取り出す
-		std::string wc = w + c;
-		prdc_lzw::LzwNode* q = current_node->FindChild(c);
-
-		if (q != NULL) {
-			//辞書に文字列が追加されていたら
-			current_node = q;	//探索ノードを一つ進める
-			w = wc;
-			string_length++;
-		} else {
-			compressed.push_back(current_node->get_data());
-
-			if ((flags & prdc_lzw::ARROW_EDIT_DICTIONARY)) {
-				if (dicsize < dic.max_dicsize
-						&& string_length < dic.max_length) {
-					dicsize++;
-					dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
-					dic.contents.push_back(wc);
-				}
-			}
-			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
-			current_node = dic.get_root()->FindChild(c);	//最初から検索し直す
-			w = std::string(1, c);
-			string_length = 1;
-		}
-	}
-	std::vector<std::string>(dic.contents).swap(dic.contents);
-	compressed.push_back(current_node->get_data());
-	return compressed;
-}
+//std::vector<int> Compress(const std::string &uncompressed,
+//		prdc_lzw::Dictionary& dic, unsigned int flags) {
+//
+//	std::vector<int> compressed;
+//	prdc_lzw::LzwNode<char>* current_node = dic.get_root_char(); //初期位置
+//	unsigned int dicsize = 256;
+//	unsigned int string_length = 1;
+//	std::string w; //複数回の圧縮で共通数字を出力するため、元のテキストを保存しておく
+//
+//	//数値→文字列変換のための配列のサイズ設定
+//	dic.contents.reserve(dic.max_dicsize + 256);
+//
+//	for (std::string::const_iterator it = uncompressed.begin();
+//			it != uncompressed.end(); ++it) {
+//
+//		char c = *it;	//未圧縮の文字列から一文字取り出す
+//		std::string wc = w + c;
+//		prdc_lzw::LzwNode<char>* q = current_node->FindChild(c);
+//
+//		if (q != NULL) {
+//			//辞書に文字列が追加されていたら
+//			current_node = q;	//探索ノードを一つ進める
+//			w = wc;
+//			string_length++;
+//		} else {
+//			compressed.push_back(current_node->get_data());
+//
+//			if ((flags & prdc_lzw::ARROW_EDIT_DICTIONARY)) {
+//				if (dicsize < dic.max_dicsize
+//						&& string_length < dic.max_length) {
+//					dicsize++;
+//					dic.AddNode(current_node, c);	//current_nodeの下に文字cのノードを作成
+//					dic.contents.push_back(wc);
+//				}
+//			}
+//			//NOTE:圧縮文字列に0以下、または256以上の文字コードが入っていた場合エラーになる
+//			current_node = dic.get_root_char()->FindChild(c);	//最初から検索し直す
+//			w = std::string(1, c);
+//			string_length = 1;
+//		}
+//	}
+//	std::vector<std::string>(dic.contents).swap(dic.contents);
+//	compressed.push_back(current_node->get_data());
+//	return compressed;
+//}
 std::vector<std::pair<std::string, double>>& MakeHistgram(
 		prdc_lzw::Dictionary& dic) {
 	std::vector<int> output;
@@ -492,6 +492,17 @@ std::vector<std::pair<std::string, std::string>> FindPair(
 		}
 	}
 	return output;
+}
+
+std::string CurrentTimeString() {
+	//画像保存用フォルダ作成
+	struct tm *date;
+	time_t now = time(NULL);
+	date = localtime(&now);
+
+	return to_string(date->tm_mon + 1) + "月" + to_string(date->tm_mday) + "日"
+			+ to_string(date->tm_hour) + "時" + to_string(date->tm_min) + "分"
+			+ to_string(date->tm_sec) + "秒";
 }
 
 void SavingImages::Push(std::string image_name, const cv::Mat& image) {

@@ -1,0 +1,22 @@
+Dataset: /home/uchinosub/eclipse_folder/eclipse4.4/workspace/DictionaryDistanceProject/dataset/20news-18828/
+k: 5, loop: 10
+Number of classes: 13
+Number of dics: 10
+Number of test data: 300
+Number of learning data: 18518
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE |
+| 1回目 | 0.206667 | 0.223333 | 
+| 2回目 | 0.216667 | 0.24 | 
+| 3回目 | 0.236667 | 0.246667 | 
+| 4回目 | 0.193333 | 0.27 | 
+| 5回目 | 0.243333 | 0.223333 | 
+| 6回目 | 0.263333 | 0.23 | 
+| 7回目 | 0.253333 | 0.243333 | 
+| 8回目 | 0.256667 | 0.246667 | 
+| 9回目 | 0.273333 | 0.253333 | 
+| 10回目 | 0.24 | 0.223333 | 
+PRDC 平均正解率: 0.238333
+PAIR_MULTIPLE 平均精度上昇率: 0.00166667
+処理時間:5862秒
+

@@ -1,0 +1,9 @@
+PAIR_MULTIPLE
+k: 5loop: 1
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 890
+1回目　正解率：0.63
+平均正解率:0.63
+処理時間:42秒
+

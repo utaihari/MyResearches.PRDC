@@ -27,15 +27,15 @@ const unsigned int ARROW_EDIT_DICTIONARY = 2;
 
 /**
  * @brief LZW辞書のノード
- *
+ * @note T = char or int を想定しています
  * 内部に辞書番号（辞書に何個目に追加されたか）と単語(検索用)を持つ
  */
+template<typename T = char>
 class LzwNode {
 	friend class Dictionary;
 public:
 	LzwNode();
-	LzwNode(int d, char c);
-	virtual ~LzwNode();
+	LzwNode(int d, T c);
 
 	//! 圧縮に利用するかどうか
 	bool abilable;
@@ -43,12 +43,12 @@ public:
 	int get_data() {
 		return data;
 	}
-	char get_content() {
+	T get_content() {
 		return content;
 	}
-	std::string get_strings() {
+
+	std::string get_strings(LzwNode<char>* current_node) {
 		std::string strings;
-		LzwNode* current_node = this;
 		while (current_node->content != ' ') {
 			strings += current_node->content;
 			current_node = current_node->parent_node;
@@ -62,8 +62,8 @@ public:
 	 * @param c 探索したい文字
 	 * @return 存在すればノードのポインタ、なければNULL
 	 */
-	LzwNode* FindChild(char c);
-	std::vector<std::shared_ptr<LzwNode>> children; ///子ノード
+	LzwNode<T>* FindChild(T c) const;
+	std::vector<std::shared_ptr<LzwNode<T>>>children; ///子ノード
 private:
 	/**
 	 * @brief 子ノードの挿入
@@ -72,11 +72,11 @@ private:
 	 * @param data 辞書番号
 	 * @param c 格納文字
 	 */
-	void InsertChild(int data, char c);
+	void InsertChild(int data, T c);
 
 	int data; ///辞書番号
-	char content; ///格納文字
-	LzwNode* parent_node; ///親ノード
+	T content;///格納文字
+	LzwNode<T>* parent_node;///親ノード
 
 };
 
@@ -86,15 +86,25 @@ private:
  * 文字列の登録と検索ができる
  * @author uchino
  */
+
 class Dictionary {
 public:
 	Dictionary();
-	Dictionary(std::string uncompress, unsigned int max_dicsize =
+	Dictionary(std::string uncompress, bool multi_byte_string = false,
+			unsigned int max_dicsize = default_max_dicsize,
+			unsigned int max_length = default_max_length);
+	Dictionary(std::vector<int> uncompress, unsigned int max_dicsize =
 			default_max_dicsize, unsigned int max_length = default_max_length);
 	virtual ~Dictionary();
 
-	LzwNode* get_root() {
-		return root.get();
+	LzwNode<int>* get_root_int() {
+		return root_int.get();
+	}
+	LzwNode<char>* get_root_char() const {
+		return root_char.get();
+	}
+	LzwNode<std::string>* get_root_string() const {
+		return root_string.get();
 	}
 	int get_size() {
 		return this->size;
@@ -105,8 +115,11 @@ public:
 	//!辞書に登録できる単語の長さの上限
 	unsigned int max_length;
 
-	//!文字と辞書番号を関連付ける配列
+	//!文字と辞書番号を関連付ける配列（数値列の圧縮では利用できません）
 	std::vector<std::string> contents;
+	//!数値列と辞書番号を関連付ける配列
+	std::vector<std::vector<int>> contents_int;
+
 	//!圧縮後の辞書番号配列
 	std::vector<int> compressed;
 	//!圧縮後文字列中にそれぞれの単語が何回存在するか(全て足すと１になるように正規化)
@@ -117,19 +130,37 @@ public:
 	 * @param node 文字を追加するノード
 	 * @note 辞書番号の管理のため直接ノードに子を追加させない
 	 */
-	void AddNode(LzwNode* node, char key_word);
+	void AddNode(LzwNode<char>* node, char key_word);
+
+	/**
+	 * @brief 辞書中の指定したノードに文字を追加する
+	 * @param key_word 追加する文字
+	 * @param node 文字を追加するノード
+	 * @note 辞書番号の管理のため直接ノードに子を追加させない
+	 */
+	void AddNode(LzwNode<int>* node, int key_word);
+
+	/**
+	 * @brief 辞書中の指定したノードに文字を追加する
+	 * @param key_word 追加する文字
+	 * @param node 文字を追加するノード
+	 * @note 辞書番号の管理のため直接ノードに子を追加させない
+	 */
+	void AddNode(LzwNode<std::string>* node, std::string key_word);
+
+
 	/**
 	 * @brief key_wordのノードを辞書から検索し返す。
 	 * @param key_word 検索する文字列
 	 * @return key_wordのノード。辞書中に存在しなければNULLを返す
 	 */
-	LzwNode* SearchNode(std::string& key_word);
+	LzwNode<char>* SearchNode(std::string& key_word);
 
 	/**
 	 * @brief 引数の文字列を、辞書に登録された単語のみを用いて圧縮する。
 	 * @param uncompressed 圧縮する文字列
 	 */
-	std::vector<int> Compress(const std::string &uncompressed);
+	std::vector<int> Compress(std::string &uncompressed);
 
 	/**
 	 * @brief 引数の文字列を圧縮に使用しないようにする
@@ -140,12 +171,23 @@ public:
 
 private:
 	//!辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
-	int dict_size;
+	unsigned int dict_size;
 	//!実際に圧縮に利用できる単語の数
 	int size;
-	void InnerCompress(const std::string &uncompressed);
+	bool multibyte_string;
+
+
+	void InnerCompressChar(const std::string &uncompressed);
+	void InnerCompressString(const std::string &uncompressed);
+	void InnerCompress(const std::vector<int> &uncompressed);
+
+	void MakeCompressChar(const std::string &uncompressed,std::vector<int>& compressed_string);
+	void MakeCompressString(const std::string &uncompressed,std::vector<int>& compressed_string);
+
 	//!ルートノード
-	std::shared_ptr<LzwNode> root;
+	std::shared_ptr<LzwNode<char>> root_char;
+	std::shared_ptr<LzwNode<int>> root_int;
+	std::shared_ptr<LzwNode<std::string>> root_string;
 };
 }
 /* namespace prdc_lzw */

@@ -76,6 +76,7 @@ void ReadFiles(std::string folder_path,
 		std::vector<std::string>& output_file_contents,
 		std::vector<float>& output_file_classes,
 		std::map<std::string, float>& classes);
+std::string CurrentTimeString();
 
 class SavingImages {
 public:

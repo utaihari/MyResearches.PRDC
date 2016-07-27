@@ -1,0 +1,23 @@
+Dataset: /home/uchinosub/git/MyResearches.ImageToText/output/image-orig/
+k: 5, loop: 10
+Number of classes: 10
+Number of dics: 10
+Number of test data: 100
+Number of learning data: 890
+~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~
+| ~回目 | PRDC |  PAIR_MULTIPLE | PAIR_MULTIPLE_LOG |
+| 1回目 | 0.59 | 0.67 | 0.66 | 
+| 2回目 | 0.59 | 0.62 | 0.65 | 
+| 3回目 | 0.58 | 0.69 | 0.6 | 
+| 4回目 | 0.71 | 0.76 | 0.76 | 
+| 5回目 | 0.61 | 0.58 | 0.63 | 
+| 6回目 | 0.69 | 0.74 | 0.64 | 
+| 7回目 | 0.61 | 0.69 | 0.65 | 
+| 8回目 | 0.67 | 0.69 | 0.69 | 
+| 9回目 | 0.7 | 0.68 | 0.71 | 
+| 10回目 | 0.58 | 0.65 | 0.64 | 
+PRDC 平均正解率: 0.633
+PAIR_MULTIPLE 平均精度上昇率: 0.044
+PAIR_MULTIPLE_LOG 平均精度上昇率: 0.03
+処理時間:608秒
+

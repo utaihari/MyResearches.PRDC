@@ -63,6 +63,7 @@ std::vector<std::pair<std::string, double>>& MakeHistgram(
  */
 std::vector<std::pair<std::string, double>> MakeHistgram(
 		std::vector<int> compressed, std::vector<std::string>& bind_data);
+std::map<int, double>& MakeHistgramInt(prdc_lzw::Dictionary& dic);
 std::map<std::pair<std::string, std::string>, int> MakePairHistgram(
 		std::vector<std::pair<std::string, std::string>>& pair);
 std::vector<std::pair<std::string, std::string>> MakePair(
@@ -72,10 +73,11 @@ std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
 std::vector<std::pair<std::string, std::string>> FindPair(
 		std::vector<std::pair<std::string, std::string>>& A,
 		std::vector<std::pair<std::string, std::string>>& B);
-void ReadFiles(std::string folder_path,
+void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_contents,
 		std::vector<float>& output_file_classes,
-		std::map<std::string, float>& classes);
+		std::map<std::string, float>& all_of_classes);
+void FilePathToString(std::string path,std::string& output);
 std::string CurrentTimeString();
 
 class SavingImages {

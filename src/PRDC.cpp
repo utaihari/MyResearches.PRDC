@@ -6,6 +6,7 @@
  */
 
 #include "PRDC.h"
+#include "util.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>    // std::copy
@@ -17,11 +18,14 @@ using std::cout;
 using std::endl;
 
 namespace prdc {
+int ofs_count = 0;
 
 std::vector<std::vector<std::vector<float>>>PRDC::PRDC_LAST_LEARNING(METHOD_ARRAY.size());
 const PRDC::MakeVecPtr PRDC::make_vector_functions[] = {
 		&PRDC::make_compless_vector, &PRDC::make_pair_multiple_vector,
-		&PRDC::make_pair_multiple_log_vector, &PRDC::make_recompression_vector };
+		&PRDC::make_pair_multiple_log_vector, &PRDC::make_recompression_vector,
+		&PRDC::make_self_compression_vector,
+		&PRDC::make_pair_and_selfcompression_vector };
 
 bool PRDC::train(std::vector<std::string>& training_data_paths,
 		std::vector<float>& data_class) {
@@ -48,7 +52,7 @@ bool PRDC::train(std::vector<std::string>& training_data_paths,
 #pragma omp parallel for
 	for (int i = 0; i < (int) training_data_paths.size(); ++i) {
 		std::string text;
-		file_read(training_data_paths.at(i), text);
+		prdc_util::FilePathToString(training_data_paths.at(i), text);
 
 		std::vector<float> vec; //PRDCに使用するベクトル
 
@@ -86,9 +90,9 @@ bool PRDC::train(std::vector<std::string>& training_data_paths,
 }
 
 PRDC::PRDC(std::vector<std::string>& bases, int flag, int READY_FOR_NEXT,
-		bool USE_LAST_DATA) :
+		bool USE_LAST_DATA, bool MULTI_BYTE_CHAR) :
 		base_dics_names(bases), prdc_flag(flag), ready_for_next(READY_FOR_NEXT), use_last_data(
-				USE_LAST_DATA) {
+				USE_LAST_DATA), multi_byte_char(MULTI_BYTE_CHAR) {
 
 	if (use_last_data == false) {
 		//METHOD_ARRAYと同じ順番にするように気をつける
@@ -103,7 +107,7 @@ PRDC::PRDC(std::vector<std::string>& bases, int flag, int READY_FOR_NEXT,
 	for (auto b : bases) {
 		std::string text;
 		file_read(b, text);
-		base_dics.push_back(prdc_lzw::Dictionary(text));
+		base_dics.push_back(prdc_lzw::Dictionary(text, multi_byte_char));
 	}
 }
 
@@ -127,18 +131,20 @@ float PRDC::find_nearest(std::string file_name, int k) {
 }
 
 PRDC::PRDC(std::string train_file) :
-		prdc_flag(0) {
+		base_dics_names(), prdc_flag(), ready_for_next(), use_last_data(), multi_byte_char(
+				false) {
 	cv::FileStorage cvfs(train_file, CV_STORAGE_READ);
 	cvfs["vectors"] >> training_mat;
 	cvfs["classes"] >> classes_mat;
 	cvfs["base_dics"] >> base_dics_names;
 	cvfs["prdc_flag"] >> prdc_flag;
+	cvfs["use_multibyte"] >> multi_byte_char;
 	cvfs.release();
 
 	for (auto b : base_dics_names) {
 		std::string text;
 		file_read(b, text);
-		base_dics.push_back(prdc_lzw::Dictionary(text));
+		base_dics.push_back(prdc_lzw::Dictionary(text, multi_byte_char));
 	}
 
 	knn.train(training_mat, classes_mat);
@@ -149,12 +155,13 @@ bool PRDC::save(std::string filename) {
 	cv::write(cvfs, "classes", classes_mat);
 	cv::write(cvfs, "base_dics", base_dics_names);
 	cv::write(cvfs, "prdc_flag", prdc_flag);
+	cv::write(cvfs, "use_multibyte", multi_byte_char);
 	cvfs.release();
 	return true;
 }
 
 std::vector<float> PRDC::make_compless_vector(std::string& text,
-		std::vector<std::vector<int>>& comp) const {
+		std::vector<prdc_lzw::EncodedText>& comp) const {
 	std::vector<float> vec(base_dics.size());
 
 	//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
@@ -166,7 +173,7 @@ std::vector<float> PRDC::make_compless_vector(std::string& text,
 }
 
 std::vector<float> PRDC::make_pair_multiple_vector(std::string& text,
-		std::vector<std::vector<int>>& comp) const {
+		std::vector<prdc_lzw::EncodedText>& comp) const {
 
 	std::vector<float> vec(base_dics.size() * 2);
 
@@ -176,7 +183,6 @@ std::vector<float> PRDC::make_pair_multiple_vector(std::string& text,
 	for (int i = 0; i < (int) base_dics.size(); ++i) {
 		auto& dic = base_dics.at(i);
 		auto& compressed = comp.at(i);
-
 		std::vector<std::pair<int, int>> compressed_pair = make_pair(
 				compressed);
 		std::map<std::pair<int, int>, int> pair_histgram = make_pair_histgram(
@@ -184,23 +190,24 @@ std::vector<float> PRDC::make_pair_multiple_vector(std::string& text,
 
 		int reduction = 0; //削減文字数
 		for (auto pair : pair_histgram) {
-			int count = pair.second - 1; //ペアの頻度-1 (必ず0以上の値になる)
+			int count = pair.second; //ペアの頻度 (必ず1以上の値になる)
 			int pair_string_length; //ペアの合計文字数
 
 			pair_string_length = (int) dic.contents[pair.first.first].size()
-					+ (int) dic.contents[pair.first.second].size() - 2;
-			reduction += count * pair_string_length;
+					+ (int) dic.contents[pair.first.second].size();
+			reduction += (count -1) * (pair_string_length -2);
 		}
 
-		vec.at(vec_index) = (float) compressed.size() / (float) text.length();
+		vec.at(vec_index) = (float) compressed.length() / (float) text.length();
 		vec.at(vec_index + 1) = 1.0
 				- (float) reduction / (2.0 * (float) text.length());
+
 		vec_index += 2;
 	}
 	return vec;
 }
 std::vector<float> PRDC::make_pair_multiple_log_vector(std::string& text,
-		std::vector<std::vector<int>>& comp) const {
+		std::vector<prdc_lzw::EncodedText>& comp) const {
 	std::vector<float> vec(base_dics.size() * 2);
 
 	int vec_index = 0; //圧縮率ベクトルのインデックス
@@ -235,7 +242,7 @@ std::vector<float> PRDC::make_pair_multiple_log_vector(std::string& text,
 }
 
 std::vector<float> PRDC::make_recompression_vector(std::string& text,
-		std::vector<std::vector<int>>& comp) const {
+		std::vector<prdc_lzw::EncodedText>& comp) const {
 
 	std::vector<float> vec(base_dics.size() * 2);
 	int vec_index = 0; //圧縮率ベクトルのインデックス
@@ -249,13 +256,14 @@ std::vector<float> PRDC::make_recompression_vector(std::string& text,
 
 		//再圧縮した圧縮率ベクトル作成
 
-		std::vector<int> recompress;
+		prdc_lzw::EncodedText recompress;
 		recompress = compress(compressed); //2分木を用いた圧縮(わずかに処理速度早い)
 		float comp_size = (float) recompress.size() / (float) compressed.size();
 
 //		prdc_lzw::Dictionary recompress(compressed);//トライ木を用いた圧縮(機能豊富)
 //		float comp_size = (float) recompress.compressed.size()
 //				/ (float) compressed.size();
+
 		vec.at(vec_index + 1) = comp_size;
 		vec_index += 2;
 	}
@@ -274,15 +282,15 @@ std::map<std::pair<int, int>, int> PRDC::make_pair_histgram(
 }
 
 std::vector<std::pair<int, int>> PRDC::make_pair(
-		std::vector<int>& compressed) const {
+		prdc_lzw::EncodedText& compressed) const {
 	std::vector<std::pair<int, int>> output(compressed.size() - 1);
 
 	int prev = 0;
 	int next = 0;
 
-	for (int i = 0; i < (int) compressed.size() - 1; ++i) {
-		prev = compressed.at(i);
-		next = compressed.at(i + 1);
+	for (int i = 0; i < (int) compressed.encoded.size() - 1; ++i) {
+		prev = compressed.encoded.at(i);
+		next = compressed.encoded.at(i + 1);
 		output.at(i) = std::make_pair(prev, next);
 	}
 	std::sort(output.begin(), output.end());
@@ -301,7 +309,7 @@ void PRDC::file_read(std::string path, std::string& output) const {
 
 std::vector<float> PRDC::make_vector(std::string& text, int vec_num) {
 	std::vector<float> vec; //PRDCに使用するベクトル
-	std::vector<std::vector<int>> compressed(base_dics.size());
+	std::vector<prdc_lzw::EncodedText> compressed(base_dics.size());
 
 	if (vec_num >= 0) {
 		//結果を記録する場合（連続したベクトルを作成する場合）
@@ -352,14 +360,46 @@ std::vector<float> PRDC::make_vector(std::string& text, int vec_num) {
 
 }
 
-std::vector<int> PRDC::compress(std::vector<int>& uncompressed) const {
+std::vector<float> PRDC::make_self_compression_vector(std::string& text,
+		std::vector<prdc_lzw::EncodedText>& comp) const {
 
-	std::vector<int> output;
+	std::vector<float> vec(base_dics.size() + 1);
+
+//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
+	for (int i = 0; i < (int) base_dics.size(); ++i) {
+		auto& compressed = comp.at(i);
+		//通常の圧縮率ベクトル作成
+		vec.at(i) = (float) compressed.size() / (float) text.length();
+	}
+
+	prdc_lzw::Dictionary self_compress(text);
+
+	vec.at(vec.size() - 1) = (float) self_compress.compressed.length()
+			/ (float) text.length();
+
+	return vec;
+}
+
+std::vector<float> PRDC::make_pair_and_selfcompression_vector(std::string& text,
+		std::vector<prdc_lzw::EncodedText>& compressed) const {
+	std::vector<float> vec = make_pair_multiple_vector(text, compressed);
+
+	prdc_lzw::Dictionary self_compress(text);
+	vec.push_back(
+			(float) self_compress.compressed.length() / (float) text.length());
+
+	return vec;
+}
+
+prdc_lzw::EncodedText PRDC::compress(
+		prdc_lzw::EncodedText& uncompressed) const {
+
+	prdc_lzw::EncodedText output;
 	int dictSize = 0;
 	std::map<std::vector<int>, int> dictionary;
 	std::vector<int> w;
 
-	for (int it : uncompressed) {
+	for (int it : uncompressed.encoded) {
 		int c = it;
 		std::vector<int> wc(w);
 		wc.push_back(c);

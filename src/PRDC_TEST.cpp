@@ -56,7 +56,7 @@ int PRDC_TEST(string dataset_path, int method_flag, int LOOP,
 		map<string, float> classes;
 
 		//ファイルの読み込み
-		ReadFiles(dataset_path, file_paths, file_classes, classes);
+		prdc_util::GetEachFilePathsAndClasses(dataset_path, file_paths, file_classes, classes);
 
 		if ((int) file_paths.size()
 				< NUMBER_OF_DICS + NUMBER_OF_TEST_DATA + 1) {

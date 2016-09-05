@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>
+#include <math.h>
 
 ///PRDCで用いるLZW圧縮に関する名前空間
 namespace prdc_lzw {
@@ -81,6 +82,35 @@ private:
 };
 
 /**
+ * @brief 符号化されたテキスト
+ */
+class EncodedText {
+public:
+	EncodedText() :
+			number_of_type(0) {
+	}
+	EncodedText(const EncodedText &et) {
+		encoded = et.encoded;
+		number_of_type = et.number_of_type;
+	}
+	std::vector<int> encoded;
+	int number_of_type;
+
+	int length() {
+		return encoded.size();
+	}
+	int size() {
+		return encoded.size();
+	}
+	void push_back(int i) {
+		encoded.push_back(i);
+	}
+	int at(int i) {
+		return encoded.at(i);
+	}
+};
+
+/**
  * @brief LZW辞書クラス
  *
  * 文字列の登録と検索ができる
@@ -90,7 +120,7 @@ private:
 class Dictionary {
 public:
 	Dictionary();
-	Dictionary(std::string uncompress, bool multi_byte_string = false,
+	Dictionary(std::string uncompress, bool multi_byte_char = false,
 			unsigned int max_dicsize = default_max_dicsize,
 			unsigned int max_length = default_max_length);
 	Dictionary(std::vector<int> uncompress, unsigned int max_dicsize =
@@ -121,9 +151,11 @@ public:
 	std::vector<std::vector<int>> contents_int;
 
 	//!圧縮後の辞書番号配列
-	std::vector<int> compressed;
+	EncodedText compressed;
 	//!圧縮後文字列中にそれぞれの単語が何回存在するか(全て足すと１になるように正規化)
 	std::vector<std::pair<std::string, double>> histgram;
+	std::map<int, double> histgram_int;
+
 	/**
 	 * @brief 辞書中の指定したノードに文字を追加する
 	 * @param key_word 追加する文字
@@ -148,7 +180,6 @@ public:
 	 */
 	void AddNode(LzwNode<std::string>* node, std::string key_word);
 
-
 	/**
 	 * @brief key_wordのノードを辞書から検索し返す。
 	 * @param key_word 検索する文字列
@@ -160,7 +191,7 @@ public:
 	 * @brief 引数の文字列を、辞書に登録された単語のみを用いて圧縮する。
 	 * @param uncompressed 圧縮する文字列
 	 */
-	std::vector<int> Compress(std::string &uncompressed);
+	EncodedText Compress(std::string &uncompressed);
 
 	/**
 	 * @brief 引数の文字列を圧縮に使用しないようにする
@@ -173,22 +204,26 @@ private:
 	//!辞書に単語がいくつ登録されているか(辞書番号をつける際に利用)
 	unsigned int dict_size;
 	//!実際に圧縮に利用できる単語の数
-	int size;
+	unsigned int size;
 	bool multibyte_string;
 
-
-	void InnerCompressChar(const std::string &uncompressed);
-	void InnerCompressString(const std::string &uncompressed);
+	void InnerCompressStr(const std::string &uncompressed);
+	void InnerCompressStrMultibyte(const std::string &uncompressed);
 	void InnerCompress(const std::vector<int> &uncompressed);
 
-	void MakeCompressChar(const std::string &uncompressed,std::vector<int>& compressed_string);
-	void MakeCompressString(const std::string &uncompressed,std::vector<int>& compressed_string);
+	void MakeCompressStr(const std::string &uncompressed,
+			EncodedText& compressed_string);
+	void MakeCompressStrMultiByte(const std::string &uncompressed,
+			EncodedText& compressed_string);
 
 	//!ルートノード
 	std::shared_ptr<LzwNode<char>> root_char;
 	std::shared_ptr<LzwNode<int>> root_int;
 	std::shared_ptr<LzwNode<std::string>> root_string;
+
+	int CharSize(unsigned char& c) const;
 };
+
 }
 /* namespace prdc_lzw */
 #endif /* DICTIONARY_H_ */

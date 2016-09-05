@@ -23,17 +23,24 @@ const int PRDC_BASE = 0x0001;
 const int PAIR_MULTIPLE = 0x0002;
 const int PAIR_MULTIPLE_LOG = 0x0004;
 const int RECOMPRESSION = 0x0008;
+const int SELF_COMPRESSION = 0x0010;
+const int PAIR_AND_SELFCOMPRESS = 0x0020;
 
 const std::vector<int> METHOD_ARRAY = { PRDC_BASE, PAIR_MULTIPLE,
-		PAIR_MULTIPLE_LOG, RECOMPRESSION };
+		PAIR_MULTIPLE_LOG, RECOMPRESSION, SELF_COMPRESSION,
+		PAIR_AND_SELFCOMPRESS };
+const std::vector<std::string> METHOD_NAME_ARRAY = { "PRDC_BASE",
+		"PAIR_MULTIPLE", "PAIR_MULTIPLE_LOG", "RECOMPRESSION",
+		"SELF_COMPRESSION" ,"PAIR_AND_SELFCOMPRESS"};
 
 /*
  *
  */
 class PRDC {
 public:
-	PRDC(std::vector<std::string>& base_dics_path, int flag = PRDC_BASE,
-			int READY_FOR_NEXT = 0, bool USE_LAST_DATA = false);
+	PRDC(std::vector<std::string>& base_dics_path, int method_flag = PRDC_BASE,
+			int READY_FOR_NEXT = 0, bool USE_LAST_DATA = false,
+			bool MULTI_BYTE_CHAR = false);
 
 	/**
 	 * @brief 以前作成した学習データを読み込みますA
@@ -78,6 +85,7 @@ private:
 	int prdc_flag;
 	int ready_for_next;
 	bool use_last_data;
+	bool multi_byte_char;
 
 	static std::vector<std::vector<std::vector<float>>>PRDC_LAST_LEARNING;
 
@@ -86,23 +94,25 @@ private:
 	 * @param text 元テキスト
 	 * @return 圧縮率ベクトル
 	 */
-	std::vector<float> make_compless_vector(std::string& text,std::vector<std::vector<int>>& compressed) const;
-	std::vector<float> make_pair_multiple_vector(std::string& text,std::vector<std::vector<int>>& compressed) const;
+	std::vector<float> make_compless_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
+	std::vector<float> make_pair_multiple_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
 	std::vector<float> make_pair_multiple_log_vector(std::string& text,
-			std::vector<std::vector<int>>& compressed) const;
-	std::vector<float> make_recompression_vector(std::string& text,std::vector<std::vector<int>>& compressed) const;
+			std::vector<prdc_lzw::EncodedText>& compressed) const;
+	std::vector<float> make_recompression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
+	std::vector<float> make_self_compression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
+	std::vector<float> make_pair_and_selfcompression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
 
 	std::vector<float> make_vector(std::string& text, int i = -1);
 
-	typedef std::vector<float> (PRDC::*MakeVecPtr)(std::string&,std::vector<std::vector<int>>&) const;
+	typedef std::vector<float> (PRDC::*MakeVecPtr)(std::string&,std::vector<prdc_lzw::EncodedText>&) const;
 	static const MakeVecPtr make_vector_functions[];
 
 	void file_read(std::string path, std::string& output) const;
 	std::vector<std::pair<int, int>> make_pair(
-			std::vector<int>& compressed) const;
+			prdc_lzw::EncodedText& compressed) const;
 	std::map<std::pair<int, int>, int> make_pair_histgram(
 			std::vector<std::pair<int, int>>& pair) const;
-	std::vector<int> compress(std::vector<int>& text) const;
+	prdc_lzw::EncodedText compress(prdc_lzw::EncodedText& text) const;
 
 };
 }

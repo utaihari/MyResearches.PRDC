@@ -50,7 +50,8 @@ using namespace cv;
  * @return
  */
 int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
-		int NUMBER_OF_DICS, int NUMBER_OF_TEST_DATA, int k) {
+		int NUMBER_OF_DICS, int NUMBER_OF_TEST_DATA, int k,
+		bool multibyte_char) {
 
 	string filename = "PRDC_SAMEDICS_LOG/" + CurrentTimeString() + ".txt";
 	std::ofstream ofs(filename);
@@ -58,20 +59,13 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	vector<int> flags;
 	vector<string> flags_name;
 
-	if (method_flag & prdc::PAIR_MULTIPLE) {
-		flags.push_back(prdc::PAIR_MULTIPLE);
-		flags_name.push_back("PAIR_MULTIPLE");
-	}
-	if (method_flag & prdc::PAIR_MULTIPLE_LOG) {
-		flags.push_back(prdc::PAIR_MULTIPLE_LOG);
-		flags_name.push_back("PAIR_MULTIPLE_LOG");
-	}
-	if (method_flag & prdc::RECOMPRESSION) {
-		flags.push_back(prdc::RECOMPRESSION);
-		flags_name.push_back("RECOMPRESSION");
+	for (int i = 0; i < (int) prdc::METHOD_ARRAY.size(); ++i) {
+		if (method_flag & prdc::METHOD_ARRAY.at(i)) {
+			flags.push_back(prdc::METHOD_ARRAY.at(i));
+			flags_name.push_back(prdc::METHOD_NAME_ARRAY.at(i));
+		}
 	}
 
-	Dictionary dic;
 	vector<string> file_paths;
 	vector<float> file_classes;
 	map<string, float> classes;
@@ -80,7 +74,12 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	vector<double> accuracy_base;
 
 	//ファイルの読み込み
-	ReadFiles(dataset_path, file_paths, file_classes, classes);
+	GetEachFilePathsAndClasses(dataset_path, file_paths, file_classes, classes);
+
+	cout << "読み込んだクラス一覧" << endl;
+	for (auto c : classes) {
+		cout << c.first << endl;
+	}
 
 	if ((int) file_paths.size() < NUMBER_OF_DICS + NUMBER_OF_TEST_DATA + 1) {
 		cout << "データセットが少なすぎます" << endl;
@@ -133,7 +132,8 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 //PRDCここから
 
 //基底辞書の設定
-		prdc::PRDC pr(base_dics, prdc::PRDC_BASE, method_flag);
+		prdc::PRDC pr(base_dics, prdc::PRDC_BASE, method_flag, false,
+				multibyte_char);
 		cout << "基底辞書作成完了" << endl;
 		pr.train(learning_contents, learning_class);
 		cout << "学習完了" << endl;
@@ -158,7 +158,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		//各種手法比較
 		for (int n = 0; n < (int) flags.size(); ++n) {
 
-			prdc::PRDC pr_plus(base_dics, flags.at(n), 0, true);
+			prdc::PRDC pr_plus(base_dics, flags.at(n), 0, true, multibyte_char);
 			pr_plus.train(learning_contents, learning_class);
 
 			int accuracy_count = 0;

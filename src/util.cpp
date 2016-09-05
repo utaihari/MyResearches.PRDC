@@ -7,6 +7,8 @@
 #include "util.h"
 #include "Dictionary.h"
 #include <iostream>
+#include <fstream>
+#include <iterator>
 #include <set>
 #include <algorithm>
 #include <time.h>
@@ -16,6 +18,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 
+using std::cout;
+using std::endl;
 namespace fs = boost::filesystem;
 namespace prdc_util {
 
@@ -357,20 +361,33 @@ double NormalizedDictionaryDistance(prdc_lzw::Dictionary& dicA,
 //}
 std::vector<std::pair<std::string, double>>& MakeHistgram(
 		prdc_lzw::Dictionary& dic) {
-	std::vector<int> output;
-	const unsigned int max_value = dic.contents.size();
-	output.resize(max_value, 0);
+	std::vector<double> output;
+	unsigned int max_value;
+
+	max_value = dic.contents.size();
+
 	dic.histgram.resize(max_value);
-	for (auto i : dic.compressed) {
-		output[i]++;
+
+	output.resize(max_value, 0.0);
+	for (auto i : dic.compressed.encoded) {
+		output.at(i) += 1.0;
 	}
+
 	for (unsigned int i = 0; i < max_value; ++i) {
-		dic.histgram.at(i) = std::make_pair(dic.contents.at(i),
-				(double) (output.at(i)));
+		dic.histgram.at(i) = std::make_pair(dic.contents.at(i), output.at(i));
 	}
 
 	std::sort(dic.histgram.begin(), dic.histgram.end());
 	return dic.histgram;
+}
+std::map<int, double>& MakeHistgramInt(prdc_lzw::Dictionary& dic) {
+	std::map<int, double> output;
+
+	for (auto i : dic.compressed.encoded) {
+		dic.histgram_int[i]++;
+	}
+
+	return dic.histgram_int;
 }
 std::vector<std::pair<std::string, double>> MakeHistgram(
 		std::vector<int> compressed, std::vector<std::string>& bind_data) {
@@ -393,7 +410,7 @@ std::vector<std::pair<std::string, double>> MakeHistgram(
 	return histgram;
 }
 std::map<std::pair<std::string, std::string>, int> MakePairHistgram(
-		std::vector<std::pair<std::string, std::string>>& pair) {
+		std::vector<std::pair<std::string, std::string>> & pair) {
 	std::map<std::pair<std::string, std::string>, int> pair_histgram;
 
 	for (auto p : pair) {
@@ -429,8 +446,8 @@ std::vector<std::string> ConvertNumtoStr(std::vector<int> compressed,
 	return output;
 }
 std::vector<std::pair<std::string, std::string>> FindPair(
-		std::vector<std::pair<std::string, std::string>>& A,
-		std::vector<std::pair<std::string, std::string>>& B) {
+		std::vector<std::pair<std::string, std::string>> & A,
+		std::vector<std::pair<std::string, std::string>> & B) {
 	auto Aiter = A.begin();
 	auto Biter = B.begin();
 
@@ -578,7 +595,7 @@ void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
 			cv::FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2);
 	push_times++;
 }
-void ReadFiles(std::string folder_path,
+void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
 		std::vector<float>& output_file_classes,
 		std::map<std::string, float>& classes) {
@@ -593,21 +610,28 @@ void ReadFiles(std::string folder_path,
 		std::string file_extension = p.extension().string();
 
 		//それぞれのファイルに対する操作
-		if (file_extension == ".txt") {
-			std::string classname = p.parent_path().stem().string();
+		std::string classname = p.parent_path().stem().string();
 
-			output_file_paths.push_back(p.string());
+		output_file_paths.push_back(p.string());
 
-			if(classes.count(classname) == 0) {
-				classes[classname] = class_num;
-				class_num += 1.0;
-			}
-
-			output_file_classes.push_back(classes[classname]);
+		if(classes.count(classname) == 0) {
+			classes[classname] = class_num;
+			class_num += 1.0;
 		}
+
+		output_file_classes.push_back(classes[classname]);
 	}
 }
 
+}
+void FilePathToString(std::string path, std::string& output) {
+	std::ifstream ifs(path);
+	if (ifs.fail()) {
+		std::cerr << "読み込みエラー:" << path << std::endl;
+	}
+	output = std::string((std::istreambuf_iterator<char>(ifs)),
+			std::istreambuf_iterator<char>());
+	ifs.close();
 }
 
 }

@@ -1,0 +1,12 @@
+読み込んだクラス一覧
+Africa
+Beach
+Buildings
+Buses
+Dinosaurs
+Elephants
+Flowers
+Food
+Horses
+Mountains
+基底辞書作成完了

@@ -71,7 +71,14 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	map<string, float> classes;
 
 	vector<vector<double>> accuracys(flags.size());
-	vector<double> accuracy_base;
+	vector<vector<map<float, double>>> accuracys_for_each_classes(flags.size());
+	vector<double> accuracy_base(LOOP);
+	vector<map<float, double>> accuracy_base_for_each_classes(LOOP);
+
+	for (int i = 0; i < (int) flags.size(); ++i) {
+		accuracys.at(i).resize(LOOP);
+		accuracys_for_each_classes.at(i).resize(LOOP);
+	}
 
 	//ファイルの読み込み
 	GetEachFilePathsAndClasses(dataset_path, file_paths, file_classes, classes);
@@ -96,7 +103,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 
 	auto start = std::chrono::system_clock::now(); // 計測開始時間
 	for (int p = 0; p < LOOP; p++) {
-
+		map<float, int> each_class_size;
 		//学習用テキストなどをランダムに選ぶためのランダムな数値が入った配列
 		vector<int> random_num(file_paths.size());
 
@@ -120,6 +127,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 				i < (int) file_paths.size() - NUMBER_OF_DICS; ++i) {
 			test_contents.push_back(file_paths.at(random_num.at(i)));
 			test_class.push_back(file_classes.at(random_num.at(i)));
+			each_class_size[file_classes.at(random_num.at(i))]++;
 		}
 
 		//基底辞書用テキストの設定
@@ -140,18 +148,35 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		cout << "テスト開始（多少時間がかかります）" << endl;
 
 		int accuracy_count = 0;
+		map<float, int> accuracy_count_base_for_each_classes;
+
+		for (auto c : classes) {
+			accuracy_count_base_for_each_classes[c.second] = 0;
+		}
 
 #pragma omp parallel for
 		for (int i = 0; i < (int) test_contents.size(); ++i) {
 
 			float r = pr.find_nearest(test_contents.at(i), k);
-
 			if (r == test_class.at(i)) {
+				//正解個数の計算
 				accuracy_count++;
+				accuracy_count_base_for_each_classes[test_class.at(i)]++;
 			}
 		}
-		accuracy_base.push_back(
-				(double) accuracy_count / (double) test_contents.size());
+
+		//正解個数の平均
+		accuracy_base.at(p) = (double) accuracy_count
+				/ (double) test_contents.size();
+
+		for (auto class_num : classes) {
+			float num = class_num.second;
+			if (each_class_size[num] == 0)
+				continue;
+			accuracy_base_for_each_classes.at(p)[num] =
+					(double) accuracy_count_base_for_each_classes[num]
+							/ (double) each_class_size[num];
+		}
 
 		cout << p + 1 << "回目　PRDC正解率：" << accuracy_base.at(p) << endl;
 
@@ -162,6 +187,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 			pr_plus.train(learning_contents, learning_class);
 
 			int accuracy_count = 0;
+			map<float, int> accuracy_count_for_each_classes;
 
 #pragma omp parallel for
 			for (int i = 0; i < (int) test_contents.size(); ++i) {
@@ -170,11 +196,21 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 
 				if (r == test_class.at(i)) {
 					accuracy_count++;
+					accuracy_count_for_each_classes[test_class.at(i)]++;
 				}
 			}
 
-			accuracys.at(n).push_back(
-					(double) accuracy_count / (double) test_contents.size());
+			accuracys.at(n).at(p) = (double) accuracy_count
+					/ (double) test_contents.size();
+
+			for (auto class_num : classes) {
+				float num = class_num.second;
+				if (each_class_size[num] == 0)
+					continue;
+				accuracys_for_each_classes.at(n).at(p)[num] =
+						(double) accuracy_count_for_each_classes[num]
+								/ (double) each_class_size[num];
+			}
 			cout << p + 1 << "回目　手法" << flags_name.at(n) << " 正解率："
 					<< accuracys.at(n).at(p) << endl;
 
@@ -182,7 +218,10 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	}
 	cout << "~~~~~~~~~~~~~~~~~~~~終了~~~~~~~~~~~~~~~~~~~" << endl;
 	vector<double> accuracys_rate_sum(flags.size()); //精度が何％向上したか
+	vector<map<float, double>> accuracys_rate_sum_each_classes(flags.size()); //それぞれのクラスで精度が何％向上したか
+
 	double accuracy_base_sum = 0.0; //PRDC(先行研究)の平均正解率
+	map<float, double> accuracy_base_sum_each_classes;
 
 	for (auto& ars : accuracys_rate_sum) {
 		ars = 0.0;
@@ -198,8 +237,13 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	ofs << "Number of classes: " << classes.size() << endl;
 	ofs << "Number of dics: " << NUMBER_OF_DICS << endl;
 	ofs << "Number of test data: " << NUMBER_OF_TEST_DATA << endl;
-	ofs << "Number of learning data: " << NUMBER_OF_LEARNING << endl;
+	ofs << "Number of learning data: " << NUMBER_OF_LEARNING << endl << endl;
 
+	ofs << "CLASS LIST" << endl;
+	for (auto num : classes) {
+		ofs << num.first << " >> " << num.second << endl;
+	}
+	ofs << endl;
 	cout << "~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~" << endl;
 	cout << "| ~回目 | PRDC |";
 	for (auto name : flags_name) {
@@ -214,15 +258,26 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	}
 	ofs << endl;
 
-	for (int i = 0; i < (int) accuracy_base.size(); ++i) {
+	for (int i = 0; i < LOOP; ++i) {
 		cout << "| " << i + 1 << "回目 | " << accuracy_base.at(i) << " | ";
 		ofs << "| " << i + 1 << "回目 | " << accuracy_base.at(i) << " | ";
 		accuracy_base_sum += accuracy_base.at(i);
+
+		for (auto num : classes) {
+			accuracy_base_sum_each_classes[num.second] +=
+					accuracy_base_for_each_classes.at(i)[num.second];
+		}
+
 		for (int n = 0; n < (int) flags.size(); ++n) {
 			cout << accuracys.at(n).at(i) << " | ";
 			ofs << accuracys.at(n).at(i) << " | ";
-			accuracys_rate_sum.at(n) += accuracys.at(n).at(i)
-					- accuracy_base.at(i);
+
+			accuracys_rate_sum.at(n) += accuracys.at(n).at(i);
+
+			for (auto num : classes) {
+				accuracys_rate_sum_each_classes.at(n)[num.second] +=
+						accuracys_for_each_classes.at(n).at(i)[num.second];
+			}
 
 		}
 		cout << endl;
@@ -233,10 +288,30 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 			<< endl;
 	ofs << "PRDC 平均正解率: " << (double) accuracy_base_sum / (double) LOOP << endl;
 	for (int n = 0; n < (int) flags.size(); ++n) {
-		cout << flags_name.at(n) << " 平均精度上昇率: "
+		cout << flags_name.at(n) << " 平均正解率: "
 				<< (double) accuracys_rate_sum.at(n) / (double) LOOP << endl;
-		ofs << flags_name.at(n) << " 平均精度上昇率: "
+		ofs << flags_name.at(n) << " 平均正解率: "
 				<< (double) accuracys_rate_sum.at(n) / (double) LOOP << endl;
+	}
+
+	ofs << "\nクラス毎の平均正解率" << endl;
+
+	ofs << "PRDC" << endl;
+	for (auto num : classes) {
+		ofs << num.first << " : "
+				<< accuracy_base_sum_each_classes[num.second] / (double) LOOP
+				<< endl;
+	}
+	ofs << endl;
+
+	for (int n = 0; n < (int) flags.size(); ++n) {
+		ofs << flags_name.at(n) << endl;
+		for (auto num : classes) {
+			ofs << num.first << " : "
+					<< accuracys_rate_sum_each_classes.at(n)[num.second]
+							/ (double) LOOP << endl;
+		}
+		ofs << endl;
 	}
 
 	auto end = std::chrono::system_clock::now();  // 計測終了時間
@@ -244,7 +319,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	cout << "処理時間:" << chrono::duration_cast<chrono::seconds>(elapsed).count()
 			<< "秒" << endl;
 
-	ofs << "処理時間:" << chrono::duration_cast<chrono::seconds>(elapsed).count()
+	ofs << "\n処理時間:" << chrono::duration_cast<chrono::seconds>(elapsed).count()
 			<< "秒" << endl;
 	ofs << endl;
 

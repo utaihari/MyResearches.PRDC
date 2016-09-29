@@ -28,7 +28,7 @@ const PRDC::MakeVecPtr PRDC::make_vector_functions[] = {
 		&PRDC::make_pair_and_selfcompression_vector };
 
 bool PRDC::train(std::vector<std::string>& training_data_paths,
-		std::vector<float>& data_class) {
+		std::vector<float>& data_class, bool encoded) {
 
 	if (training_data_paths.size() != data_class.size()) {
 		std::cout << "エラー：データとクラスの数が違います." << std::endl;
@@ -52,8 +52,11 @@ bool PRDC::train(std::vector<std::string>& training_data_paths,
 #pragma omp parallel for
 	for (int i = 0; i < (int) training_data_paths.size(); ++i) {
 		std::string text;
-		prdc_util::FilePathToString(training_data_paths.at(i), text);
-
+		if (encoded) {
+			text = training_data_paths.at(i);
+		} else {
+			prdc_util::FilePathToString(training_data_paths.at(i), text);
+		}
 		std::vector<float> vec; //PRDCに使用するベクトル
 
 		//ベクトル作成ここから
@@ -90,9 +93,10 @@ bool PRDC::train(std::vector<std::string>& training_data_paths,
 }
 
 PRDC::PRDC(std::vector<std::string>& bases, int flag, int READY_FOR_NEXT,
-		bool USE_LAST_DATA, bool MULTI_BYTE_CHAR) :
+		bool USE_LAST_DATA, bool MULTI_BYTE_CHAR, bool encoded) :
 		base_dics_names(bases), prdc_flag(flag), ready_for_next(READY_FOR_NEXT), use_last_data(
-				USE_LAST_DATA), multi_byte_char(MULTI_BYTE_CHAR) {
+				USE_LAST_DATA), multi_byte_char(MULTI_BYTE_CHAR), encoded(
+				encoded) {
 
 	if (use_last_data == false) {
 		//METHOD_ARRAYと同じ順番にするように気をつける
@@ -106,7 +110,39 @@ PRDC::PRDC(std::vector<std::string>& bases, int flag, int READY_FOR_NEXT,
 
 	for (auto b : bases) {
 		std::string text;
-		file_read(b, text);
+		if (encoded) {
+			text = b;
+		} else {
+			file_read(b, text);
+		}
+		base_dics.push_back(prdc_lzw::Dictionary(text, multi_byte_char));
+	}
+}
+
+PRDC::PRDC(std::vector<std::string>& bases,
+		std::vector<std::string>& bases_path, int flag, int READY_FOR_NEXT,
+		bool USE_LAST_DATA, bool MULTI_BYTE_CHAR, bool encoded) :
+		base_dics_names(bases_path), prdc_flag(flag), ready_for_next(
+				READY_FOR_NEXT), use_last_data(USE_LAST_DATA), multi_byte_char(
+				MULTI_BYTE_CHAR), encoded(encoded) {
+
+	if (use_last_data == false) {
+		//METHOD_ARRAYと同じ順番にするように気をつける
+		for (int i = 0; i < (int) METHOD_ARRAY.size(); ++i) {
+			if ((ready_for_next | prdc_flag) & METHOD_ARRAY.at(i)) {
+				PRDC_LAST_LEARNING.at(i).clear();
+				PRDC_LAST_LEARNING.at(i).shrink_to_fit();
+			}
+		}
+	}
+
+	for (auto b : bases) {
+		std::string text;
+		if (encoded) {
+			text = b;
+		} else {
+			file_read(b, text);
+		}
 		base_dics.push_back(prdc_lzw::Dictionary(text, multi_byte_char));
 	}
 }
@@ -117,6 +153,7 @@ PRDC::~PRDC() {
 
 float PRDC::find_nearest(std::string file_name, int k) {
 	std::string text;
+
 	file_read(file_name, text);
 
 	//ベクトル作成ここから
@@ -132,7 +169,7 @@ float PRDC::find_nearest(std::string file_name, int k) {
 
 PRDC::PRDC(std::string train_file) :
 		base_dics_names(), prdc_flag(), ready_for_next(), use_last_data(), multi_byte_char(
-				false) {
+				false), encoded(false) {
 	cv::FileStorage cvfs(train_file, CV_STORAGE_READ);
 	cvfs["vectors"] >> training_mat;
 	cvfs["classes"] >> classes_mat;
@@ -143,11 +180,27 @@ PRDC::PRDC(std::string train_file) :
 
 	for (auto b : base_dics_names) {
 		std::string text;
-		file_read(b, text);
+		if (encoded) {
+			text = b;
+		} else {
+			file_read(b, text);
+		}
 		base_dics.push_back(prdc_lzw::Dictionary(text, multi_byte_char));
 	}
 
-	knn.train(training_mat, classes_mat);
+	vectors.resize(training_mat.rows);
+	for(auto& v:vectors){
+		v.resize(training_mat.cols);
+	}
+
+	for (int i = 0; i < (int) training_mat.rows; ++i) {
+		for (int j = 0; j < (int) training_mat.cols; ++j) {
+			 vectors[i][j] = training_mat.at<float>(i, j);
+		}
+//		classes.at(i) = classes_mat.at<float>(0, i);
+	}
+
+//	knn.train(training_mat, classes_mat);
 }
 bool PRDC::save(std::string filename) {
 	cv::FileStorage cvfs(filename, CV_STORAGE_WRITE);
@@ -195,7 +248,7 @@ std::vector<float> PRDC::make_pair_multiple_vector(std::string& text,
 
 			pair_string_length = (int) dic.contents[pair.first.first].size()
 					+ (int) dic.contents[pair.first.second].size();
-			reduction += (count -1) * (pair_string_length -2);
+			reduction += (count - 1) * (pair_string_length - 2);
 		}
 
 		vec.at(vec_index) = (float) compressed.length() / (float) text.length();
@@ -389,6 +442,40 @@ std::vector<float> PRDC::make_pair_and_selfcompression_vector(std::string& text,
 			(float) self_compress.compressed.length() / (float) text.length());
 
 	return vec;
+}
+
+std::vector<int> PRDC::find_near_vector(std::string input_image_path,
+		int output_num, bool encoded) {
+	std::string text;
+	if (encoded) {
+		text = input_image_path;
+	} else {
+		file_read(input_image_path, text);
+	}
+
+	//ベクトル作成ここから
+	std::vector<float> vec = make_vector(text); //PRDCに使用するベクトル
+	//ベクトル作成ここまで
+
+	cv::Mat sample(1, vec.size(), CV_32FC1);
+	for (int i = 0; i < (int) vec.size(); ++i) {
+		sample.at<float>(i) = vec[i];
+	}
+	std::vector<float> norms;
+	calc_all_vector_norm(vec, norms);
+	std::vector<int_float_pair> ifp(norms.size());
+	for (int i = 0; i < (int) norms.size(); ++i) {
+		ifp.at(i).ID = i;
+		ifp.at(i).norm = norms.at(i);
+	}
+	std::sort(ifp.begin(), ifp.end());
+
+	std::vector<int> output(output_num);
+	for (int i = 0; i < output_num; ++i) {
+		output.at(i) = ifp.at(i).ID;
+	}
+
+	return output;
 }
 
 prdc_lzw::EncodedText PRDC::compress(

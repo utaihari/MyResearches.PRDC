@@ -31,15 +31,18 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 	std::vector<std::pair<float, std::string> > output(k); //pair<class,file_path>
 	std::vector<std::pair<double, int>> nmd(data_histgrams.size());
 
-	//検索対象データのヒストグラム作成 ここから
+	//検索対象データの辞書作成 ここから
 	prdc_util::FilePathToString(file_path, input);
 	prdc_lzw::Dictionary input_dic(input);
+	//検索対象データの辞書作成 ここまで
+
+	//検索対象データのヒストグラム作成 ここから
 	prdc_util::MakeHistgram(input_dic);
-	HistgramZeroToOne(input_dic.histgram);
 	auto& input_histgram = input_dic.histgram;
 	//検索対象データのヒストグラム作成 ここまで
 
 	if (flag & ORIGINAL_NMD) {
+		HistgramZeroToOne(input_dic.histgram);
 		//全データとのNMDを測る ここから
 #pragma omp parallel for
 		for (int i = 0; i < (int) data_histgrams.size(); ++i) {
@@ -48,6 +51,7 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 			nmd.at(i).second = i; //何番目の配列か記録しておく
 		}
 	} else if (flag & WEIGHTING_NMD) {
+		HistgramZeroToOne(input_dic.histgram);
 		//全データとのNMDを測る ここから
 #pragma omp parallel for
 		for (int i = 0; i < (int) data_histgrams.size(); ++i) {
@@ -56,13 +60,22 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 			nmd.at(i).second = i; //何番目の配列か記録しておく
 //			cout << "nmd.at(i).first " << nmd.at(i).first << endl;
 		}
+	} else if (flag & NDD) {
+		//全データとのNDDを測る ここから
+#pragma omp parallel for
+		for (int i = 0; i < (int) data_dictionaries.size(); ++i) {
+			nmd.at(i).first = NormalizedDictionaryDistance(data_histgrams.at(i),
+					input_histgram);
+			nmd.at(i).second = i; //何番目の配列か記録しておく
+//			cout << "nmd.at(i).first " << nmd.at(i).first << endl;
+		}
 	}
 
-	//NMDの値でソート
+//NMDの値でソート
 	std::sort(nmd.begin(), nmd.end(),
 			[](std::pair<double, int> a,std::pair<double, int> b)->int {return (a.first < b.first);});
 
-	//出力の作成
+//出力の作成
 	for (int i = 0; i < k; ++i) {
 		output.at(i).first = data_classes.at(nmd.at(i).second);
 		output.at(i).second = data_paths.at(nmd.at(i).second);
@@ -112,6 +125,7 @@ int NMD::SetCodebook(std::vector<std::string>& datas,
 	copy(d_classes.begin(), d_classes.end(), back_inserter(data_classes));
 
 	data_histgrams.resize(data_paths.size());
+	data_dictionaries.resize(data_paths.size());
 
 	int debug = 1;
 //それぞれのデータのヒストグラム作成
@@ -119,13 +133,13 @@ int NMD::SetCodebook(std::vector<std::string>& datas,
 	for (int i = 0; i < (int) data_paths.size(); ++i) {
 		string text;
 		prdc_util::FilePathToString(data_paths.at(i), text);
-		prdc_lzw::Dictionary dic(text);
-		prdc_util::MakeHistgram(dic);
+		data_dictionaries.at(i) = prdc_lzw::Dictionary(text);
+		prdc_util::MakeHistgram(data_dictionaries.at(i));
 
-		HistgramZeroToOne(dic.histgram);
+		HistgramZeroToOne(data_dictionaries.at(i).histgram);
 
 		data_histgrams.at(i) = std::vector<std::pair<std::string, double>>(
-				dic.histgram);
+				data_dictionaries.at(i).histgram);
 
 		if (debug % 10 == 0) {
 			cout << data_histgrams.size() << "個中 " << debug << "個圧縮完了" << endl;
@@ -292,7 +306,7 @@ double NMD::NormalizedMultisetDistanceWeighted(
 	double H = 0;
 
 	while (!(Afinished && Bfinished)) {
-		//Aのデータ番号とBのデータ番号が同じだったら頻度が大きい方を足す
+		//Aの文字列とBの文字列が同じだったら頻度が大きい方を足す
 		if (Aiter->first == Biter->first) {
 			//大きい方の頻度を足す
 
@@ -385,6 +399,91 @@ double NMD::NormalizedMultisetDistanceWeighted(
 	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
 	return nmd;
 
+}
+
+double NMD::NormalizedDictionaryDistance(
+		const std::vector<std::pair<std::string, double>>& A,
+		const std::vector<std::pair<std::string, double>>& B) const {
+
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+	int Asize = (int) A.size();
+	int Bsize = (int) B.size();
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	int H = 0;
+
+	while (!(Afinished && Bfinished)) {
+		//Aのデータ番号とBのデータ番号が同じだったら
+		if (Aiter->first == Biter->first) {
+			H++;
+			if (!Bfinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのデータ番号のほうが小さければ、Bを進める
+		else if (Aiter->first > Biter->first) {
+			H++;
+			if (Bfinished) {
+				//Bが終わっていたらAを進める
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			H++;
+			if (Afinished) {
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+
+	int max_dicsize;
+	int min_dicsize;
+
+	if (Asize > Bsize) {
+		max_dicsize = Asize;
+		min_dicsize = Bsize;
+	} else {
+		max_dicsize = Bsize;
+		min_dicsize = Asize;
+	}
+
+//std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize << std::endl;
+
+	double ndd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
+	return ndd;
 }
 
 } /* namespace image_retrieval */

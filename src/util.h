@@ -77,16 +77,21 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_contents,
 		std::vector<float>& output_file_classes,
 		std::map<std::string, float>& all_of_classes);
-void FilePathToString(std::string path,std::string& output);
+void FilePathToString(std::string path, std::string& output);
 std::string CurrentTimeString();
+int ImagesToString(std::string& dataset_path,
+		std::vector<std::string>& image_texts,
+		std::vector<std::string>& output_file_paths,
+		std::vector<float>& output_file_classes, int QUANTIZED_LEVEL = 5);
+void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL);
 
 class SavingImages {
 public:
 	SavingImages() {
 	}
-	;
 	void Push(std::string image_name, const cv::Mat& image);
-	void Save();
+	void Save(std::string output_folder_path = "output",
+			std::string folder_name = "", bool add_timestamp = true);
 private:
 	std::vector<std::string> image_names;
 	std::vector<cv::Mat> images;
@@ -101,6 +106,20 @@ public:
 private:
 	cv::Mat origin_image;
 	int push_times;
+};
+class ChangeDatasetPath {
+public:
+	ChangeDatasetPath();
+	ChangeDatasetPath(const ChangeDatasetPath& right) {
+		dataset = right.dataset;
+		images = right.images;
+	}
+	ChangeDatasetPath(std::string dataset_path_str,
+			std::string images_path_str);
+	std::string ChangePath(std::string& text_path);
+private:
+	std::string dataset;
+	std::string images;
 };
 }
 #endif /* SRC_UTIL_H_ */

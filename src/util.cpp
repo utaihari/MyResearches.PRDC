@@ -531,7 +531,8 @@ void SavingImages::Push(std::string image_name, const cv::Mat& image) {
 	image_names.push_back(image_name);
 	images.push_back(image.clone());
 }
-void SavingImages::Save() {
+void SavingImages::Save(std::string output_folder_path,
+		std::string folder_name, bool add_timestamp) {
 	//画像保存用フォルダ作成
 	struct tm *date;
 	time_t now = time(NULL);
@@ -541,8 +542,17 @@ void SavingImages::Save() {
 			+ to_string(date->tm_mday) + "日" + to_string(date->tm_hour) + "時"
 			+ to_string(date->tm_min) + "分" + to_string(date->tm_sec) + "秒";
 
-	std::string path = "output/" + today + "-" + std::to_string(images.size());
+	std::string path = output_folder_path + "/" + folder_name;
+	if (add_timestamp) {
+		path += today + "-" + std::to_string(images.size());
+	}
+
 	struct stat st;
+
+	if (stat(output_folder_path.c_str(), &st) != 0) {
+		mkdir(output_folder_path.c_str(), 0775);
+	}
+
 	if (stat(path.c_str(), &st) != 0) {
 		mkdir(path.c_str(), 0775);
 	}
@@ -608,18 +618,21 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 
 	if (!fs::is_directory(p)) {
 		std::string file_extension = p.extension().string();
+		if (file_extension == ".jpg" || file_extension == ".gif"
+				|| file_extension == ".png"|| file_extension == ".txt") {
 
-		//それぞれのファイルに対する操作
-		std::string classname = p.parent_path().stem().string();
+			//それぞれのファイルに対する操作
+			std::string classname = p.parent_path().stem().string();
 
-		output_file_paths.push_back(p.string());
+			output_file_paths.push_back(p.string());
 
-		if(classes.count(classname) == 0) {
-			classes[classname] = class_num;
-			class_num += 1.0;
+			if(classes.count(classname) == 0) {
+				classes[classname] = class_num;
+				class_num += 1.0;
+			}
+
+			output_file_classes.push_back(classes[classname]);
 		}
-
-		output_file_classes.push_back(classes[classname]);
 	}
 }
 
@@ -634,5 +647,110 @@ void FilePathToString(std::string path, std::string& output) {
 	ifs.close();
 }
 
+int ImagesToString(std::string& dataset_path,
+		std::vector<std::string>& image_texts,
+		std::vector<std::string>& output_file_paths,
+		std::vector<float>& output_file_classes, int QUANTIZED_LEVEL) {
+	//第一引数(argv[1])→データセットのディレクトリパス
+	//第二引数(argv[2])→出力ディレクトリのパス
+
+	//設定ここから
+	const fs::path INPUT_PATH(dataset_path);
+	//設定ここまで
+	std::map<std::string, float> classes;
+	float class_num = 1.0;
+	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
+	BOOST_FOREACH(const fs::path& p, std::make_pair(fs::recursive_directory_iterator(INPUT_PATH),
+					fs::recursive_directory_iterator())){
+	if (!fs::is_directory(p)) {
+
+		std::string file_extension = p.extension().string();
+
+		//それぞれのファイルに対する操作
+		if (file_extension == ".jpg" || file_extension == ".gif"
+				|| file_extension == ".png") {
+
+			output_file_paths.push_back(p.string());
+			//それぞれのファイルに対する操作
+			std::string classname = p.parent_path().stem().string();
+
+			if(classes.count(classname) == 0) {
+				classes[classname] = class_num;
+				class_num += 1.0;
+			}
+
+			output_file_classes.push_back(classes[classname]);
+
+			//処理中の画像ファイル名の出力
+			cout << p << endl;
+
+			//画像ファイルの読み込み
+			cv::Mat input_image = cv::imread(p.string());
+
+			//出力用のテキスト配列を確保（１画素が１文字になるのでサイズはinput_image.rows * input_image.cols）
+			unsigned char* output;
+			output = new unsigned char[input_image.rows * input_image.cols
+			+ 1];
+
+			//メインの処理
+			ImageToString(input_image, output, QUANTIZED_LEVEL);
+
+			//ファイルにoutputを出力
+			image_texts.push_back(std::string((char*)output));
+
+			delete output;
+		}
+	}
+}
+	return 0;
 }
 
+void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL) {
+	//cv::Mat rgb_image;
+	//cv::cvtColor(image, rgb_image, CV_BGR2Lab);	//rgb -> Lab
+
+	int q = ceil(255.0 / LEVEL);
+
+	for (int y = 0; y < image.rows; ++y) {
+		for (int x = 0; x < image.cols; ++x) {
+			cv::Vec3b rgb = image.at<cv::Vec3b>(y, x);
+			unsigned char rgb_char[3];
+
+			for (int i = 0; i < 3; ++i) {
+				rgb_char[i] = (unsigned char) ((rgb[i] - 1) / q);	//量子化
+			}
+			unsigned char c = (unsigned char) ((rgb_char[2] * pow(LEVEL, 2))
+					+ (rgb_char[1] * LEVEL) + (rgb_char[0]));
+
+			// \0 はヌル文字なので出現しないようにしている
+			if (c == '\0') {
+				c = 255;
+			}
+
+//			//'10' = LF
+//			if (c == 10) {
+//				c = 1;
+//			}
+//			//'13' = CR
+//			else if (c == 13) {
+//				c = 2;
+//			}
+
+			output[x + image.cols * y] = c;
+
+		}
+	}
+	output[image.rows * image.cols] = '\0';
+}
+ChangeDatasetPath::ChangeDatasetPath(std::string dataset_path,
+		std::string images_path) :
+		dataset(dataset_path), images(images_path) {
+}
+
+std::string ChangeDatasetPath::ChangePath(std::string& text_path) {
+	std::string t(text_path);
+	t.replace(0, dataset.size(), images);
+	t.replace(text_path.size() - 2, 3, "jpg");
+	return t;
+}
+}

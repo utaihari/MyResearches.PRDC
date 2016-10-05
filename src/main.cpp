@@ -18,11 +18,11 @@ using namespace std;
 int main(int argc, char* argv[]) {
 
 	 //基底辞書作成用テキストのパス
-	 	const string DATA_SET_PATH(
-	 			"/home/uchinosub/git/MyResearches.ImageToText/output/101_ObjectCategories/");
+//	 	const string DATA_SET_PATH(
+//	 			"/home/uchinosub/git/MyResearches.ImageToText/output/101_ObjectCategories/");
 
-//	 const string DATA_SET_PATH(
-//	 "/home/uchinosub/git/MyResearches.ImageToText/output/image-orig/");
+	 const string DATA_SET_PATH(
+	 "/home/uchinosub/git/MyResearches.ImageToText/output/image-orig/");
 
 	 //	const string DATA_SET_PATH(
 	 //			"/home/uchinosub/eclipse_folder/eclipse4.4/workspace/DictionaryDistanceProject/dataset/20news-18828-multibyte/");
@@ -42,6 +42,6 @@ int main(int argc, char* argv[]) {
 //	 	PRDC_SAMEDICS_TEST(DATA_SET_PATH, flags, loop, number_of_dics,
 //	 			number_of_testdata, k, use_utf8_text);
 
-	 	NMD_TEST(DATA_SET_PATH, 100, image_retrieval::WEIGHTING_NMD);
+	 	NMD_TEST(DATA_SET_PATH, 100, image_retrieval::ORIGINAL_NMD);
 
 }

@@ -28,7 +28,7 @@ const unsigned int ARROW_EDIT_DICTIONARY = 2;
 
 /**
  * @brief LZW辞書のノード
- * @note T = char or int を想定しています
+ * @note T = char, int or string を想定しています
  * 内部に辞書番号（辞書に何個目に追加されたか）と単語(検索用)を持つ
  */
 template<typename T = char>
@@ -48,12 +48,19 @@ public:
 		return content;
 	}
 
+	/**
+	 * @brief ノードの完全な文字列を返す
+	 * @param current_node
+	 * @return
+	 */
 	std::string get_strings(LzwNode<char>* current_node) {
 		std::string strings;
+		//ルートノードに達するまで親をたどる
 		while (current_node->content != ' ') {
 			strings += current_node->content;
 			current_node = current_node->parent_node;
 		}
+		//下から辿ったので文字列を逆にする
 		std::reverse(strings.begin(), strings.end());
 		return strings;
 	}
@@ -96,11 +103,16 @@ public:
 	std::vector<int> encoded;
 	int number_of_type;
 
+	/**
+	 * @brief 符号化文字列の長さ
+	 * @note 符号化文字列の長さを変更するときはここを変えてください
+	 * @return
+	 */
 	int length() {
 		return encoded.size();
 	}
 	int size() {
-		return encoded.size();
+		return length();
 	}
 	void push_back(int i) {
 		encoded.push_back(i);
@@ -207,20 +219,30 @@ private:
 	unsigned int size;
 	bool multibyte_string;
 
+	//通常版
 	void InnerCompressStr(const std::string &uncompressed);
-	void InnerCompressStrMultibyte(const std::string &uncompressed);
-	void InnerCompress(const std::vector<int> &uncompressed);
-
 	void MakeCompressStr(const std::string &uncompressed,
 			EncodedText& compressed_string);
-	void MakeCompressStrMultiByte(const std::string &uncompressed,
-			EncodedText& compressed_string);
-
 	//!ルートノード
 	std::shared_ptr<LzwNode<char>> root_char;
-	std::shared_ptr<LzwNode<int>> root_int;
+
+	//Multibyte文字用
+	void InnerCompressStrMultibyte(const std::string &uncompressed);
+	void MakeCompressStrMultiByte(const std::string &uncompressed,
+			EncodedText& compressed_string);
+	//!ルートノード
 	std::shared_ptr<LzwNode<std::string>> root_string;
 
+	//再圧縮用
+	void InnerCompress(const std::vector<int> &uncompressed);
+	//!ルートノード
+	std::shared_ptr<LzwNode<int>> root_int;
+
+	/**
+	 * @brief マルチバイト文字が何バイトで表現されているかを調べる
+	 * @param c マルチバイト文字の１バイト目
+	 * @return マルチバイト文字が何バイトで構成されているか
+	 */
 	int CharSize(unsigned char& c) const;
 };
 

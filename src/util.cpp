@@ -531,8 +531,8 @@ void SavingImages::Push(std::string image_name, const cv::Mat& image) {
 	image_names.push_back(image_name);
 	images.push_back(image.clone());
 }
-void SavingImages::Save(std::string output_folder_path,
-		std::string folder_name, bool add_timestamp) {
+void SavingImages::Save(std::string output_folder_path, std::string folder_name,
+		bool add_timestamp) {
 	//画像保存用フォルダ作成
 	struct tm *date;
 	time_t now = time(NULL);
@@ -635,10 +635,41 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 		}
 	}
 }
+}
+void GetEachFilePathsAndClasses(std::string folder_path,
+		std::vector<std::string>& output_file_paths,
+		std::vector<float>& output_file_classes,
+		std::map<std::string, float>& classes, std::string file_extension) {
+
+	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
+	float class_num = 1.0;
+	BOOST_FOREACH(const fs::path& p,
+			std::make_pair(fs::recursive_directory_iterator(folder_path),
+					fs::recursive_directory_iterator())){
+
+	if (!fs::is_directory(p)) {
+		std::string file_extension = p.extension().string();
+		if (file_extension == ".jpg" || file_extension == ".gif"
+				|| file_extension == ".png"|| file_extension == ".txt") {
+
+			//それぞれのファイルに対する操作
+			std::string classname = p.parent_path().stem().string();
+
+			output_file_paths.push_back(p.string());
+
+			if(classes.count(classname) == 0) {
+				classes[classname] = class_num;
+				class_num += 1.0;
+			}
+
+			output_file_classes.push_back(classes[classname]);
+		}
+	}
+}
 
 }
 void FilePathToString(std::string path, std::string& output) {
-	std::ifstream ifs(path);
+	std::ifstream ifs(path, std::ios::in | std::ios::binary);
 	if (ifs.fail()) {
 		std::cerr << "読み込みエラー:" << path << std::endl;
 	}
@@ -747,7 +778,7 @@ ChangeDatasetPath::ChangeDatasetPath(std::string dataset_path,
 		dataset(dataset_path), images(images_path) {
 }
 
-std::string ChangeDatasetPath::ChangePath(std::string& text_path) {
+std::string ChangeDatasetPath::ChangePath(std::string & text_path) {
 	std::string t(text_path);
 	t.replace(0, dataset.size(), images);
 	t.replace(text_path.size() - 2, 3, "jpg");

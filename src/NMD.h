@@ -27,7 +27,7 @@ const std::vector<std::string> METHOD_NAME_ARRAY = { "ORIGINAL_NMD",
 class NMD {
 public:
 	NMD();
-	NMD(std::string database_filepath);
+	NMD(std::string database_folderpath);
 	NMD(std::vector<std::string>& data_paths, std::vector<float>& class_paths);
 	NMD(std::vector<std::vector<std::pair<std::string, double>>>&data_histgrams);
 	virtual ~NMD();

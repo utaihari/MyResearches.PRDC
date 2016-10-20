@@ -10,6 +10,7 @@ CPP_SRCS += \
 ../src/NMD.cpp \
 ../src/NMD_TEST.cpp \
 ../src/PRDC.cpp \
+../src/PRDC_ImageRetrival.cpp \
 ../src/PRDC_SAMEDICS_TEST.cpp \
 ../src/PRDC_SIMILAR_IMAGE_DISPLAY.cpp \
 ../src/PRDC_TEST.cpp \
@@ -23,6 +24,7 @@ OBJS += \
 ./src/NMD.o \
 ./src/NMD_TEST.o \
 ./src/PRDC.o \
+./src/PRDC_ImageRetrival.o \
 ./src/PRDC_SAMEDICS_TEST.o \
 ./src/PRDC_SIMILAR_IMAGE_DISPLAY.o \
 ./src/PRDC_TEST.o \
@@ -36,6 +38,7 @@ CPP_DEPS += \
 ./src/NMD.d \
 ./src/NMD_TEST.d \
 ./src/PRDC.d \
+./src/PRDC_ImageRetrival.d \
 ./src/PRDC_SAMEDICS_TEST.d \
 ./src/PRDC_SIMILAR_IMAGE_DISPLAY.d \
 ./src/PRDC_TEST.d \

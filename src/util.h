@@ -76,7 +76,11 @@ std::vector<std::pair<std::string, std::string>> FindPair(
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_contents,
 		std::vector<float>& output_file_classes,
-		std::map<std::string, float>& all_of_classes);
+		std::vector<std::string>& classes);
+void GetEachFilePathsAndClasses(std::string folder_path,
+		std::vector<std::string>& output_file_paths,
+		std::vector<float>& output_file_classes,
+		std::vector<std::string>& classes, std::string file_extension);
 void FilePathToString(std::string path, std::string& output);
 std::string CurrentTimeString();
 int ImagesToString(std::string& dataset_path,
@@ -84,6 +88,8 @@ int ImagesToString(std::string& dataset_path,
 		std::vector<std::string>& output_file_paths,
 		std::vector<float>& output_file_classes, int QUANTIZED_LEVEL = 5);
 void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL);
+std::string GetFileName(std::string file_path);
+std::string GetFileClassName(std::string file_path);
 
 class SavingImages {
 public:
@@ -121,5 +127,8 @@ private:
 	std::string dataset;
 	std::string images;
 };
+template<typename T>
+std::string printVector(const std::vector<T> &data, std::string &delimiter =
+		", ");
 }
 #endif /* SRC_UTIL_H_ */

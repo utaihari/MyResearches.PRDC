@@ -8,6 +8,7 @@
 #include "Dictionary.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <iterator>
 #include <set>
 #include <algorithm>
@@ -608,7 +609,10 @@ void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
 		std::vector<float>& output_file_classes,
-		std::map<std::string, float>& classes) {
+		std::vector<std::string>& classes) {
+
+	output_file_paths.clear();
+	output_file_classes.clear();
 
 	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
 	float class_num = 1.0;
@@ -626,12 +630,18 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 
 			output_file_paths.push_back(p.string());
 
-			if(classes.count(classname) == 0) {
-				classes[classname] = class_num;
-				class_num += 1.0;
+			bool find = false;
+			for(int i = 0; i< (int)classes.size();++i) {
+				if(classes.at(i) == classname) {
+					output_file_classes.push_back(static_cast<float>(i));
+					find = true;
+					break;
+				}
 			}
-
-			output_file_classes.push_back(classes[classname]);
+			if(!find) {
+				classes.push_back(classname);
+				output_file_classes.push_back(static_cast<float>(classes.size()-1));
+			}
 		}
 	}
 }
@@ -639,7 +649,10 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
 		std::vector<float>& output_file_classes,
-		std::map<std::string, float>& classes, std::string file_extension) {
+		std::vector<std::string>& classes, std::string extension) {
+
+	output_file_paths.clear();
+	output_file_classes.clear();
 
 	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
 	float class_num = 1.0;
@@ -649,20 +662,25 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 
 	if (!fs::is_directory(p)) {
 		std::string file_extension = p.extension().string();
-		if (file_extension == ".jpg" || file_extension == ".gif"
-				|| file_extension == ".png"|| file_extension == ".txt") {
+		if (file_extension == extension) {
 
 			//それぞれのファイルに対する操作
 			std::string classname = p.parent_path().stem().string();
 
 			output_file_paths.push_back(p.string());
 
-			if(classes.count(classname) == 0) {
-				classes[classname] = class_num;
-				class_num += 1.0;
+			bool find = false;
+			for(int i = 0; i< (int)classes.size();++i) {
+				if(classes.at(i) == classname) {
+					output_file_classes.push_back(static_cast<float>(i));
+					find = true;
+					break;
+				}
 			}
-
-			output_file_classes.push_back(classes[classname]);
+			if(!find) {
+				classes.push_back(classname);
+				output_file_classes.push_back(static_cast<float>(classes.size()-1));
+			}
 		}
 	}
 }
@@ -783,5 +801,26 @@ std::string ChangeDatasetPath::ChangePath(std::string & text_path) {
 	t.replace(0, dataset.size(), images);
 	t.replace(text_path.size() - 2, 3, "jpg");
 	return t;
+}
+
+std::string GetFileName(std::string file_path) {
+	fs::path p(file_path);
+	return p.stem().string();
+}
+
+std::string GetFileClassName(std::string file_path) {
+	fs::path p(file_path);
+	return p.parent_path().stem().string();
+
+}
+template <typename T>
+std::string printVector(const std::vector<T> &data,std::string &delimiter)
+{
+    std::stringstream ss;
+    std::ostream_iterator<T> out_it(ss, delimiter);
+    ss << "[";
+    std::copy(data.begin(), data.end() - 1, out_it);
+    ss << data.back() << "]";
+    return ss.str();
 }
 }

@@ -53,7 +53,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		int NUMBER_OF_DICS, int NUMBER_OF_TEST_DATA, int k,
 		bool multibyte_char) {
 
-	string filename = "PRDC_SAMEDICS_LOG/" + CurrentTimeString() + ".txt";
+	string filename = "LOG/PRDC_SAMEDICS_LOG/" + CurrentTimeString() + ".txt";
 	std::ofstream ofs(filename);
 
 	vector<int> flags;
@@ -68,7 +68,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 
 	vector<string> file_paths;
 	vector<float> file_classes;
-	map<string, float> classes;
+	std::vector<std::string> classes;
 
 	vector<vector<double>> accuracys(flags.size());
 	vector<vector<map<float, double>>> accuracys_for_each_classes(flags.size());
@@ -85,7 +85,7 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 
 	cout << "読み込んだクラス一覧" << endl;
 	for (auto c : classes) {
-		cout << c.first << endl;
+		cout << c << endl;
 	}
 
 	if ((int) file_paths.size() < NUMBER_OF_DICS + NUMBER_OF_TEST_DATA + 1) {
@@ -150,8 +150,8 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		int accuracy_count = 0;
 		map<float, int> accuracy_count_base_for_each_classes;
 
-		for (auto c : classes) {
-			accuracy_count_base_for_each_classes[c.second] = 0;
+		for (int i = 0; i < (int) classes.size(); ++i) {
+			accuracy_count_base_for_each_classes[(float) i] = 0;
 		}
 
 #pragma omp parallel for
@@ -169,8 +169,8 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		accuracy_base.at(p) = (double) accuracy_count
 				/ (double) test_contents.size();
 
-		for (auto class_num : classes) {
-			float num = class_num.second;
+		for (int i = 0; i < (int) classes.size(); ++i) {
+			float num = (float) i;
 			if (each_class_size[num] == 0)
 				continue;
 			accuracy_base_for_each_classes.at(p)[num] =
@@ -203,8 +203,8 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 			accuracys.at(n).at(p) = (double) accuracy_count
 					/ (double) test_contents.size();
 
-			for (auto class_num : classes) {
-				float num = class_num.second;
+			for (int i = 0; i < (int) classes.size(); ++i) {
+				float num = (float) i;
 				if (each_class_size[num] == 0)
 					continue;
 				accuracys_for_each_classes.at(n).at(p)[num] =
@@ -240,8 +240,9 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	ofs << "Number of learning data: " << NUMBER_OF_LEARNING << endl << endl;
 
 	ofs << "CLASS LIST" << endl;
-	for (auto num : classes) {
-		ofs << num.first << " >> " << num.second << endl;
+	for (int i = 0; i < (int) classes.size(); ++i) {
+		float num = (float) i;
+		ofs << classes.at(i) << " >> " << num << endl;
 	}
 	ofs << endl;
 	cout << "~~~~~~~~~~~~~~~~~~~~正解率~~~~~~~~~~~~~~~~~~" << endl;
@@ -263,9 +264,10 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 		ofs << "| " << i + 1 << "回目 | " << accuracy_base.at(i) << " | ";
 		accuracy_base_sum += accuracy_base.at(i);
 
-		for (auto num : classes) {
-			accuracy_base_sum_each_classes[num.second] +=
-					accuracy_base_for_each_classes.at(i)[num.second];
+		for (int i = 0; i < (int) classes.size(); ++i) {
+			float num = (float) i;
+			accuracy_base_sum_each_classes[num] +=
+					accuracy_base_for_each_classes.at(i)[num];
 		}
 
 		for (int n = 0; n < (int) flags.size(); ++n) {
@@ -274,9 +276,10 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 
 			accuracys_rate_sum.at(n) += accuracys.at(n).at(i);
 
-			for (auto num : classes) {
-				accuracys_rate_sum_each_classes.at(n)[num.second] +=
-						accuracys_for_each_classes.at(n).at(i)[num.second];
+			for (int m = 0; m < (int) classes.size(); ++m) {
+				float num = (float) m;
+				accuracys_rate_sum_each_classes.at(n)[num] +=
+						accuracys_for_each_classes.at(n).at(m)[num];
 			}
 
 		}
@@ -297,18 +300,19 @@ int PRDC_SAMEDICS_TEST(string dataset_path, int method_flag, int LOOP,
 	ofs << "\nクラス毎の平均正解率" << endl;
 
 	ofs << "PRDC" << endl;
-	for (auto num : classes) {
-		ofs << num.first << " : "
-				<< accuracy_base_sum_each_classes[num.second] / (double) LOOP
-				<< endl;
+	for (int i = 0; i < (int) classes.size(); ++i) {
+		float num = (float) i;
+		ofs << classes.at(i) << " : "
+				<< accuracy_base_sum_each_classes[num] / (double) LOOP << endl;
 	}
 	ofs << endl;
 
 	for (int n = 0; n < (int) flags.size(); ++n) {
 		ofs << flags_name.at(n) << endl;
-		for (auto num : classes) {
-			ofs << num.first << " : "
-					<< accuracys_rate_sum_each_classes.at(n)[num.second]
+		for (int i = 0; i < (int) classes.size(); ++i) {
+			float num = (float) i;
+			ofs << classes.at(i) << " : "
+					<< accuracys_rate_sum_each_classes.at(n)[num]
 							/ (double) LOOP << endl;
 		}
 		ofs << endl;

@@ -27,33 +27,35 @@ const std::vector<std::string> METHOD_NAME_ARRAY = { "ORIGINAL_NMD",
 class NMD {
 public:
 	NMD();
+	~NMD();
 	NMD(std::string database_folderpath);
-	NMD(std::vector<std::string>& data_paths, std::vector<float>& class_paths);
-	NMD(std::vector<std::vector<std::pair<std::string, double>>>&data_histgrams);
-	virtual ~NMD();
 
-	std::map<std::string, float> classes;
+	std::vector<std::string> classes;
 
 	std::vector<std::pair<float, std::string>> FindNearest(
-	std::string file_path, int k = 1) {
-		return FindNearest(file_path, k,ORIGINAL_NMD);
+			std::string file_path, int k = 1) {
+		return FindNearest(file_path, k, ORIGINAL_NMD);
 	}
 
 	std::vector<std::pair<float, std::string>> FindNearest(
-	std::string file_path, int k = 1,int flag = ORIGINAL_NMD);
+			std::string file_path, int k = 1, int flag = ORIGINAL_NMD);
 	int SetCodebook(std::string folder_path);
-	int SetCodebook(std::vector<std::string>& data_paths,
-	std::vector<float>& class_paths);
 	void Save(std::string filename);
 
 private:
-	std::vector<std::string> data_paths;
-	std::vector<float> data_classes;
-	std::vector<std::vector<std::pair<std::string, double>>>data_histgrams;
-	std::vector<prdc_lzw::Dictionary> data_dictionaries;
+	std::string database_path;
 
-	void HistgramToString(const std::vector<std::pair<std::string, double>>&histgram,std::vector<std::string>& output);
-	void StringToInt(const std::string& s,std::vector<unsigned int>& output);
+	std::vector<std::string> histgram_paths;
+	std::vector<float> data_classes;
+
+	/**
+	 * @note 高速化のため　"テキスト長さ 頻度 テキスト内容"の順に記述しています
+	 * @param histgram
+	 * @param output
+	 */
+	void HistgramToString(const std::vector<std::pair<std::string, double>>&histgram,
+			std::vector<std::string>& output);
+	void StringToInt(const std::string& s,std::vector<int>& output);
 	double NormalizedMultisetDistance(
 			const std::vector<std::pair<std::string, double>>& histgramA,
 			const std::vector<std::pair<std::string, double>>& histgramB) const;
@@ -70,12 +72,17 @@ private:
 			}
 		}
 	}
-	double NMD_Weight(const int length)const{
-		return log2((double)length);
+	double NMD_Weight(const int length)const {
+		return sqrt((double)length);
 	}
+	void SaveHistgram(std::string file_name,std::string file_class,
+			std::vector<std::pair<std::string, double>>& histgram);
+	int LoadHistgram(std::string file_path,
+			std::vector<std::pair<std::string, double>>& histgram);
+	bool hasHistgramMade(std::string file_path);
 };
 
 }
-	/* namespace image_retrieval */
+/* namespace image_retrieval */
 
 #endif /* SRC_NMD_H_ */

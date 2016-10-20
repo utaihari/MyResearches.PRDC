@@ -12,7 +12,7 @@
 #include <string>
 #include <map>
 #include <functional> //std::function
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include "Dictionary.h"
 
 #define prdc_base

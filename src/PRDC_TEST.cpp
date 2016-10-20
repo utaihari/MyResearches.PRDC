@@ -34,7 +34,7 @@ using namespace cv;
 int PRDC_TEST(string dataset_path, int method_flag, int LOOP,
 		int NUMBER_OF_DICS, int NUMBER_OF_TEST_DATA, int k) {
 
-	string filename = "PRDC_LOG/" + CurrentTimeString() + ".txt";
+	string filename = "LOG/PRDC_LOG/" + CurrentTimeString() + ".txt";
 	std::ofstream ofs(filename);
 
 	vector<int> flags;
@@ -53,7 +53,7 @@ int PRDC_TEST(string dataset_path, int method_flag, int LOOP,
 		Dictionary dic;
 		vector<string> file_paths;
 		vector<float> file_classes;
-		map<string, float> classes;
+		std::vector<std::string> classes;
 
 		//ファイルの読み込み
 		prdc_util::GetEachFilePathsAndClasses(dataset_path, file_paths, file_classes, classes);

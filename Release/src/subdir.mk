@@ -8,6 +8,7 @@ CPP_SRCS += \
 ../src/MultiByteCharList.cpp \
 ../src/NDD.cpp \
 ../src/NMD.cpp \
+../src/NMD_CLASSIFICATION.cpp \
 ../src/NMD_TEST.cpp \
 ../src/PRDC.cpp \
 ../src/PRDC_ImageRetrival.cpp \
@@ -22,6 +23,7 @@ OBJS += \
 ./src/MultiByteCharList.o \
 ./src/NDD.o \
 ./src/NMD.o \
+./src/NMD_CLASSIFICATION.o \
 ./src/NMD_TEST.o \
 ./src/PRDC.o \
 ./src/PRDC_ImageRetrival.o \
@@ -36,6 +38,7 @@ CPP_DEPS += \
 ./src/MultiByteCharList.d \
 ./src/NDD.d \
 ./src/NMD.d \
+./src/NMD_CLASSIFICATION.d \
 ./src/NMD_TEST.d \
 ./src/PRDC.d \
 ./src/PRDC_ImageRetrival.d \
@@ -50,7 +53,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -std=c++1y -fopenmp -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	g++ -std=c++1y -fopenmp -I/home/uchinosub/opencv_2.4.9/opencv-2.4.9/include -O3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

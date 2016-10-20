@@ -58,11 +58,11 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 
 	vector<string> file_paths;
 	vector<float> file_classes;
-	map<string, float> classes;
+	std::vector<std::string> classes;
 
 	vector<string> image_paths;
 	vector<float> image_classes;
-	map<string, float> iclasses;
+	std::vector<std::string> iclasses;
 
 	//データセットの読み込み
 	GetEachFilePathsAndClasses(dataset_path, file_paths, file_classes, classes);

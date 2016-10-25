@@ -21,6 +21,7 @@
 
 using std::cout;
 using std::endl;
+using std::string;
 namespace fs = boost::filesystem;
 namespace prdc_util {
 
@@ -615,7 +616,6 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 	output_file_classes.clear();
 
 	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
-	float class_num = 1.0;
 	BOOST_FOREACH(const fs::path& p,
 			std::make_pair(fs::recursive_directory_iterator(folder_path),
 					fs::recursive_directory_iterator())){
@@ -655,7 +655,6 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 	output_file_classes.clear();
 
 	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
-	float class_num = 1.0;
 	BOOST_FOREACH(const fs::path& p,
 			std::make_pair(fs::recursive_directory_iterator(folder_path),
 					fs::recursive_directory_iterator())){
@@ -813,14 +812,50 @@ std::string GetFileClassName(std::string file_path) {
 	return p.parent_path().stem().string();
 
 }
-template <typename T>
-std::string printVector(const std::vector<T> &data,std::string &delimiter)
-{
-    std::stringstream ss;
-    std::ostream_iterator<T> out_it(ss, delimiter);
-    ss << "[";
-    std::copy(data.begin(), data.end() - 1, out_it);
-    ss << data.back() << "]";
-    return ss.str();
+template<typename T>
+std::string printVector(const std::vector<T> &data, std::string &delimiter) {
+	std::stringstream ss;
+	std::ostream_iterator<T> out_it(ss, delimiter);
+	ss << "[";
+	std::copy(data.begin(), data.end() - 1, out_it);
+	ss << data.back() << "]";
+	return ss.str();
 }
+
+std::vector<std::pair<int, std::string> > MakeRanking(
+		std::vector<std::vector<int> >& classified_table,
+		std::vector<std::string>& data_classes) {
+	std::vector<std::pair<int, std::string> > output;
+
+	output.reserve(classified_table.size() * classified_table.size());
+
+	for (int i = 0; i < (int) classified_table.size(); ++i) {
+		for (int p = 0; p < (int) classified_table.at(i).size(); ++p) {
+			std::string s = data_classes[i] + " -> " + data_classes[p];
+			output.push_back(std::make_pair(classified_table[i][p], s));
+		}
+	}
+	std::sort(output.rbegin(), output.rend());
+	return output;
+}
+std::vector<std::pair<int, std::string> > MakeMistakeRanking(
+		std::vector<std::vector<int> >& classified_table,
+		std::vector<std::string>& data_classes) {
+	std::vector<std::pair<int, std::string> > output;
+
+	output.reserve(classified_table.size() * classified_table.size());
+
+	for (int i = 0; i < (int) classified_table.size(); ++i) {
+		for (int p = 0; p < (int) classified_table.at(i).size(); ++p) {
+			if (data_classes[i] != data_classes[p]) {
+				std::string s = data_classes[i] + " -> " + data_classes[p];
+				output.push_back(std::make_pair(classified_table[i][p], s));
+			}
+		}
+	}
+	output.shrink_to_fit();
+	std::sort(output.rbegin(), output.rend());
+	return output;
+}
+
 }

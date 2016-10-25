@@ -11,8 +11,9 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <valarray>
 #include <functional> //std::function
-#include <opencv2/opencv.hpp>
+#include "opencv2/opencv.hpp"
 #include "Dictionary.h"
 
 #define prdc_base
@@ -48,6 +49,9 @@ public:
 			std::vector<std::string>& base_dics_name, int method_flag =
 					PRDC_BASE, int READY_FOR_NEXT = 0, bool USE_LAST_DATA =
 					false, bool MULTI_BYTE_CHAR = false, bool encoded = false);
+
+	static std::vector<double> compress_rate_array;
+	static std::vector<double> recompress_rate_array;
 
 	/**
 	 * @brief 以前作成した学習データを読み込みますA
@@ -95,7 +99,7 @@ private:
 	std::vector<prdc_lzw::Dictionary> base_dics; ///基底辞書
 	std::vector<float> classes;
 	std::vector<std::vector<float>> vectors;
-	CvKNearest knn;
+	cv::KNearest knn;
 	cv::Mat training_mat;
 	cv::Mat classes_mat;
 	int prdc_flag;
@@ -117,12 +121,20 @@ private:
 	std::vector<float> make_recompression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
 	std::vector<float> make_self_compression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
 	std::vector<float> make_pair_and_selfcompression_vector(std::string& text,std::vector<prdc_lzw::EncodedText>& compressed) const;
+	//圧縮率ベクトル作成関数（各手法比較用）　ここまで
 
+	/**
+	 * @brief 現在使用中の手法をもちいて、圧縮率べクトルを作成します
+	 * @param text
+	 * @param i
+	 * @return
+	 */
 	std::vector<float> make_vector(std::string& text, int i = -1);
 
 	typedef std::vector<float> (PRDC::*MakeVecPtr)(std::string&,std::vector<prdc_lzw::EncodedText>&) const;
 	static const MakeVecPtr make_vector_functions[];
 
+	//細かい処理用
 	void file_read(std::string path, std::string& output) const;
 	std::vector<std::pair<int, int>> make_pair(
 			prdc_lzw::EncodedText& compressed) const;
@@ -157,6 +169,7 @@ private:
 	}
 }
 ;
+
 }
 /* namespace prdc */
 

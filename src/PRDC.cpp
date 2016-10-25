@@ -27,6 +27,9 @@ const PRDC::MakeVecPtr PRDC::make_vector_functions[] = {
 		&PRDC::make_self_compression_vector,
 		&PRDC::make_pair_and_selfcompression_vector };
 
+std::vector<double> PRDC::compress_rate_array;
+std::vector<double> PRDC::recompress_rate_array;
+
 bool PRDC::train(std::vector<std::string>& training_data_paths,
 		std::vector<float>& data_class, bool encoded) {
 
@@ -71,12 +74,25 @@ bool PRDC::train(std::vector<std::string>& training_data_paths,
 		//全てのベクトルが完成した後mat型に変換します（ここでは纏めておくだけ）
 		vectors.at(i) = std::vector<float>(vec);
 
+		//平均と分散を出力するために圧縮率と再圧縮率をそれぞれ記録する
+		if (prdc_flag == RECOMPRESSION) {
+			int arr_size = (int) compress_rate_array.size();
+			compress_rate_array.resize(arr_size + (vec.size() / 2),0);
+			recompress_rate_array.resize(arr_size + (vec.size() / 2),0);
+
+			for (int p = 0; p < (int) vec.size(); p += 2) {
+				compress_rate_array[arr_size] = vec.at(p);
+				recompress_rate_array[arr_size] = vec.at(p + 1);
+				arr_size++;
+			}
+		}
+
 		debug++;
 	}
 
-	//データをMat型に変換する
+//データをMat型に変換する
 
-	//Mat(全てのデータ数,次元数,CV_32FC1);
+//Mat(全てのデータ数,次元数,CV_32FC1);
 	training_mat.create(training_data_paths.size(), vectors.at(0).size(),
 	CV_32FC1);
 	classes_mat.create(1, data_class.size(), CV_32FC1);
@@ -156,9 +172,9 @@ float PRDC::find_nearest(std::string file_name, int k) {
 
 	file_read(file_name, text);
 
-	//ベクトル作成ここから
+//ベクトル作成ここから
 	std::vector<float> vec = make_vector(text); //PRDCに使用するベクトル
-	//ベクトル作成ここまで
+//ベクトル作成ここまで
 
 	cv::Mat sample(1, vec.size(), CV_32FC1);
 	for (int i = 0; i < (int) vec.size(); ++i) {
@@ -189,13 +205,13 @@ PRDC::PRDC(std::string train_file) :
 	}
 
 	vectors.resize(training_mat.rows);
-	for(auto& v:vectors){
+	for (auto& v : vectors) {
 		v.resize(training_mat.cols);
 	}
 
 	for (int i = 0; i < (int) training_mat.rows; ++i) {
 		for (int j = 0; j < (int) training_mat.cols; ++j) {
-			 vectors[i][j] = training_mat.at<float>(i, j);
+			vectors[i][j] = training_mat.at<float>(i, j);
 		}
 //		classes.at(i) = classes_mat.at<float>(0, i);
 	}
@@ -217,7 +233,7 @@ std::vector<float> PRDC::make_compless_vector(std::string& text,
 		std::vector<prdc_lzw::EncodedText>& comp) const {
 	std::vector<float> vec(base_dics.size());
 
-	//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
+//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
 	for (int i = 0; i < (int) base_dics.size(); ++i) {
 		auto& compressed = comp.at(i);
 		vec.at(i) = ((float) compressed.size() / (float) text.length());
@@ -232,7 +248,7 @@ std::vector<float> PRDC::make_pair_multiple_vector(std::string& text,
 
 	int vec_index = 0;	//圧縮率ベクトルのインデックス
 
-	//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
+//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
 	for (int i = 0; i < (int) base_dics.size(); ++i) {
 		auto& dic = base_dics.at(i);
 		auto& compressed = comp.at(i);
@@ -300,7 +316,7 @@ std::vector<float> PRDC::make_recompression_vector(std::string& text,
 	std::vector<float> vec(base_dics.size() * 2);
 	int vec_index = 0; //圧縮率ベクトルのインデックス
 
-	//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
+//基底辞書それぞれで圧縮し、圧縮率をベクトルにする
 	for (int i = 0; i < (int) base_dics.size(); ++i) {
 		auto& compressed = comp.at(i);
 
@@ -453,9 +469,9 @@ std::vector<int> PRDC::find_near_vector(std::string input_image_path,
 		file_read(input_image_path, text);
 	}
 
-	//ベクトル作成ここから
+//ベクトル作成ここから
 	std::vector<float> vec = make_vector(text); //PRDCに使用するベクトル
-	//ベクトル作成ここまで
+//ベクトル作成ここまで
 
 	cv::Mat sample(1, vec.size(), CV_32FC1);
 	for (int i = 0; i < (int) vec.size(); ++i) {

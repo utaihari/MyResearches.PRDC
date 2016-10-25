@@ -18,7 +18,7 @@
 ///PRDCで用いるLZW圧縮に関する名前空間
 namespace prdc_lzw {
 
-//! 辞書の最大値のデフォルト値(ファイルサイスが大きく、辞書番号が50000では収まらない場合には増やす)
+//! 辞書の最大値のデフォルト値
 const unsigned int default_max_dicsize = -1;
 const unsigned int default_max_length = -1;
 
@@ -41,22 +41,28 @@ public:
 	//! 圧縮に利用するかどうか
 	bool abilable;
 
+	//辞書番号を返す
 	int get_data() {
 		return data;
 	}
+	//ノードが持つ文字を返す
 	T get_content() {
 		return content;
+	}
+	LzwNode<T>* get_parent_node(){
+		return parent_node;
 	}
 
 	/**
 	 * @brief ノードの完全な文字列を返す
 	 * @param current_node
 	 * @return
+	 * @note 未完成
 	 */
 	std::string get_strings(LzwNode<char>* current_node) {
 		std::string strings;
 		//ルートノードに達するまで親をたどる
-		while (current_node->content != ' ') {
+		while (current_node->get_parent_node() != NULL) {
 			strings += current_node->content;
 			current_node = current_node->parent_node;
 		}
@@ -127,6 +133,7 @@ public:
  *
  * 文字列の登録と検索ができる
  * @author uchino
+ * @note 通常のLZW、マルチバイト用のLZW、圧縮符号列を再度圧縮する用のLZWが入っています
  */
 
 class Dictionary {
@@ -175,21 +182,7 @@ public:
 	 * @note 辞書番号の管理のため直接ノードに子を追加させない
 	 */
 	void AddNode(LzwNode<char>* node, char key_word);
-
-	/**
-	 * @brief 辞書中の指定したノードに文字を追加する
-	 * @param key_word 追加する文字
-	 * @param node 文字を追加するノード
-	 * @note 辞書番号の管理のため直接ノードに子を追加させない
-	 */
 	void AddNode(LzwNode<int>* node, int key_word);
-
-	/**
-	 * @brief 辞書中の指定したノードに文字を追加する
-	 * @param key_word 追加する文字
-	 * @param node 文字を追加するノード
-	 * @note 辞書番号の管理のため直接ノードに子を追加させない
-	 */
 	void AddNode(LzwNode<std::string>* node, std::string key_word);
 
 	/**
@@ -219,7 +212,7 @@ private:
 	unsigned int size;
 	bool multibyte_string;
 
-	//通常版
+	//文字列を圧縮する（通常版）
 	void InnerCompressStr(const std::string &uncompressed);
 	void MakeCompressStr(const std::string &uncompressed,
 			EncodedText& compressed_string);

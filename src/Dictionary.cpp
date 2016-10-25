@@ -75,7 +75,7 @@ inline void LzwNode<T>::InsertChild(int data, T c) {
 
 Dictionary::Dictionary() :
 		max_dicsize(default_max_dicsize), max_length(default_max_length), dict_size(
-				256), size(256), root_char(new LzwNode<char>()),multibyte_string(false) {
+				256), size(256), multibyte_string(false),root_char(new LzwNode<char>()){
 	root_char->children.resize(256);
 	contents.resize(256);
 	for (int i = 0; i < 256; i++) {

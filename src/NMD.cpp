@@ -562,12 +562,12 @@ int NMD::LoadHistgram(std::string file_path,
 	char* file_contents_char;
 	file_contents_char = new char[pre_read[0]];
 
-	if (fread(file_contents_int, sizeof(int), pre_read[1] * 2, fp)
+	if ((int)fread(file_contents_int, sizeof(int), pre_read[1] * 2, fp)
 			!= pre_read[1] * 2) {
 		cout << "読み込みエラー" << endl;
 		exit(1);
 	}
-	if (fread(file_contents_char, sizeof(char), pre_read[0], fp)
+	if ((int)fread(file_contents_char, sizeof(char), pre_read[0], fp)
 			!= pre_read[0]) {
 		cout << "読み込みエラー" << endl;
 		exit(1);

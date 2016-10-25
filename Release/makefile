@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/TEST/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
 -include objects.mk
@@ -44,7 +45,7 @@ all: DictionaryDistanceProject
 DictionaryDistanceProject: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -nodefaultlibs -L/home/uchinosub/opencv_2.4.9/opencv-2.4.9/build/lib -fopenmp -o "DictionaryDistanceProject" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -fopenmp -o "DictionaryDistanceProject" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

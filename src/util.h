@@ -14,6 +14,7 @@
 #include <set>
 #include <iterator>
 #include <map>
+#include <valarray>
 #include "Dictionary.h"
 #include "opencv2/opencv.hpp"
 
@@ -90,6 +91,20 @@ int ImagesToString(std::string& dataset_path,
 void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL);
 std::string GetFileName(std::string file_path);
 std::string GetFileClassName(std::string file_path);
+std::vector<std::pair<int, std::string>> MakeRanking(
+		std::vector<std::vector<int>>& classified_table,
+		std::vector<std::string>& data_classes);
+std::vector<std::pair<int, std::string>> MakeMistakeRanking(
+		std::vector<std::vector<int>>& classified_table,
+		std::vector<std::string>& data_classes);
+
+/**
+ * @brief 平均と分散を求める
+ * @param array
+ * @return 平均,分散
+ */
+template <typename T>
+std::pair<double,double> mean_variance(std::vector<T>& array);
 
 class SavingImages {
 public:
@@ -131,4 +146,15 @@ template<typename T>
 std::string printVector(const std::vector<T> &data, std::string &delimiter =
 		", ");
 }
+
+template<typename T>
+inline std::pair<double, double> prdc_util::mean_variance(
+		std::vector<T>& vector) {
+	auto mean = std::accumulate(vector.begin(), vector.end(), 0.0)
+			/ vector.size();
+	auto var = (std::inner_product(vector.begin(), vector.end(), vector.begin(),
+			0.0) - mean * mean * vector.size()) / vector.size();
+	return std::make_pair(mean, var);
+}
+
 #endif /* SRC_UTIL_H_ */

@@ -18,9 +18,9 @@ int NMD_TEST(std::string TEXT_PATH, std::string DATABASE_PATH,
 		int NUMBER_OF_OUTPUT, int METHOD_FLAG) {
 
 	std::vector<std::string> data_paths;
-	std::vector<float> data_classes;
+	std::vector<double> data_classes;
 	std::vector<std::string> classes;
-	std::map<float, int> each_class_size;
+	std::map<double, int> each_class_size;
 	string filename = "LOG/NMD_LOG/" + CurrentTimeString() + ".txt";
 	string table_name = "LOG/NMD_LOG/" + CurrentTimeString() + "-table.txt";
 	std::ofstream ofs(filename);
@@ -36,30 +36,34 @@ int NMD_TEST(std::string TEXT_PATH, std::string DATABASE_PATH,
 	cout << "nmd_set_end" << endl;
 
 	double accuracy_rate = 0;
-	map<float, double> accuracy_rate_each_classes;
+	map<double, double> accuracy_rate_each_classes;
 	vector<vector<int>> classified_table(classes.size());
 
-	for (float i = 0.0; i < (float) classes.size(); i += 1.0) {
+	for (double i = 0.0; i < (double) classes.size(); i += 1.0) {
 		accuracy_rate_each_classes[i] = 0.0;
 		each_class_size[i] = 0.0;
 		classified_table.at((int) i) = vector<int>(classes.size(), 0);
 	}
 
 	int debug = 1;
+#ifdef PARALLEL
 #pragma omp parallel for
+#endif
 	for (int i = 0; i < (int) data_paths.size(); ++i) {
 		each_class_size[data_classes.at(i)]++;
 
-		std::vector<std::pair<float, std::string>> response = nmd.FindNearest(
-				data_paths.at(i), NUMBER_OF_OUTPUT, METHOD_FLAG);
+		std::vector<std::tuple<double, std::string, double>> response =
+				nmd.FindNearest(data_paths.at(i), NUMBER_OF_OUTPUT,
+						METHOD_FLAG);
 
 		int accuracy_count = 0;
 
 		for (int p = 0; p < NUMBER_OF_OUTPUT; ++p) {
-			if (data_classes.at(i) == response.at(p).first) {
+			if (data_classes.at(i) == get<0>(response.at(p))) {
 				accuracy_count++;
 			}
-			classified_table[(int) data_classes.at(i)][(int) response.at(p).first]++;
+			classified_table[(int) data_classes.at(i)][(int) get<0>(
+					response.at(p))]++;
 		}
 		double rate = (double) accuracy_count / (double) NUMBER_OF_OUTPUT;
 		accuracy_rate += rate;
@@ -73,7 +77,7 @@ int NMD_TEST(std::string TEXT_PATH, std::string DATABASE_PATH,
 	accuracy_rate = (double) accuracy_rate / (double) data_paths.size();
 
 	for (int i = 0; i < (int) classes.size(); ++i) {
-		float num = (float) i;
+		double num = (double) i;
 		if (each_class_size[num] == 0)
 			continue;
 		accuracy_rate_each_classes[num] =
@@ -99,7 +103,7 @@ int NMD_TEST(std::string TEXT_PATH, std::string DATABASE_PATH,
 	ofs << "クラスごとの正解率" << endl;
 	map<string, double> sorted;
 	for (int i = 0; i < (int) classes.size(); ++i) {
-		float num = (float) i;
+		double num = (double) i;
 		sorted[classes.at(i)] = accuracy_rate_each_classes[num];
 	}
 	for (auto m : sorted) {

@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <boost/filesystem.hpp>
+#include "Debug.h"
 
 using std::string;
 using std::vector;
@@ -32,24 +33,22 @@ NMD::~NMD() {
 	// TODO Auto-generated destructor stub
 }
 
-std::vector<std::pair<float, std::string> > NMD::FindNearest(
+std::vector<std::tuple<double, std::string, double>> NMD::FindNearest(
 		std::string file_path, int k, int flag) {
 	string input;
-	std::vector<std::pair<float, std::string> > output(k); //pair<class,file_path>
+	std::vector<std::tuple<double, std::string, double>> output; //tuple<class,file_path,distance>
 	std::vector<std::pair<double, int>> nmd(histgram_paths.size());
 
 	//検索対象データのヒストグラム作成 ここから
 	//検索対象データの辞書作成 ここから
 	prdc_util::FilePathToString(file_path, input);
 	prdc_lzw::Dictionary input_dic(input);
-	prdc_util::MakeHistgram(input_dic);
-	auto& input_histgram = input_dic.histgram;
+	auto input_histgram = MakeHistgram(input_dic);
 	//検索対象データのヒストグラム作成 ここまで
 
 	if (flag & ORIGINAL_NMD) {
-		HistgramZeroToOne(input_dic.histgram);
+		HistgramZeroToOne(input_histgram);
 		//全データとのNMDを測る ここから
-#pragma omp parallel for
 		for (int i = 0; i < (int) histgram_paths.size(); ++i) {
 			std::vector<std::pair<std::string, double>> histgram;
 			LoadHistgram(histgram_paths.at(i), histgram);
@@ -58,9 +57,8 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 			nmd.at(i).second = i; //何番目の配列か記録しておく
 		}
 	} else if (flag & WEIGHTING_NMD) {
-		HistgramZeroToOne(input_dic.histgram);
+		HistgramZeroToOne(input_histgram);
 		//全データとのNMDを測る ここから
-#pragma omp parallel for
 		for (int i = 0; i < (int) histgram_paths.size(); ++i) {
 			std::vector<std::pair<std::string, double>> histgram;
 			LoadHistgram(histgram_paths.at(i), histgram);
@@ -70,7 +68,6 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 		}
 	} else if (flag & NDD) {
 		//全データとのNDDを測る ここから
-#pragma omp parallel for
 		for (int i = 0; i < (int) histgram_paths.size(); ++i) {
 			std::vector<std::pair<std::string, double>> histgram;
 			LoadHistgram(histgram_paths.at(i), histgram);
@@ -85,12 +82,22 @@ std::vector<std::pair<float, std::string> > NMD::FindNearest(
 	std::sort(nmd.begin(), nmd.end(),
 			[](std::pair<double, int> a,std::pair<double, int> b)->int {return (a.first < b.first);});
 
+	if (k > 0) {
 //出力の作成
-	for (int i = 0; i < k; ++i) {
-		output.at(i).first = data_classes.at(nmd.at(i).second);
-		output.at(i).second = histgram_paths.at(nmd.at(i).second);
+		output.resize(k);
+		for (int i = 0; i < k; ++i) {
+			std::get<0>(output.at(i)) = data_classes.at(nmd.at(i).second);
+			std::get<1>(output.at(i)) = histgram_paths.at(nmd.at(i).second);
+			std::get<2>(output.at(i)) = nmd.at(i).first;
+		}
+	} else {
+		output.resize(histgram_paths.size());
+		for (int i = 0; i < (int) histgram_paths.size(); ++i) {
+			std::get<0>(output.at(i)) = data_classes.at(nmd.at(i).second);
+			std::get<1>(output.at(i)) = histgram_paths.at(nmd.at(i).second);
+			std::get<2>(output.at(i)) = nmd.at(i).first;
+		}
 	}
-
 	return output;
 }
 
@@ -100,25 +107,28 @@ int NMD::SetCodebook(std::string folder_path) {
 			classes);
 	int debug = 1;
 //それぞれのデータのヒストグラム作成
+#ifdef PARALLEL
 #pragma omp parallel for
+#endif
 	for (int i = 0; i < (int) data_paths.size(); ++i) {
 		if (hasHistgramMade(data_paths.at(i))) {
-			cout << GetFileName(data_paths.at(i)) << " 作成済みのため省略します" << endl;
+//			cout << GetFileName(data_paths.at(i)) << " 作成済みのため省略します" << endl;
 			continue;
 		}
 		string text;
 		prdc_util::FilePathToString(data_paths.at(i), text);
 		prdc_lzw::Dictionary dic(text);
-		prdc_util::MakeHistgram(dic);
+		auto histgram = MakeHistgram(dic);
 
-		HistgramZeroToOne(dic.histgram);
+		HistgramZeroToOne(histgram);
 
 		SaveHistgram(GetFileName(data_paths.at(i)),
-				classes.at((int) data_classes.at(i)), dic.histgram);
-
+				classes.at((int) data_classes.at(i)), histgram);
+#ifdef DEBUG_OUTPUT
 		if (debug % 10 == 0) {
 			cout << debug << "番目 作成完了" << endl;
 		}
+#endif
 		debug++;
 	}
 	prdc_util::GetEachFilePathsAndClasses(database_path, histgram_paths,
@@ -129,15 +139,19 @@ int NMD::SetCodebook(std::string folder_path) {
 
 NMD::NMD(std::string database_filepath) :
 		database_path(database_filepath) {
+	fs::path p(database_path);
+	if (!fs::exists(p)) {
+		fs::create_directories(p);
+	}
 	prdc_util::GetEachFilePathsAndClasses(database_filepath, histgram_paths,
 			data_classes, classes, ".histgram");
 }
 
 void NMD::Save(std::string filename) {
-	cout << "saving" << endl;
+//	cout << "saving" << endl;
 	vector<string> text;
 //HistgramToString(data_histgrams.at(0), text);
-	cout << text.at(0) << endl;
+//	cout << text.at(0) << endl;
 }
 
 void NMD::HistgramToString(
@@ -193,9 +207,10 @@ double NMD::NormalizedMultisetDistance(
 				Aplus = 0;
 				Bplus = Biter->second;
 			}
+
 			if (!Bfinished) {
 				Bsize += Biter->second;
-				H += Bplus;
+//				H += Bplus;
 				if (Biter == histgramB.end() - 1) {
 					Bfinished = true;
 				} else {
@@ -204,13 +219,17 @@ double NMD::NormalizedMultisetDistance(
 			}
 			if (!Afinished) {
 				Asize += Aiter->second;
-				H += Aplus;
+//				H += Aplus;
 				if (Aiter == histgramA.end() - 1) {
 					Afinished = true;
 				} else {
 					Aiter++;
 				}
 			}
+
+			H += Aplus;
+			H += Bplus;
+
 		} //Bのデータ番号のほうが小さければ、Bを進める
 		else if (Aiter->first > Biter->first) {
 			if (Bfinished) {
@@ -300,7 +319,7 @@ double NMD::NormalizedMultisetDistanceWeighted(
 			}
 			if (!Bfinished) {
 				Bsize += Biter->second * weight;
-				H += Bplus;
+//				H += Bplus;
 				if (Biter == histgramB.end() - 1) {
 					Bfinished = true;
 				} else {
@@ -309,12 +328,18 @@ double NMD::NormalizedMultisetDistanceWeighted(
 			}
 			if (!Afinished) {
 				Asize += Aiter->second * weight;
-				H += Aplus;
+//				H += Aplus;
 				if (Aiter == histgramA.end() - 1) {
 					Afinished = true;
 				} else {
 					Aiter++;
 				}
+			}
+			H += Aplus;
+			H += Bplus;
+
+			if (Aplus < 0 || Bplus < 0) {
+				cout << "Aplus: " << Aplus << ", Bplus: " << Bplus << endl;
 			}
 		} //Bのデータ番号のほうが小さければ、Bを進める
 		else if (Aiter->first > Biter->first) {
@@ -373,9 +398,9 @@ double NMD::NormalizedMultisetDistanceWeighted(
 		min_dicsize = Asize;
 	}
 
-//std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize << std::endl;
-
 	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
+//	std::cout << "nmd:" << nmd << " H:" << H << " max:" << max_dicsize
+//			<< " min:" << min_dicsize << std::endl;
 	return nmd;
 
 }
@@ -562,12 +587,12 @@ int NMD::LoadHistgram(std::string file_path,
 	char* file_contents_char;
 	file_contents_char = new char[pre_read[0]];
 
-	if ((int)fread(file_contents_int, sizeof(int), pre_read[1] * 2, fp)
+	if ((int) fread(file_contents_int, sizeof(int), pre_read[1] * 2, fp)
 			!= pre_read[1] * 2) {
 		cout << "読み込みエラー" << endl;
 		exit(1);
 	}
-	if ((int)fread(file_contents_char, sizeof(char), pre_read[0], fp)
+	if ((int) fread(file_contents_char, sizeof(char), pre_read[0], fp)
 			!= pre_read[0]) {
 		cout << "読み込みエラー" << endl;
 		exit(1);
@@ -598,8 +623,31 @@ bool NMD::hasHistgramMade(std::string file_path) {
 	fs::path database(database_path);
 	string histgram_path = database.string() + "/" + file_class + "/"
 			+ file_name + ".histgram";
-	cout << histgram_path << endl;
+//	cout << histgram_path << endl;
 	return fs::exists(fs::path(histgram_path));
+}
+
+std::vector<std::pair<std::string, double>> NMD::MakeHistgram(
+		prdc_lzw::Dictionary& dic) {
+	std::vector<std::pair<std::string, double>> histgram;
+	std::vector<double> output;
+	unsigned int max_value;
+
+	max_value = dic.contents.size();
+
+	histgram.resize(max_value);
+
+	output.resize(max_value, 0.0);
+	for (auto i : dic.compressed.encoded) {
+		output.at(i) += 1.0;
+	}
+
+	for (unsigned int i = 0; i < max_value; ++i) {
+		histgram.at(i) = std::make_pair(dic.contents.at(i), output.at(i));
+	}
+
+	std::sort(histgram.begin(), histgram.end());
+	return histgram;
 }
 
 } /* namespace image_retrieval */

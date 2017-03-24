@@ -231,6 +231,132 @@ double NormalizedMultisetDistance(prdc_lzw::Dictionary& dicA,
 	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
 	return nmd;
 }
+double NormalizedMultisetDistanceWeighted(prdc_lzw::Dictionary& dicA,
+		prdc_lzw::Dictionary& dicB) {
+
+	//前準備 NMDでは0回出力された単語を1回出力されたことにする
+	//TODO 事前に(このメソッドを呼び出す前に)終わらせておくようにする
+	for (int i = 0; i < (int) dicA.histgram.size(); ++i) {
+		if (dicA.histgram.at(i).second == 0) {
+			dicA.histgram.at(i).second = 1;
+		}
+	}
+	for (int i = 0; i < (int) dicB.histgram.size(); ++i) {
+		if (dicB.histgram.at(i).second == 0) {
+			dicB.histgram.at(i).second = 1;
+		}
+	}
+	//前準備ここまで
+
+	std::vector<std::pair<std::string, double>>& A = dicA.histgram;
+	std::vector<std::pair<std::string, double>>& B = dicB.histgram;
+	auto Aiter = A.begin();
+	auto Biter = B.begin();
+	double Asize = 0;
+	double Bsize = 0;
+
+	bool Afinished = false;
+	bool Bfinished = false;
+
+	double H = 0;
+
+	while (!(Afinished && Bfinished)) {
+		//Aのデータ番号とBのデータ番号が同じだったら頻度が大きい方を足す
+		if (Aiter->first == Biter->first) {
+			//大きい方の頻度を足す
+
+			//以下のコメントアウトされた式では、どちらかの配列が先に終了した場合に不具合が起きる
+			//H += Aiter->second > Biter->second ? Aiter->second : Biter->second;
+			double weight = sqrt((int) Aiter->first.length());
+			int Aplus, Bplus;
+			if (Aiter->second > Biter->second) {
+				Aplus = Aiter->second * weight;
+				Bplus = 0;
+			} else {
+				Aplus = 0;
+				Bplus = Biter->second * weight;
+			}
+			if (!Bfinished) {
+				Bsize += Biter->second * weight;
+				H += Bplus;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+			if (!Afinished) {
+				Asize += Aiter->second * weight;
+				H += Aplus;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		} //Bのデータ番号のほうが小さければ、Bを進める
+		else if (Aiter->first > Biter->first) {
+			if (Bfinished) {
+				double weight = sqrt((int) Aiter->first.length());
+				//Bが終わっていたらAを進める
+				Asize += Aiter->second * weight;
+				H += Aiter->second * weight;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			} else {
+				double weight = sqrt((int) Biter->first.length());
+				Bsize += Biter->second * weight;
+				H += Biter->second * weight;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			}
+		} //Aのデータ番号のほうが小さければ、Aを進める
+		else {
+			if (Afinished) {
+				double weight = sqrt((int) Biter->first.length());
+				Bsize += Biter->second * weight;
+				H += Biter->second * weight;
+				if (Biter == B.end() - 1) {
+					Bfinished = true;
+				} else {
+					Biter++;
+				}
+			} else {
+				double weight = sqrt((int) Aiter->first.length());
+				Asize += Aiter->second * weight;
+				H += Aiter->second * weight;
+				if (Aiter == A.end() - 1) {
+					Afinished = true;
+				} else {
+					Aiter++;
+				}
+			}
+		}
+	}
+
+	double max_dicsize;
+	double min_dicsize;
+
+	if (Asize > Bsize) {
+		max_dicsize = Asize;
+		min_dicsize = Bsize;
+	} else {
+		max_dicsize = Bsize;
+		min_dicsize = Asize;
+	}
+
+	//std::cout << "H:" << H << " max:" << max_dicsize << " min:" << min_dicsize << std::endl;
+
+	double nmd = (double) ((double) (H - min_dicsize) / (double) max_dicsize);
+	return nmd;
+}
+
 double NormalizedDictionaryDistance(prdc_lzw::Dictionary& dicA,
 		prdc_lzw::Dictionary& dicB) {
 
@@ -609,7 +735,7 @@ void ComparisonImage::Push(std::string text, cv::Scalar text_color) {
 }
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
-		std::vector<float>& output_file_classes,
+		std::vector<double>& output_file_classes,
 		std::vector<std::string>& classes) {
 
 	output_file_paths.clear();
@@ -633,14 +759,14 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 			bool find = false;
 			for(int i = 0; i< (int)classes.size();++i) {
 				if(classes.at(i) == classname) {
-					output_file_classes.push_back(static_cast<float>(i));
+					output_file_classes.push_back(static_cast<double>(i));
 					find = true;
 					break;
 				}
 			}
 			if(!find) {
 				classes.push_back(classname);
-				output_file_classes.push_back(static_cast<float>(classes.size()-1));
+				output_file_classes.push_back(static_cast<double>(classes.size()-1));
 			}
 		}
 	}
@@ -648,7 +774,7 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 }
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
-		std::vector<float>& output_file_classes,
+		std::vector<double>& output_file_classes,
 		std::vector<std::string>& classes, std::string extension) {
 
 	output_file_paths.clear();
@@ -671,42 +797,82 @@ void GetEachFilePathsAndClasses(std::string folder_path,
 			bool find = false;
 			for(int i = 0; i< (int)classes.size();++i) {
 				if(classes.at(i) == classname) {
-					output_file_classes.push_back(static_cast<float>(i));
+					output_file_classes.push_back(static_cast<double>(i));
 					find = true;
 					break;
 				}
 			}
 			if(!find) {
 				classes.push_back(classname);
-				output_file_classes.push_back(static_cast<float>(classes.size()-1));
+				output_file_classes.push_back(static_cast<double>(classes.size()-1));
 			}
 		}
 	}
 }
+}
+IncludedFilePaths::IncludedFilePaths(std::string folder_path,
+		std::vector<std::string> extensions) {
+	included_file_paths.clear();
+	included_file_classes.clear();
 
+	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
+	BOOST_FOREACH(const fs::path& p,
+			std::make_pair(fs::recursive_directory_iterator(folder_path),
+					fs::recursive_directory_iterator())){
+
+	if (!fs::is_directory(p)) {
+		std::string file_extension = p.extension().string();
+		auto Iter = std::find(extensions.begin(),extensions.end(), file_extension);
+		if (Iter != extensions.end()) {
+
+			//それぞれのファイルに対する操作
+			std::string classname = p.parent_path().stem().string();
+
+			included_file_paths.push_back(p.string());
+
+			bool find = false;
+			for(int i = 0; i< (int)classes.size();++i) {
+				if(classes.at(i) == classname) {
+					included_file_classes.push_back(static_cast<double>(i));
+					each_class_files[static_cast<double>(i)].push_back(p.string());
+					find = true;
+					break;
+				}
+			}
+			if(!find) {
+				classes.push_back(classname);
+				included_file_classes.push_back(static_cast<double>(classes.size()-1));
+				each_class_files[classes.size()-1].push_back(p.string());
+			}
+		}
+	}
+}
 }
 void FilePathToString(std::string path, std::string& output) {
 	std::ifstream ifs(path, std::ios::in | std::ios::binary);
-	if (ifs.fail()) {
+	std::ostringstream oss;
+
+	oss << ifs.rdbuf();
+
+	if (!(ifs && oss)) {
 		std::cerr << "読み込みエラー:" << path << std::endl;
 	}
-	output = std::string((std::istreambuf_iterator<char>(ifs)),
-			std::istreambuf_iterator<char>());
+	output = oss.str();
 	ifs.close();
 }
 
 int ImagesToString(std::string& dataset_path,
 		std::vector<std::string>& image_texts,
 		std::vector<std::string>& output_file_paths,
-		std::vector<float>& output_file_classes, int QUANTIZED_LEVEL) {
+		std::vector<double>& output_file_classes, int QUANTIZED_LEVEL) {
 	//第一引数(argv[1])→データセットのディレクトリパス
 	//第二引数(argv[2])→出力ディレクトリのパス
 
 	//設定ここから
 	const fs::path INPUT_PATH(dataset_path);
 	//設定ここまで
-	std::map<std::string, float> classes;
-	float class_num = 1.0;
+	std::map<std::string, double> classes;
+	double class_num = 1.0;
 	//データセットディレクトリの中身を再帰的に（すべてのファイルを）調べる
 	BOOST_FOREACH(const fs::path& p, std::make_pair(fs::recursive_directory_iterator(INPUT_PATH),
 					fs::recursive_directory_iterator())){
@@ -762,17 +928,17 @@ void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL) {
 	for (int y = 0; y < image.rows; ++y) {
 		for (int x = 0; x < image.cols; ++x) {
 			cv::Vec3b rgb = image.at<cv::Vec3b>(y, x);
-			unsigned char rgb_char[3];
+			char rgb_char[3];
 
 			for (int i = 0; i < 3; ++i) {
-				rgb_char[i] = (unsigned char) ((rgb[i] - 1) / q);	//量子化
+				rgb_char[i] = (char) ((rgb[i] - 1) / q);	//量子化
 			}
-			unsigned char c = (unsigned char) ((rgb_char[2] * pow(LEVEL, 2))
+			char c = (char) ((rgb_char[2] * pow(LEVEL, 2))
 					+ (rgb_char[1] * LEVEL) + (rgb_char[0]));
 
 			// \0 はヌル文字なので出現しないようにしている
 			if (c == '\0') {
-				c = 255;
+				c = 127;
 			}
 
 //			//'10' = LF
@@ -790,15 +956,20 @@ void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL) {
 	}
 	output[image.rows * image.cols] = '\0';
 }
-ChangeDatasetPath::ChangeDatasetPath(std::string dataset_path,
-		std::string images_path) :
-		dataset(dataset_path), images(images_path) {
+ChangeDirectoryPath::ChangeDirectoryPath(std::string dataset_path,
+		std::string images_path, std::string src_extention_str,
+		std::string dest_extention_str) :
+		src(dataset_path), dest(images_path), src_extention(src_extention_str), dest_extention(
+				dest_extention_str) {
 }
 
-std::string ChangeDatasetPath::ChangePath(std::string & text_path) {
-	std::string t(text_path);
-	t.replace(0, dataset.size(), images);
-	t.replace(text_path.size() - 2, 3, "jpg");
+std::string ChangeDirectoryPath::ChangePath(std::string & src_path) {
+	std::string t(src_path);
+	//フォルダパスの入れ替え
+	t.replace(0, src.size(), dest);
+	//拡張子の入れ替え
+	t.replace(src_path.size() - (src_extention.length() - 1),
+			dest_extention.length(), dest_extention);
 	return t;
 }
 
@@ -813,7 +984,7 @@ std::string GetFileClassName(std::string file_path) {
 
 }
 template<typename T>
-std::string printVector(const std::vector<T> &data, std::string &delimiter) {
+std::string printVector(std::vector<T> &data, std::string &delimiter) {
 	std::stringstream ss;
 	std::ostream_iterator<T> out_it(ss, delimiter);
 	ss << "[";
@@ -823,8 +994,8 @@ std::string printVector(const std::vector<T> &data, std::string &delimiter) {
 }
 
 std::vector<std::pair<int, std::string> > MakeRanking(
-		std::vector<std::vector<int> >& classified_table,
-		std::vector<std::string>& data_classes) {
+		std::vector<std::vector<int> > &classified_table,
+		std::vector<std::string> &data_classes) {
 	std::vector<std::pair<int, std::string> > output;
 
 	output.reserve(classified_table.size() * classified_table.size());
@@ -839,8 +1010,8 @@ std::vector<std::pair<int, std::string> > MakeRanking(
 	return output;
 }
 std::vector<std::pair<int, std::string> > MakeMistakeRanking(
-		std::vector<std::vector<int> >& classified_table,
-		std::vector<std::string>& data_classes) {
+		std::vector<std::vector<int> > &classified_table,
+		std::vector<std::string> &data_classes) {
 	std::vector<std::pair<int, std::string> > output;
 
 	output.reserve(classified_table.size() * classified_table.size());

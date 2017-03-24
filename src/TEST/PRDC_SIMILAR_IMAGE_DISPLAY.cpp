@@ -43,8 +43,8 @@ using namespace cv;
  * @return
  */
 int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
-		string images_path, int method_flag, int NUMBER_OF_DICS, int output_num,
-		string savefile, string loadfile,string output_folder) {
+		string images_path, string dictionary_path, int method_flag, int NUMBER_OF_DICS, int output_num,
+		string savefile, string loadfile, string output_folder) {
 
 	vector<int> flags;
 	vector<string> flags_name;
@@ -57,11 +57,11 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 	}
 
 	vector<string> file_paths;
-	vector<float> file_classes;
+	vector<double> file_classes;
 	std::vector<std::string> classes;
 
 	vector<string> image_paths;
-	vector<float> image_classes;
+	vector<double> image_classes;
 	std::vector<std::string> iclasses;
 
 	//データセットの読み込み
@@ -69,6 +69,7 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 	//画像フォルダの読み込み
 	GetEachFilePathsAndClasses(images_path, image_paths, image_classes,
 			iclasses);
+	prdc_util::IncludedFilePaths dic_paths(dictionary_path,{".txt"});
 
 	if (file_paths.size() != image_paths.size()) {
 		cerr
@@ -97,21 +98,15 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 
 	//学習用テキストの設定
 	vector<string> learning_contents;
-	vector<string> learning_contents_path;
-	vector<float> learning_class;
+	vector<double> learning_class;
+	//file_paths.size()
 	for (int i = 0; i < (int) file_paths.size(); ++i) {
 		learning_contents.push_back(file_paths.at(i));
-		learning_contents_path.push_back(image_paths.at(i));
 		learning_class.push_back(file_classes.at(i));
 	}
 
 	//基底辞書用テキストの設定
-	vector<string> base_dics;
-
-	for (int i = 0; i < NUMBER_OF_DICS; ++i) {
-		base_dics.push_back(file_paths.at(random_num.at(i)));
-
-	}
+	vector<string> base_dics = dic_paths.included_file_paths;
 
 //PRDCここから
 //基底辞書の設定
@@ -119,21 +114,26 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 	if (loadfile == "") {
 		pr = prdc::PRDC(base_dics, method_flag, 0, false, false);
 		cout << "基底辞書作成完了" << endl;
-		pr.train(learning_contents, learning_class);
+		pr.train(file_paths, file_classes);
 		cout << "学習完了" << endl;
 	} else {
 		pr = prdc::PRDC(loadfile);
+	}
+
+	cout << "DICS" << endl;
+	for(auto p:pr.base_dics_names){
+		cout << p << endl;
 	}
 
 	cout << "検索開始（多少時間がかかります）" << endl;
 
 	vector<int> r = pr.find_near_vector(input_image_data, output_num, true);
 	vector<Mat> output_images;
-	ChangeDatasetPath cdp(dataset_path, images_path);
+	ChangeDirectoryPath cdp(dataset_path, images_path, ".txt", ".jpg");
 	SavingImages si;
 
 	for (auto num : r) {
-//		cout << learning_contents_path.at(num) << endl;
+//		cout << learning_contents.at(num) << endl;
 		cout << cdp.ChangePath(learning_contents.at(num)) << endl;
 		cout << endl;
 		output_images.push_back(
@@ -149,11 +149,11 @@ int PRDC_SIMILAR_IMAGE_DISPLAY(string input_image_path, string dataset_path,
 		cvMoveWindow(to_string(i).c_str(), 1000, 1000);
 		si.Push(to_string(i), output_images.at(i));
 	}
-	si.Save(output_folder,flags_name.at(0) + "-");
+	si.Save(output_folder, flags_name.at(0) + "-");
 	if (savefile != "") {
 		pr.save(savefile);
 	}
-
+	cout << "Press press any key on the image to exit..." << endl;
 	waitKey(0);
 
 	return 0;

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <math.h>
+#include <tuple>
 #include "Dictionary.h"
 
 namespace image_retrieval {
@@ -32,21 +33,27 @@ public:
 
 	std::vector<std::string> classes;
 
-	std::vector<std::pair<float, std::string>> FindNearest(
+	std::vector<std::tuple<double, std::string, double>> FindNearest(
 			std::string file_path, int k = 1) {
 		return FindNearest(file_path, k, ORIGINAL_NMD);
 	}
 
-	std::vector<std::pair<float, std::string>> FindNearest(
+	std::vector<std::tuple<double, std::string, double>> FindNearest(
 			std::string file_path, int k = 1, int flag = ORIGINAL_NMD);
+
 	int SetCodebook(std::string folder_path);
 	void Save(std::string filename);
+
+	//以下研究用
+	std::vector<std::tuple<double, std::string>> CalcAllDistance(
+				std::string query_path, int flag = ORIGINAL_NMD);
+
 
 private:
 	std::string database_path;
 
 	std::vector<std::string> histgram_paths;
-	std::vector<float> data_classes;
+	std::vector<double> data_classes;
 
 	/**
 	 * @note 高速化のため　"テキスト長さ 頻度 テキスト内容"の順に記述しています
@@ -73,8 +80,11 @@ private:
 		}
 	}
 	double NMD_Weight(const int length)const {
-		return sqrt((double)length);
+//		return (double)length;
+		return (double)log2((double)length + 1);
+//		return sqrt((double)length);
 	}
+	std::vector<std::pair<std::string, double>> MakeHistgram(prdc_lzw::Dictionary& dic);
 	void SaveHistgram(std::string file_name,std::string file_class,
 			std::vector<std::pair<std::string, double>>& histgram);
 	int LoadHistgram(std::string file_path,

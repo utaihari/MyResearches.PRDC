@@ -76,18 +76,18 @@ std::vector<std::pair<std::string, std::string>> FindPair(
 		std::vector<std::pair<std::string, std::string>>& B);
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_contents,
-		std::vector<float>& output_file_classes,
+		std::vector<double>& output_file_classes,
 		std::vector<std::string>& classes);
 void GetEachFilePathsAndClasses(std::string folder_path,
 		std::vector<std::string>& output_file_paths,
-		std::vector<float>& output_file_classes,
+		std::vector<double>& output_file_classes,
 		std::vector<std::string>& classes, std::string file_extension);
 void FilePathToString(std::string path, std::string& output);
 std::string CurrentTimeString();
 int ImagesToString(std::string& dataset_path,
 		std::vector<std::string>& image_texts,
 		std::vector<std::string>& output_file_paths,
-		std::vector<float>& output_file_classes, int QUANTIZED_LEVEL = 5);
+		std::vector<double>& output_file_classes, int QUANTIZED_LEVEL = 5);
 void ImageToString(cv::Mat& image, unsigned char* output, const int LEVEL);
 std::string GetFileName(std::string file_path);
 std::string GetFileClassName(std::string file_path);
@@ -103,8 +103,8 @@ std::vector<std::pair<int, std::string>> MakeMistakeRanking(
  * @param array
  * @return 平均,分散
  */
-template <typename T>
-std::pair<double,double> mean_variance(std::vector<T>& array);
+template<typename T>
+std::pair<double, double> mean_variance(std::vector<T>& array);
 
 class SavingImages {
 public:
@@ -128,25 +128,54 @@ private:
 	cv::Mat origin_image;
 	int push_times;
 };
-class ChangeDatasetPath {
+class ChangeDirectoryPath {
 public:
-	ChangeDatasetPath();
-	ChangeDatasetPath(const ChangeDatasetPath& right) {
-		dataset = right.dataset;
-		images = right.images;
+	ChangeDirectoryPath();
+	ChangeDirectoryPath(const ChangeDirectoryPath& right) {
+		src = right.src;
+		dest = right.dest;
+		src_extention = right.src_extention;
+		dest_extention = right.dest_extention;
 	}
-	ChangeDatasetPath(std::string dataset_path_str,
-			std::string images_path_str);
+	ChangeDirectoryPath(std::string src_path_str, std::string dest_path_str,
+			std::string src_extention = "", std::string dest_extention = "");
 	std::string ChangePath(std::string& text_path);
 private:
-	std::string dataset;
-	std::string images;
+	std::string src;
+	std::string dest;
+	std::string src_extention;
+	std::string dest_extention;
 };
 template<typename T>
-std::string printVector(const std::vector<T> &data, std::string &delimiter =
-		", ");
+std::string printVector(std::vector<T> &data, std::string &delimiter = ", ");
+
+template<typename T>
+void remove(std::vector<T>& vector, unsigned int index) {
+	vector.erase(vector.begin() + index);
 }
 
+class IncludedFilePaths {
+public:
+	IncludedFilePaths(std::string folder_path,
+			std::vector<std::string> extensions);
+	std::vector<std::string> included_file_paths;
+	std::vector<double> included_file_classes;
+	std::vector<std::string> classes;
+	std::map<double, std::vector<std::string>> each_class_files;
+
+	int size() {
+		return included_file_paths.size();
+	}
+	int class_size() {
+		return classes.size();
+	}
+	std::pair<std::string, double> at(int i) {
+		return std::make_pair(included_file_paths.at(i),
+				included_file_classes.at(i));
+	}
+
+};
+}
 template<typename T>
 inline std::pair<double, double> prdc_util::mean_variance(
 		std::vector<T>& vector) {
@@ -156,5 +185,5 @@ inline std::pair<double, double> prdc_util::mean_variance(
 			0.0) - mean * mean * vector.size()) / vector.size();
 	return std::make_pair(mean, var);
 }
-
+;
 #endif /* SRC_UTIL_H_ */
